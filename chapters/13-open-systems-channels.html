@@ -1,0 +1,150 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13 · Open systems &amp; quantum channels — The Bridge</title>
+<meta name="description" content="Spontaneous emission is the amplitude-damping channel; the course's T1 is its damping parameter. Kraus operators pay the debt essay 02 left: a POVM is a quantum operation with the outcome state thrown away.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part V · Open systems &amp; information — Essay 13</p>
+    <h1>Open systems, and everything that can happen to a state</h1>
+    <p class="lede">The course computes one decay — an excited atom emitting into a field it writes down.
+      Nielsen &amp; Chuang call that the amplitude-damping channel and ask a question the course never
+      poses: what is the <em>most general</em> thing that can happen to a state? On the way it settles a
+      debt essay 02 left in print.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §40–43 — time-dependent perturbation, the golden rule, an atom decaying into a field it models</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C Ch 8 — quantum operations, Kraus operators, the amplitude-damping channel</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>Put an excited atom in the electromagnetic field and the course knows what to do. The coupling to
+        the field is a time-dependent perturbation; Fermi's golden rule gives the rate of transitions into
+        the continuum of field modes (L&amp;L's time-dependent perturbation theory, §40–43, with the
+        transition rate into a continuum in §43); and the excited-state population drains away
+        exponentially,</p>
+      <p>$$ \rho_{11}(t) = \rho_{11}(0)\,e^{-t/T_1}, $$</p>
+      <p>with $T_1$ the lifetime. Two things about how the calculation is set up matter for what follows.
+        The environment is written down <em>explicitly</em> — the field is in the Hamiltonian, atom and
+        field evolve together by a perfectly ordinary unitary, and you obtain the atom's fate by keeping
+        track of that whole closed system. And the calculation answers one question: what does
+        <em>this</em> process do? The course computes a particular decay, for a particular coupling. It
+        never asks what the entire menu of possible fates might be.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>Two moves turn that decay into the object N&amp;C study. The first is to <em>abstract the
+        environment</em>. Rather than write the field's Hamiltonian, treat the environment as an
+        inaccessible ancilla in a fixed state, couple system and ancilla by some joint unitary $U$, and —
+        as in Essays <a href="02-observables-measurement.html">02</a> and
+        <a href="03-density-matrix.html">03</a> — trace the ancilla out. What the system undergoes is then
+        no longer a unitary but a <strong>quantum operation</strong>, and it always takes the
+        operator-sum form</p>
+      <p>$$ \mathcal{E}(\rho) = \sum_k A_k\,\rho\,A_k^\dagger, \qquad \sum_k A_k^\dagger A_k = I, $$</p>
+      <p>whose $A_k$ are the <strong>Kraus operators</strong>. The second move is to ask the question the
+        course skips. Not “what does this environment do,” but “what is the most general transformation a
+        quantum state can suffer?” The answer is the completely-positive, trace-preserving (CPTP) maps,
+        and every one of them has a Kraus form — equivalently (the Stinespring picture), every one is a
+        unitary on the system plus an ancilla, followed by discarding the ancilla. We take that as a fact
+        and show the construction rather than prove it, exactly as Essay 02 did with Naimark: the two are
+        the same statement, once for measurements and once for dynamics. This question has no course-side
+        counterpart at all. The course always keeps the environment in view and computes cases; it never
+        maps the space those cases live in.</p>
+      <p>And here the debt from Essay 02 comes due. There, a general measurement had operators $\{A_m\}$:
+        outcome $m$ arrived with probability $\langle\psi|A_m^\dagger A_m|\psi\rangle$, leaving the state
+        proportional to $A_m|\psi\rangle$, and the POVM element was</p>
+      <p>$$ E_m = A_m^\dagger A_m. $$</p>
+      <p>A channel is <em>the very same operators</em> with the outcome forgotten — summed over instead of
+        selected among. Measurement keeps the label $m$ and the state it left behind; the channel throws
+        both away and averages. So a POVM is a quantum operation with the post-measurement state discarded,
+        and $E_m = A_m^\dagger A_m$ is the exact bridge between them: one set of operators, read as a
+        measurement if you record which one fired, as noise if you do not.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>Nielsen &amp; Chuang develop this as Chapter 8, and the decay of Move 1 is their headline example,
+        <strong>amplitude damping</strong> (§8.3.5). It is a channel on a single qubit with just two Kraus
+        operators,</p>
+      <p>$$ A_0 = \begin{pmatrix} 1 & 0 \\ 0 & \sqrt{1-\gamma} \end{pmatrix}, \qquad
+             A_1 = \begin{pmatrix} 0 & \sqrt{\gamma} \\ 0 & 0 \end{pmatrix}, \qquad
+             \gamma = 1 - e^{-t/T_1}, $$</p>
+      <p>and they resolve the identity: $A_0^\dagger A_0 = \mathrm{diag}(1,\,1-\gamma)$ and
+        $A_1^\dagger A_1 = \mathrm{diag}(0,\,\gamma)$ sum to $I$. Read what each does. $A_1 =
+        \sqrt{\gamma}\,|0\rangle\langle 1|$ is the branch where the atom emits its quantum and drops from
+        $|1\rangle$ to $|0\rangle$; $A_0$ leaves the ground state alone and shrinks the excited amplitude
+        by $\sqrt{1-\gamma}$ — the no-emission branch, which still reshapes the state. Apply the channel to
+        the excited population and</p>
+      <p>$$ \rho_{11} \;\longmapsto\; (1-\gamma)\,\rho_{11} \;=\; e^{-t/T_1}\,\rho_{11}, $$</p>
+      <p>the exponential decay of Move 1 exactly, with the course's lifetime $T_1$ now sitting inside the
+        damping parameter $\gamma$. The physics is identical; what changed is that the field is gone from
+        the description, abstracted into an ancilla nobody reads.</p>
+      <p>That abstraction is the point of the enlargement. Amplitude damping is one point in the space of
+        all channels, and the course computes that point — as spontaneous emission — without ever drawing
+        the space. Nielsen &amp; Chuang draw the space: every CPTP map, indexed by its Kraus operators.
+        It is the same widening that Essay 04 performs for dynamics — from one Hamiltonian's evolution to
+        the whole reachable unitary group — and that Essay 15 performs for readout, from one measurement's
+        yield to all the information a state can surrender. The course solves the instances; quantum
+        information characterizes the space they inhabit.</p>
+      <p>The debt-repayment doubles as a physical picture. Put a photodetector on the field and you are
+        <em>measuring</em> which Kraus branch occurred — a click is outcome $A_1$, silence is $A_0$ — a
+        POVM with $E_0 = A_0^\dagger A_0$, $E_1 = A_1^\dagger A_1$, the measurement of Essay 02. Leave the
+        emitted photon unwatched and you must sum the branches: the same operators become the
+        amplitude-damping channel. Whether spontaneous emission is a measurement or noise is nothing but
+        whether someone is looking at the light.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side.</strong> Landau &amp; Lifshitz, time-dependent perturbation theory,
+        §40–43 — the golden rule appears as the transition rate into a continuum in §43, and exponential
+        decay with a lifetime $T_1$ is its consequence. The environment is modelled explicitly and one
+        process is computed; that is the whole difference from what follows.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang, Chapter 8: §8.2 quantum operations, §8.2.3 the
+        operator-sum (Kraus) representation, §8.2.4 the axiomatic characterization of CPTP maps, and §8.3.5
+        amplitude damping. <em>Scope, on purpose:</em> this is the single-step channel picture. Continuous-time
+        master equations of Lindblad type are a genuinely different subject and are left out; letting them
+        in would swallow the essay.</p>
+      <p><strong>How it connects.</strong> This pays the promissory note of <a href="02-observables-measurement.html">Essay&nbsp;02</a>
+        — $E_m = A_m^\dagger A_m$, a POVM being a channel with the outcome kept — and it reuses the
+        trace-out of <a href="03-density-matrix.html">Essay&nbsp;03</a>, now producing dynamics rather than
+        a static mixed state. The von Neumann entropy and Holevo bound of Essay&nbsp;15 will ask how much a
+        channel like this one can still carry.</p>
+      <p><strong>Check the crossing.</strong> Confirm $A_0^\dagger A_0 + A_1^\dagger A_1 = I$ for amplitude
+        damping, then apply $\mathcal{E}$ to a general $\rho$ and read off $\rho_{11}\mapsto(1-\gamma)\rho_{11}$,
+        recovering $e^{-t/T_1}$. Finally check that $E_0=A_0^\dagger A_0$ and $E_1=A_1^\dagger A_1$ are a
+        valid POVM — the measurement you get by watching for the photon.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="09-teleportation-superdense.html"><span class="dir">← Previous</span> 09 · Teleportation &amp; superdense coding</a>
+      <a class="next" href="14-error-correction.html"><span class="dir">Next essay →</span> 14 · Quantum error correction</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 13 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>

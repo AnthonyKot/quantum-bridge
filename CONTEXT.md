@@ -77,6 +77,14 @@ bracket-class regex like `[“"]` is unreliable on curly quotes in this locale �
 read the blockquotes. This is permanent, not cleanup: the verbatim EPR criterion in essay 08 was found
 only by the sweep, not by suspicion.
 
+**Verification checklist — self-assessment scan (STANDING):** grep for the essay grading itself —
+`cleanest|clearest|sharpest|best|most (elegant|interesting|important)`, `in the whole book`, `of its
+thesis`, `worth saying`, and verdict-aphorisms of the form "X fails because Y succeeds". Replace each
+verdict with the observation that earns it: *show* it's the cleanest instance, don't say so. Recurring
+tic — caught in 06 and 07; the Quartet had the same habit in its codas. Triage the hits: a verdict
+about the *essay/book/thesis* is the tic (fix it); an ordinary descriptive superlative about the
+*physics* ("the simplest two-level system") is fine.
+
 ## Spine (L&L → N&C map)
 
 Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mirrors more cleanly.
@@ -95,7 +103,7 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 | 10 | interference-deutsch | superposition & interference | §1.4.3–1.4.4 Deutsch, Deutsch–Jozsa | stub |
 | 11 | fourier-shor | **CROSSING REWRITTEN** (old "Fourier on ℤ_N" was borrowed from harmonic analysis, not in any course). New: momentum eigenstates = eigenstates of the *translation operator*; the QM Fourier transform is the change of basis that diagonalizes translations; the QFT is the same for translations on the cyclic group ℤ_N; period-finding reads off that eigenvalue. L&L has the translation operator + momentum as its generator. | Ch 5 §5.1 QFT, §5.2 phase estimation, §5.3 factoring | stub — **SPLIT**: period-finding (11) vs number theory/factoring (11b) |
 | 12 | amplitude-grover | amplitudes & probability | Ch 6 Grover search | stub |
-| 13 | open-systems-channels | decoherence, reduced dynamics | Ch 8 quantum operations (Kraus) | stub |
+| 13 | open-systems-channels | **crossing = spontaneous emission → amplitude damping** (L&L §40–43 golden rule/decay, T₁; N&C abstracts env into an inaccessible ancilla and asks the whole space = CPTP maps — no course counterpart; shared "instances→whole space" spine with 04 & 15). Pays 02's debt: E_m = A_m†A_m, POVM = channel with the outcome discarded. Kraus/Stinespring stated as fact + ancilla construction (like Naimark). No Lindblad. | Ch 8 §8.2.3 operator-sum, §8.2.4 CPTP, §8.3.5 amplitude damping | **written** |
 | 14 | error-correction | **crossing = the CSCO** (L&L §3–4: complete set of commuting observables — verified; code space = their joint eigenspace, syndrome = measuring that CSCO; hydrogen labelled by {H,L²,L_z}). Move 2: syndrome = which *error* not which *state* (subspace not ray → callback 02/03); continuous a·I+b·X+c·Y+d·Z collapses to one Pauli, "digital because you looked". History stated as "widely argued", not documented consensus. Ends at 9-qubit + discretization (no stabilizer/CSS/threshold). | Ch 10 §10.1.1 bit-flip, §10.1.2 phase-flip, §10.2 Shor 9-qubit | **written** |
 | 15 | entropy-holevo | von Neumann entropy (§14 density matrix; needs 02 POVMs) | Ch 11 §11.3 von Neumann entropy, §12.1.1 Holevo | stub |
 

@@ -168,6 +168,7 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.4rem 0; }
 /* ---- table of contents (landing) ---- */
 .part { margin: 2.4rem 0; }
 .part-head { font-family: var(--sans); font-size: .82rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); border-bottom: 1px solid var(--rule); padding-bottom: .4rem; margin-bottom: .3rem; }
+.part-intro { font-family: var(--sans); font-size: .92rem; line-height: 1.5; color: var(--ink-soft); margin: .5rem 0 1rem; max-width: 42rem; }
 .toc { list-style: none; margin: 0; padding: 0; }
 .toc li { border-bottom: 1px solid var(--rule); }
 .toc a, .toc .stub { display: block; padding: .85rem .2rem; color: inherit; text-decoration: none; }
