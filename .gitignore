@@ -1,0 +1,6 @@
+# Source texts for pointer verification — never commit or push copyrighted material.
+sources/
+
+# OS / editor cruft
+.DS_Store
+*.swp

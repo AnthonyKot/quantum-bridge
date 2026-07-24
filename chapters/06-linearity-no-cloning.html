@@ -83,14 +83,19 @@
       <p>$$ \hat U\big(|{+}\rangle|b\rangle\big)
              = \tfrac{1}{\sqrt2}\Big(\hat U|0\rangle|b\rangle + \hat U|1\rangle|b\rangle\Big)
              = \tfrac{1}{\sqrt2}\big(|0\rangle|0\rangle + |1\rangle|1\rangle\big). $$</p>
-      <p>But the <em>definition of cloning</em> demands the output be $|{+}\rangle|{+}\rangle$, and
-        that is a different vector:</p>
-      <p>$$ |{+}\rangle|{+}\rangle
-             = \tfrac{1}{2}\big(|0\rangle + |1\rangle\big)\big(|0\rangle + |1\rangle\big)
-             = \tfrac{1}{2}\big(|00\rangle + |01\rangle + |10\rangle + |11\rangle\big). $$</p>
-      <p>The two results agree on the $|00\rangle$ and $|11\rangle$ terms but the cloning definition
-        also carries the cross terms $|01\rangle$ and $|10\rangle$, which linearity flatly refuses to
-        produce. A single machine cannot satisfy both. No universal quantum copier exists. $\blacksquare$</p>
+      <p>But the <em>definition of cloning</em> demands the output be $|{+}\rangle|{+}\rangle$ — and
+        that is not merely a vector with different numbers in it, but a different <em>kind</em> of
+        vector. What linearity produced,</p>
+      <p>$$ \tfrac{1}{\sqrt2}\big(|00\rangle + |11\rangle\big) = |\beta_{00}\rangle, $$</p>
+      <p>is a <strong>Bell state</strong>: it is <em>entangled</em>, provably impossible to write as any
+        product $|a\rangle\otimes|b\rangle$ of two single-qubit states. Cloning, by contrast, demands
+        the manifest product $|{+}\rangle\otimes|{+}\rangle$. No choice of amplitudes can turn a product
+        into an entangled state — being entangled is a structural property of the vector, not a matter
+        of coefficients to be tuned — so the two requirements cannot both hold. A single linear machine
+        cannot clone. No universal quantum copier exists. $\blacksquare$</p>
+      <p>That is the sharper way to see it, and it is worth saying in one sentence: fed a superposition,
+        a linear machine <em>entangles the copy with the original</em> instead of duplicating it.
+        Cloning fails precisely because entanglement (Essay&nbsp;07) succeeds.</p>
 
       <h3>The one-line version</h3>
       <p>The same fact falls out of inner products, which is the form N&amp;C emphasize. If $\hat U$
@@ -105,6 +110,25 @@
         just about spins: orthogonal states are distinguishable, non-orthogonal states are not, and only
         the distinguishable ones can be copied.</p>
 
+      <h3>Why it was proved: a wall against faster-than-light signalling</h3>
+      <p>No-cloning did not arrive as an abstract meditation on copiers. It was written to kill a
+        specific attempt to break relativity. In 1981 Nick Herbert circulated a proposal he called
+        <strong>FLASH</strong> — First Laser-Amplified Superluminal Hookup — for signalling faster than
+        light. Take one half of an entangled pair; a distant experimenter chooses a measurement basis,
+        collapsing your half into some polarization. You cannot tell which basis they chose from a
+        single photon — but, Herbert argued, run it through a laser gain tube and <em>amplify</em> it
+        into many copies, and the statistics of the copies would reveal the basis, carrying one bit
+        instantly across any distance.</p>
+      <p>The referees, Asher Peres among them, could not immediately name the flaw — and that pressure
+        is what produced the theorem. Wootters &amp; Zurek, and independently Dieks, showed the
+        amplifier Herbert needed is exactly a universal cloner, and the four lines above forbid it. The
+        gain tube must add noise; the copies are useless; FLASH fails. So the very first role of
+        no-cloning in physics was custodial: it is the reason entanglement, for all its nonlocal
+        correlation, <strong>cannot transmit information faster than light</strong>. Read this way, the
+        linearity of the Schrödinger equation is not a mathematical convenience — it is what protects
+        causality. The same lesson returns as the mandatory classical phone call in teleportation
+        (Essay&nbsp;09): quantum correlations never signal on their own.</p>
+
       <h3>Why it matters downstream</h3>
       <p>No-cloning is the load-bearing wall of quantum information. It is why an eavesdropper cannot
         silently duplicate a key in quantum cryptography; why quantum error correction has to protect
@@ -117,8 +141,11 @@
     <section class="move">
       <h2><span class="num">Move 4</span> Reading</h2>
       <p><strong>Course side.</strong> Landau &amp; Lifshitz, <em>Quantum Mechanics</em> (Vol. 3): §2
-        (superposition) and §8 (the Schrödinger equation and its linearity); the linearity of the
-        evolution operator is implicit wherever $\hat U = e^{-i\hat H t/\hbar}$ is used.</p>
+        (superposition) and §8 (the Hamiltonian and the time-dependent equation
+        $i\hbar\,\partial_t\psi = \hat H\psi$), whose linearity is the entire hypothesis. The same
+        linearity is explicit in Sakurai's construction of the time-evolution operator
+        $\hat U = e^{-i\hat H t/\hbar}$ (<em>Modern Quantum Mechanics</em>, the time-evolution chapter).
+        No gap here — linearity is stated plainly in every course; the surprise is only what it costs.</p>
       <p><strong>Result side.</strong> Nielsen &amp; Chuang, §1.3.5 for the statement and proof, and
         Box&nbsp;12.1 for the information-theoretic reading. The original papers are Wootters &amp;
         Zurek, <em>Nature</em> <strong>299</strong> (1982) 802, and Dieks, <em>Phys. Lett. A</em>

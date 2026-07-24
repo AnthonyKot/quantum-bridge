@@ -125,9 +125,22 @@
     <section class="move">
       <h2><span class="num">Move 4</span> Reading</h2>
       <p><strong>Course side.</strong> Landau &amp; Lifshitz, <em>Quantum Mechanics</em> (Vol. 3): §7
-        for measurement as projection onto an eigenbasis, and Ch VIII for the two-qubit spin observables
-        $\sigma_z\!\otimes\!\sigma_z$ and $\sigma_x\!\otimes\!\sigma_x$ whose common eigenbasis is the
-        Bell basis.</p>
+        for measurement as projection onto an eigenbasis, and Ch VIII for spin-½ and the two-spin
+        problem. <em>A caution on this crossing:</em> L&amp;L's natural basis for two spins is the
+        <strong>singlet/triplet</strong> basis — the common eigenbasis of total spin
+        $\hat{\mathbf S}^2$ and $\hat S_z$ — and it is <em>not</em> the Bell basis. They share only two
+        of four vectors (the singlet $|\beta_{11}\rangle$ and one triplet $|\beta_{01}\rangle$); the two
+        triplets $|00\rangle,|11\rangle$ are product states, not the entangled combinations
+        $(|00\rangle\pm|11\rangle)/\sqrt2$. The Bell basis proper is the common eigenbasis of
+        $\sigma_z\!\otimes\!\sigma_z$ and $\sigma_x\!\otimes\!\sigma_x$ (verify: their joint eigenvalues
+        $(\pm,\pm)$ label the four Bell states uniquely). Treat that as this book's own construction —
+        closely related to L&amp;L's, deliberately not identical.</p>
+      <p>For the physics the protocol actually rests on — that entangled halves carry correlations no
+        local description reproduces — the course canon's closest reach is Sakurai,
+        <em>Modern Quantum Mechanics</em>, which treats the EPR pair and Bell's inequality directly.
+        L&amp;L does not: it gives the singlet as a fact of two-electron symmetry, never as a resource.
+        That gap is the honest boundary of this crossing, and the reason the essay's step across —
+        measure in the Bell basis — is the book's, not the textbook's.</p>
       <p><strong>Result side.</strong> Nielsen &amp; Chuang, §1.3.7 for teleportation and §2.3 for
         superdense coding. The primary source for teleportation is Bennett, Brassard, Crépeau, Jozsa,
         Peres &amp; Wootters, <em>Phys. Rev. Lett.</em> <strong>70</strong> (1993) 1895; for superdense
@@ -136,6 +149,13 @@
         $|0\rangle_1|0\rangle_2 = \tfrac{1}{\sqrt2}(|\beta_{00}\rangle + |\beta_{10}\rangle)$ and the
         analogous expansions into $|\psi\rangle_1|\beta_{00}\rangle_{23}$, then collect terms by Alice's
         Bell state. Every Pauli correction $Z^aX^b$ appears exactly where the collapse leaves Bob.</p>
+      <p><em>One trap worth naming.</em> The overall sign of the singlet $|\beta_{11}\rangle$ is
+        convention-dependent. With $|\beta_{11}\rangle=(|01\rangle-|10\rangle)/\sqrt2$ as defined above,
+        the fourth term is $\alpha|1\rangle-\beta|0\rangle = XZ|\psi\rangle$ exactly; adopt the opposite
+        sign for $|\beta_{11}\rangle$ and you get its negative, $\beta|0\rangle-\alpha|1\rangle =
+        ZX|\psi\rangle$. The two differ only by an unobservable global phase (recall $XZ=-ZX$), and the
+        correction $Z^aX^b$ recovers $|\psi\rangle$ either way. So if your sign disagrees with the
+        display above, check your definition of $|\beta_{11}\rangle$ before you doubt your algebra.</p>
     </section>
 
     <nav class="chapter-nav">
