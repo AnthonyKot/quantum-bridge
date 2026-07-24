@@ -60,7 +60,7 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 | # | Slug | Course side (L&L / Sakurai) | Result side (N&C) | Status |
 |---|------|-------------------|-------------------|--------|
 | 01 | superposition-qubit | §2 superposition; Sakurai two-state systems | §1.2, §2.1–2.2 qubit, Bloch sphere, tensor product | **written** |
-| 02 | observables-measurement | §3, §7 operators & measurement | §2.2.3–2.2.6 projective measurement, POVMs | stub |
+| 02 | observables-measurement | §7 projective measurement (**gap:** no course does POVMs — that gap IS the essay) | §2.2.5 projective, §2.2.6 POVM, Box 2.3/2.5 (Naimark) | **written** |
 | 03 | density-matrix | §14 density matrix | §2.4 mixed states, partial trace | stub |
 | 04 | unitary-gates | §8 Schrödinger equation | Ch 4 gates, circuits, universality | stub |
 | 05 | spin-single-qubit | Ch VIII spin | §2.1.3, §4.2 single-qubit gates, Pauli group | stub |
@@ -69,11 +69,23 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 | 08 | epr-bell | Sakurai §3.10 EPR & Bell's inequality (**gap:** L&L/Feynman have neither) | §2.6 EPR and the Bell inequality | **written** |
 | 09 | teleportation-superdense | §7 measurement; Sakurai EPR (**gap:** entanglement-as-resource is the book's step) | §1.3.7, §2.3 teleportation, superdense coding | **written** |
 | 10 | interference-deutsch | superposition & interference | §1.4.3–1.4.4 Deutsch, Deutsch–Jozsa | stub |
-| 11 | fourier-shor | Fourier methods | Ch 5 QFT, phase estimation, Shor | stub |
+| 11 | fourier-shor | **CROSSING REWRITTEN** (old "Fourier on ℤ_N" was borrowed from harmonic analysis, not in any course). New: momentum eigenstates = eigenstates of the *translation operator*; the QM Fourier transform is the change of basis that diagonalizes translations; the QFT is the same for translations on the cyclic group ℤ_N; period-finding reads off that eigenvalue. L&L has the translation operator + momentum as its generator. | Ch 5 §5.1 QFT, §5.2 phase estimation, §5.3 factoring | stub — **SPLIT**: period-finding (11) vs number theory/factoring (11b) |
 | 12 | amplitude-grover | amplitudes & probability | Ch 6 Grover search | stub |
 | 13 | open-systems-channels | decoherence, reduced dynamics | Ch 8 quantum operations (Kraus) | stub |
-| 14 | error-correction | redundancy & symmetry | Ch 10 quantum error correction | stub |
-| 15 | entropy-holevo | von Neumann entropy | Ch 11–12 quantum entropy, Holevo | stub |
+| 14 | error-correction | redundancy & symmetry. **Move 2 story:** measuring a syndrome collapses a continuous error into a discrete one — "errors become digital because you looked." **Not blocked on 13** (bit/phase/9-qubit need only Pauli errors, not full Kraus). History: 1994 consensus said QEC impossible for 3 reasons; the code answered all 3. | Ch 10 §10.1 three-qubit codes, §10.2 the Shor code | stub |
+| 15 | entropy-holevo | von Neumann entropy (§14 density matrix; needs 02 POVMs) | Ch 11 §11.3 von Neumann entropy, §12.1.1 Holevo | stub |
+
+### Sequencing notes (write order, by dependency)
+
+- **02 is the highest-dependency node** — 03, 13, 15 are all written in the vocabulary of POVMs (Kraus
+  operators ≈ a POVM with post-measurement states kept). Writing 02 unblocks a third of the series.
+  *(done)*
+- **14 is self-contained** — good for momentum/story. Bit-flip, phase-flip, and the 9-qubit code need
+  only Pauli errors, so it does **not** wait on 13. The "digital because you looked" syndrome argument
+  is the Move 2 step across, not a footnote.
+- **11 is blocked on itself** until the crossing is rewritten (translation operator, above) **and split**
+  into period-finding vs number-theory. The N&C side (QFT circuit, §5.1/§5.3) is the safest material in
+  the book; the risk was always the course side. Don't write until reframed.
 
 ## Adding a stub → full essay
 

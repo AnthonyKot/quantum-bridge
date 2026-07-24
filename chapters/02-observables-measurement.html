@@ -1,0 +1,153 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · Measurement &amp; the subspace — The Bridge</title>
+<meta name="description" content="Projective measurement is what you see from inside a subspace. Enlarge the space and it becomes the POVM of Nielsen &amp; Chuang; Naimark's theorem says that is the whole story.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part I · States — Essay 02</p>
+    <h1>Measurement, and the world outside the subspace</h1>
+    <p class="lede">A course teaches projective measurement as the whole theory of observation. It is
+      not the whole theory — it is the view from inside a subspace. Widen the space and a larger,
+      simpler notion of measurement appears, and Naimark's theorem says nothing was ever left out.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §7 — measurement as projection onto an eigenbasis, and where it stops</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.2.6 — POVMs, and Naimark's dilation theorem</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>Landau &amp; Lifshitz give measurement one section, §7, and it is decisive. To measure an
+        observable is to name a Hermitian operator $\hat A$, expand the state in its orthonormal
+        eigenbasis $\{|n\rangle\}$, and collapse: the outcome is an eigenvalue $a_n$ with probability
+        $|\langle n|\psi\rangle|^2$, and the state is left in $|n\rangle$. Written with the projectors
+        $P_n = |n\rangle\langle n|$, this is the <strong>projective</strong> (or von Neumann)
+        measurement, and it carries three rigid features:</p>
+      <p>$$ P_n P_m = \delta_{nm} P_n, \qquad \sum_n P_n = I, \qquad p(n) = \langle\psi|P_n|\psi\rangle. $$</p>
+      <p>The projectors are <em>orthogonal</em> and <em>idempotent</em>. Two consequences follow that a
+        course rarely flags as assumptions. First, orthogonality caps the number of distinct outcomes at
+        the dimension $d$ of the space — a qubit measurement has at most two. Second, idempotence makes
+        the measurement <em>repeatable</em>: measure again and you get the same $n$ with certainty. This
+        is presented, in L&amp;L and in every first course, as <em>the</em> account of measurement.
+        Nielsen &amp; Chuang note the same habit dryly: “Many introductions to quantum mechanics only
+        discuss projective measurements.” The question is what that habit quietly assumes.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>It assumes the thing you measure is the whole world. It almost never is. Your qubit sits next to
+        an ancilla, a probe, a stray mode of the apparatus; what you actually control and read out is a
+        <em>larger</em> system, and the qubit is a subspace of it. So do the honest thing: adjoin an
+        ancilla in a fixed state, let system and ancilla interact through a joint unitary $U$, and then
+        perform an ordinary projective measurement — but only on the enlarged system. Ask what
+        statistics the original qubit alone appears to obey.</p>
+      <p>Grinding through the algebra (a projective $\{P_m\}$ upstairs, pulled back through $U$ and the
+        ancilla state down onto the qubit) leaves each outcome governed by an operator
+        $E_m = \langle a|U^\dagger P_m U|a\rangle$ acting on the qubit, and these operators have lost the
+        rigidity of Move 1. They need not be orthogonal. They need not be projectors, so the measurement
+        need not be repeatable. There can be <em>more</em> of them than the dimension $d$. Exactly two
+        properties survive the descent into the subspace:</p>
+      <p>$$ E_m \ge 0 \quad(\text{each is positive}), \qquad \sum_m E_m = I \quad(\text{they resolve the identity}), $$</p>
+      <p>with the outcome probabilities still $p(m) = \langle\psi|E_m|\psi\rangle$. That is the step
+        across, and it is a loosening, not a new law: drop “orthogonal projector,” keep “positive
+        operator summing to the identity.” The course was not wrong. It was computing inside a subspace
+        and mistaking the walls of that subspace for the walls of the theory.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>The surviving object is a <strong>POVM</strong> — a positive operator-valued measure — and it is
+        the general measurement of Nielsen &amp; Chuang, §2.2.6. A POVM is any set $\{E_m\}$ of positive
+        operators with $\sum_m E_m = I$; the outcome probabilities are $p(m)=\langle\psi|E_m|\psi\rangle$.
+        Projective measurement is the special case where the $E_m$ happen to be orthogonal projectors.
+        The generalization earns its keep by doing something projective measurement provably cannot.</p>
+
+      <h3>A worked example: telling apart states you shouldn't be able to</h3>
+      <p>Alice hands Bob a qubit she promises is either $|0\rangle$ or $|{+}\rangle =
+        \tfrac{1}{\sqrt2}(|0\rangle+|1\rangle)$. These are not orthogonal — $\langle 0|{+}\rangle =
+        1/\sqrt2$ — and N&amp;C's Box 2.3 proves no measurement can sort non-orthogonal states without
+        <em>ever</em> erring. A projective measurement must sometimes guess wrong. A POVM can refuse to
+        guess. Take three elements, with $c = \tfrac{\sqrt2}{1+\sqrt2}$:</p>
+      <p>$$ E_1 = c\,|1\rangle\langle 1|, \qquad
+             E_2 = c\,|{-}\rangle\langle{-}|, \qquad
+             E_3 = I - E_1 - E_2, $$</p>
+      <p>where $|{-}\rangle = \tfrac{1}{\sqrt2}(|0\rangle-|1\rangle)$. Check the logic. If the state was
+        $|0\rangle$, then $\langle 0|E_1|0\rangle = c\,|\langle 0|1\rangle|^2 = 0$: outcome 1 is
+        <em>impossible</em> for $|0\rangle$, so seeing outcome 1 means the state was certainly
+        $|{+}\rangle$. Symmetrically, $\langle{+}|E_2|{+}\rangle \propto |\langle{+}|{-}\rangle|^2 = 0$,
+        so outcome 2 certifies $|0\rangle$. Outcome 3 is the honest “don't know.” Bob is
+        <strong>never wrong</strong> — he is only, sometimes, silent.</p>
+      <p>The constant is forced by positivity: $E_3 \ge 0$ requires $\det E_3 \ge 0$, and
+        $c = \sqrt2/(1+\sqrt2) = 2-\sqrt2$ is exactly the value where $\det E_3 = 0$, the largest $c$
+        the constraint allows. At that value the inconclusive outcome has probability
+        $\langle\psi|E_3|\psi\rangle = 1/\sqrt2$ for either input, so Bob gets a definite,
+        never-mistaken answer with probability $1 - 1/\sqrt2 \approx 0.29$ — precisely the optimal
+        unambiguous-discrimination rate $1 - |\langle 0|{+}\rangle|$. No projective measurement on the
+        qubit alone can match this; it takes the extra outcomes a POVM allows.</p>
+
+      <h3>Naimark: nothing was actually added</h3>
+      <p>Move 2 built a POVM by measuring projectively on a larger space. The remarkable converse —
+        <strong>Naimark's dilation theorem</strong> — is that <em>every</em> POVM arises this way. Any
+        general measurement on a system is a projective measurement on that system plus an ancilla,
+        after a suitable unitary. N&amp;C state it outright in Box 2.5: “projective measurements
+        augmented by unitary operations turn out to be completely equivalent to general measurements.”
+        So the loosening of Move 2 added no new physics to the postulates — it revealed that the
+        course's projective measurement was already the general one, seen through the keyhole of a
+        subspace. The three extra outcomes Bob used were projective outcomes upstairs, in dimensions his
+        course never mentioned.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side — and the gap, named.</strong> Landau &amp; Lifshitz §7, “The wave function
+        and measurements,” for projective measurement — and note that it <em>stops there</em>, as does
+        Sakurai and every standard course. This is not an oversight to tiptoe around; it is the essay's
+        subject. N&amp;C's own Box 2.5 explains why physicists skip POVMs (“most physical systems can
+        only be measured in a very coarse way”), which is exactly the admission that the course works in
+        a subspace.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang: §2.2.5 for projective measurements, §2.2.6
+        for POVMs, §2.2.4 with Box 2.3 for distinguishing states, and Box 2.5 (with the composite-system
+        construction of §2.2.8) for the projective-measurement-on-a-larger-space equivalence — the
+        content of Naimark's dilation theorem.</p>
+      <p><strong>Why this essay is load-bearing.</strong> POVMs are the vocabulary the rest of Part&nbsp;I
+        and Part&nbsp;V are written in. The density operator (Essay&nbsp;03) is the state on which POVMs
+        act; quantum operations and Kraus operators (Essay&nbsp;13) are barely more than a POVM with the
+        post-measurement states kept; and accessible information and the Holevo bound (Essay&nbsp;15) are
+        statements about the best POVM. Fixing this notion here unblocks all three.</p>
+      <p><strong>Check the crossing.</strong> Verify $\sum_m E_m = I$ for the three elements above, then
+        confirm that demanding $E_3 \ge 0$ forces $c = \sqrt2/(1+\sqrt2)$ (compute $\det E_3$ in the
+        $\{|0\rangle,|1\rangle\}$ basis and set it to zero — it factors to $c^2 - 4c + 2 = 0$). The
+        never-err discrimination is entirely in that one constraint.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="01-superposition-qubit.html"><span class="dir">← Previous</span> 01 · Superposition &amp; the qubit</a>
+      <a class="next" href="06-linearity-no-cloning.html"><span class="dir">Next essay →</span> 06 · Linearity &amp; the no-cloning theorem</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 02 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>
