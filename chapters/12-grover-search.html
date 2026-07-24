@@ -1,0 +1,138 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12 · Grover search &amp; the two-level system you build — The Bridge</title>
+<meta name="description" content="Grover's iteration is a Rabi oscillation in a plane you define: rotate to the target and stop at the pi-pulse, or overshoot past it. Quadratic, query-model, and provably optimal.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part IV · Interference &amp; algorithms — Essay 12</p>
+    <h1>Search, and the two-level system you build</h1>
+    <p class="lede">Grover's algorithm is a Rabi oscillation. Each step rotates you a fixed angle toward
+      the answer; you stop at the π-pulse, and if you keep driving you sail straight past it. The only
+      novelty is that here you built the two-level system instead of finding it.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §42, §113 — a resonantly driven two-level system; the population oscillates, and you stop at the π-pulse</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C Ch 6 — Grover search: a rotation to the target, provably optimal at $\sqrt N$</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>Drive a two-level system on resonance and the course knows the answer cold. Two levels
+        $|a\rangle,|b\rangle$ with a resonant coupling of strength set by the Rabi frequency $\Omega$: the
+        state rotates steadily in the two-dimensional space they span, and the population sloshes from one
+        level to the other as</p>
+      <p>$$ P_b(t) = \sin^2\!\big(\tfrac{\Omega t}{2}\big). $$</p>
+      <p>At $\Omega t = \pi$ — the <strong>π-pulse</strong> — every bit of population has crossed from
+        $|a\rangle$ to $|b\rangle$; keep the drive on and it flows straight back, reaching $|a\rangle$
+        again at $\Omega t = 2\pi$. This is magnetic resonance, and L&amp;L compute it directly (spin in a
+        variable magnetic field, §113; the resonance of a periodic perturbation, §42). The whole craft of
+        the experiment is stopping the drive at the π-pulse. Overshoot it and you leave the level you
+        were trying to reach — a fact that will, in a moment, describe a search algorithm exactly. It also
+        makes good on <a href="05-spin-single-qubit.html">Essay&nbsp;05</a>'s line that every gate is a
+        precession timed: here the timing is the entire point.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>The step is that you <em>build</em> the two-level system rather than being handed it. Grover's
+        problem: among $N$ items, one target $|w\rangle$ is marked by an oracle that flips its phase,
+        $O|x\rangle = (-1)^{[x=w]}|x\rangle$ — the phase kickback of
+        <a href="10-interference-deutsch.html">Essay&nbsp;10</a>. Begin in the uniform superposition
+        $|s\rangle = \tfrac{1}{\sqrt N}\sum_x |x\rangle$, and take as your two "levels" the target
+        $|w\rangle$ and the uniform superposition $|s'\rangle$ of everything <em>else</em>. That plane is
+        not a gift of nature — it is a basis you defined around the answer you are looking for. The Grover
+        iterate</p>
+      <p>$$ G = \underbrace{(2|s\rangle\langle s| - I)}_{\text{diffusion}}\;\underbrace{O}_{\text{oracle}} $$</p>
+      <p>is a rotation in that plane, by a fixed angle $\theta = 2\arcsin\tfrac{1}{\sqrt N} \approx
+        \tfrac{2}{\sqrt N}$, from $|s'\rangle$ toward $|w\rangle$. The oracle and diffusion operator are a
+        resonant drive you <em>engineered</em> to rotate between two levels you <em>chose</em>. The series
+        has met the evolution-becomes-operation inversion at the level of gates (05), eigenvalues (11),
+        and phases (10); here it reaches the system itself — you do not solve a given two-level dynamics,
+        you fabricate one whose π-pulse lands on the answer.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>Nielsen &amp; Chuang lay this out geometrically in Chapter 6 (§6.1, especially §6.1.3). The start
+        state $|s\rangle$ sits at a small angle $\beta = \arcsin\tfrac{1}{\sqrt N}$ above $|s'\rangle$;
+        each Grover step turns the state by $2\beta$ toward $|w\rangle$; after $R$ steps its angle from
+        $|s'\rangle$ is $(2R+1)\beta$, and the probability of measuring the target is
+        $\sin^2\!\big((2R+1)\beta\big)$. Reaching $|w\rangle$ (angle $\tfrac{\pi}{2}$) takes</p>
+      <p>$$ R \approx \frac{\pi}{4}\sqrt N $$</p>
+      <p>steps (§6.1.4). Read against Move 1, this is a π-pulse: $|s'\rangle$ and $|w\rangle$ are the two
+        levels, and Grover drives the effective system from one to the other in $(\pi/4)\sqrt N$ resonant
+        kicks. And the warning from Move 1 is literal — run <em>past</em> $R$ and the angle overshoots
+        $\tfrac{\pi}{2}$, the state rotates beyond the target, and $\sin^2\!\big((2R+1)\beta\big)$ falls
+        back toward zero. Overshooting Grover is overshooting a π-pulse; you must stop at the right count.</p>
+
+      <h3>What the speedup is, and what it isn't</h3>
+      <p>The gain is quadratic — $\sqrt N$ against the classical $N$ — not exponential, and it is a
+        query-model statement about calls to the oracle. "Quantum computers search databases faster" is
+        the misleading gloss. If the $N$ items are stored <em>data</em> you must load into the machine,
+        loading them already costs $N$ and the $\sqrt N$ advantage is gone; proposals for quantum RAM that
+        would load them in superposition do not escape this, because building and filling that memory is
+        itself an $N$-sized job. Grover pays off when the search space is defined by a <em>function you
+        can compute</em> — an oracle cheap to evaluate — rather than a table you must read row by row.</p>
+      <p>Against that, a result the rest of this book cannot offer: Grover is <strong>provably
+        optimal</strong>. No quantum algorithm whatsoever can find the marked item in fewer than order
+        $\sqrt N$ oracle queries for an unstructured search (N&amp;C §6.6). This is the one place in the
+        series where the boundary itself is known — not merely that we have a good algorithm, but that no
+        better one can exist. The quadratic speedup is not a waypoint toward something faster; it is the
+        wall.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side.</strong> Landau &amp; Lifshitz §113 for a spin in a variable magnetic field —
+        magnetic resonance, the population oscillating between two levels — and §42 for the resonance of a
+        periodic perturbation. The π-pulse is the whole of Move 1, and it is verified Volume 3 material.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang Chapter 6, §6.1 (the oracle, the procedure, and
+        the geometric rotation of §6.1.3 with its performance count in §6.1.4), and §6.6 for the optimality
+        of the algorithm.</p>
+      <p><strong>Scope, three fences.</strong> No amplitude amplification in the general case, no proof of
+        the optimality bound, and no more than the one sentence above on quantum RAM.</p>
+      <p><strong>How it connects — and where it hands off.</strong> Phase kickback is
+        <a href="10-interference-deutsch.html">Essay&nbsp;10</a>'s; the timed π-pulse is
+        <a href="05-spin-single-qubit.html">Essay&nbsp;05</a>'s. But the rotation is exact only while the
+        evolution stays unitary and closed. Let the qubits so much as touch an environment and the angle
+        blurs, the drive detunes, and the state never lands cleanly on $|w\rangle$ — which is precisely
+        where Part V opens: the channels of <a href="13-open-systems-channels.html">Essay&nbsp;13</a> that
+        describe that blurring, and the codes of <a href="14-error-correction.html">Essay&nbsp;14</a> that
+        hold a computation like this one together long enough to reach the target.</p>
+      <p><strong>Check the crossing.</strong> Confirm that $G$ rotates the state by
+        $2\arcsin\tfrac{1}{\sqrt N}$ in the $|w\rangle$–$|s'\rangle$ plane; that $R\approx\tfrac{\pi}{4}\sqrt N$
+        steps bring the success probability to nearly one; and that a further few steps send it back down —
+        the same $\sin^2$ you would get by leaving a resonant drive running past its π-pulse.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="11-qft-translations.html"><span class="dir">← Previous</span> 11 · Bloch waves &amp; the quantum Fourier transform</a>
+      <a class="next" href="13-open-systems-channels.html"><span class="dir">Next essay →</span> 13 · Open systems &amp; quantum channels</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 12 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>
