@@ -179,6 +179,8 @@ hr { border: none; border-top: 1px solid var(--rule); margin: 2.4rem 0; }
 .toc .bridge-line .b-from { color: var(--course); }
 .toc .bridge-line .b-to { color: var(--result); }
 .toc .soon { font-family: var(--sans); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); border: 1px solid var(--rule); border-radius: 999px; padding: .1em .5em; margin-left: .5rem; }
+.toc .prereq { display: block; margin-top: .3rem; font-family: var(--sans); font-size: .78rem; font-style: italic; color: var(--ink-faint); }
+.toc .prereq::before { content: "⚑ "; font-style: normal; }
 
 /* ---- prev/next footer nav ---- */
 .chapter-nav {
