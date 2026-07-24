@@ -1,0 +1,156 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · Superposition &amp; the qubit — The Bridge</title>
+<meta name="description" content="From Landau &amp; Lifshitz's superposition principle to the qubit, the Bloch sphere, and the tensor product of Nielsen &amp; Chuang.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part I · States — Essay 01</p>
+    <h1>Superposition &amp; the qubit</h1>
+    <p class="lede">The superposition principle is the first axiom a physics course states and the last
+      one it explains. Read once more, with a two-dimensional space in mind, it <em>is</em> the qubit.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §2 — the principle of superposition; states as vectors</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §1.2, §2.1–2.2 — the qubit, the Bloch sphere, the tensor product</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>Landau &amp; Lifshitz open the whole subject not with a wave equation but with a principle. If
+        a system can be found in a state described by $\psi_1$, and also in a state described by
+        $\psi_2$, then it can be found in any state</p>
+      <p>$$ \psi \;=\; c_1\,\psi_1 + c_2\,\psi_2, \qquad c_1, c_2 \in \mathbb{C}. $$</p>
+      <p>This is the <strong>principle of superposition</strong> (L&amp;L §2), and everything algebraic
+        in the theory follows from taking it literally: the states of a system are the vectors of a
+        complex linear space, and physical quantities are Hermitian operators on that space (L&amp;L
+        §3). Two features of this space matter for us. First, the overall scale and phase of $\psi$
+        carry no physical meaning — $\psi$ and $\lambda\psi$ for any nonzero $\lambda \in \mathbb{C}$
+        describe the same state — because measurable predictions come from ratios of the coefficients,
+        the $|c_i|^2$ of L&amp;L §2. Second, an <em>observable with two possible values</em> supplies a
+        pair of basis states, and superposition then fills in everything between them.</p>
+      <p>The cleanest physical instance is the one L&amp;L reach in the chapter on spin: an electron's
+        spin projection along an axis takes exactly two values, $+\tfrac{1}{2}$ and $-\tfrac{1}{2}$
+        (in units of $\hbar$). Call the corresponding states $\psi_\uparrow$ and $\psi_\downarrow$.
+        Superposition says the general spin state is $c_1\psi_\uparrow + c_2\psi_\downarrow$, and the
+        space of such states is exactly two complex dimensions. Nothing in this paragraph mentions
+        computation. And yet it is already the entire stage.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>The step is to stop asking <em>what the two states are</em> and start asking <em>what they
+        can carry</em>. A classical bit is a system with two distinguishable configurations, labelled
+        $0$ and $1$. A spin-$\tfrac12$ has two distinguishable configurations too — but the
+        superposition principle insists that, unlike a bit, it also occupies every complex combination
+        of them. Rename the basis to match the intent:</p>
+      <p>$$ \psi_\uparrow \;\rightsquigarrow\; |0\rangle, \qquad \psi_\downarrow \;\rightsquigarrow\; |1\rangle. $$</p>
+      <p>The labels are now bit values, but the object is still a spin. This single relabelling is the
+        crossing: a two-level quantum system, viewed as a carrier of one bit's worth of
+        <em>distinguishable</em> alternatives together with all their superpositions, is a
+        <strong>qubit</strong>. Everything Nielsen &amp; Chuang say about it is forced by the two
+        features from Move&nbsp;1 — normalization-up-to-scale and the two-dimensionality — applied to
+        this relabelled basis.</p>
+      <p>Take the general state $|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$ with
+        $\alpha,\beta \in \mathbb{C}$. Because scale is unphysical we may fix the norm,</p>
+      <p>$$ |\alpha|^2 + |\beta|^2 = 1, $$</p>
+      <p>and because an overall phase is unphysical we may spend one of the remaining real parameters.
+        Write $\alpha = e^{i\gamma}\cos\tfrac{\theta}{2}$ and
+        $\beta = e^{i(\gamma+\varphi)}\sin\tfrac{\theta}{2}$ — always possible for normalized
+        coefficients — and discard the common phase $e^{i\gamma}$:</p>
+      <p>$$ |\psi\rangle \;=\; \cos\tfrac{\theta}{2}\,|0\rangle \;+\; e^{i\varphi}\sin\tfrac{\theta}{2}\,|1\rangle,
+             \qquad \theta \in [0,\pi],\ \varphi \in [0,2\pi). $$</p>
+      <p>Two real angles remain. That is the whole content of the step across: the abstract
+        two-dimensional superposition space of L&amp;L, once its unphysical scale and phase are
+        removed, is a <em>sphere</em>.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>Nielsen &amp; Chuang give this sphere a name (§1.2). The angles $(\theta,\varphi)$ are the
+        polar and azimuthal coordinates of a point on the unit sphere in $\mathbb{R}^3$, the
+        <strong>Bloch sphere</strong>, and the qubit state corresponds to the unit vector</p>
+      <p>$$ \hat{n} = (\sin\theta\cos\varphi,\ \sin\theta\sin\varphi,\ \cos\theta). $$</p>
+      <p>The dictionary is exact and physical: the Cartesian components of $\hat n$ are the expectation
+        values of the three Pauli operators in the state $|\psi\rangle$,</p>
+      <p>$$ n_x = \langle\psi|\sigma_x|\psi\rangle,\quad
+             n_y = \langle\psi|\sigma_y|\psi\rangle,\quad
+             n_z = \langle\psi|\sigma_z|\psi\rangle, $$</p>
+      <p>so a qubit's location on the sphere is literally the average spin direction — the same Pauli
+        matrices L&amp;L write down for spin-$\tfrac12$. The poles are the basis states:
+        $\theta=0$ gives $|0\rangle$ (north), $\theta=\pi$ gives $|1\rangle$ (south). Antipodal points
+        are orthogonal states; every other point is a genuine superposition. A classical bit could sit
+        only at the two poles. The qubit has the entire surface.</p>
+
+      <h3>A worked point</h3>
+      <p>Set $\theta = \tfrac{\pi}{2}$, $\varphi = 0$. Then
+        $\cos\tfrac{\theta}{2} = \sin\tfrac{\theta}{2} = \tfrac{1}{\sqrt2}$ and</p>
+      <p>$$ |{+}\rangle \;=\; \tfrac{1}{\sqrt2}\big(|0\rangle + |1\rangle\big), $$</p>
+      <p>with $\hat n = (1,0,0)$: it points along $+x$, on the equator, exactly between the poles. It
+        is an equal superposition, and a $\sigma_z$ measurement gives $0$ or $1$ with probability
+        $|\tfrac{1}{\sqrt2}|^2 = \tfrac12$ each — the $|c_i|^2$ rule of Move&nbsp;1, now read as a
+        coin flip encoded in a spin.</p>
+
+      <h3>Two qubits, and why the space explodes</h3>
+      <p>The last piece N&amp;C fix in §2.2 is how systems combine. In the course, the state of two
+        independent subsystems is built from the products $\psi_i\chi_j$ of their basis states; the
+        joint space is their <strong>tensor product</strong>. For two qubits this is
+        $\mathbb{C}^2 \otimes \mathbb{C}^2 = \mathbb{C}^4$, with basis</p>
+      <p>$$ |0\rangle\!\otimes\!|0\rangle,\quad |0\rangle\!\otimes\!|1\rangle,\quad
+             |1\rangle\!\otimes\!|0\rangle,\quad |1\rangle\!\otimes\!|1\rangle
+             \;\equiv\; |00\rangle, |01\rangle, |10\rangle, |11\rangle, $$</p>
+      <p>and superposition now runs over all four amplitudes at once. Crucially the dimension
+        <em>multiplies</em>: $n$ qubits live in $\mathbb{C}^{2^n}$, a space needing $2^n$ complex
+        amplitudes to describe. This exponential is not new physics — it is the tensor product of
+        L&amp;L §5 and the composite-system rule, counted for $n$ two-level systems. It is also the
+        reason a quantum computer is worth building, and the thread the rest of Part I follows: the
+        states that are <em>not</em> products $|a\rangle\otimes|b\rangle$ are the entangled ones, and
+        they are the subject of Essay&nbsp;07.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side.</strong> Landau &amp; Lifshitz, <em>Quantum Mechanics</em> (Vol. 3):
+        §2 for the superposition principle, §3–4 for operators, §5 for combining systems, and the spin
+        chapter (Ch VIII) for the two-level prototype and the Pauli matrices.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang, §1.2 for the qubit and the Bloch sphere,
+        §2.1–2.2 for the state-space and tensor-product postulates. The Bloch-sphere parametrization
+        appears at the start of §1.2; the tensor-product multiplication of dimensions is stated in
+        §2.2.8.</p>
+      <p><strong>Check the crossing.</strong> Confirm for yourself that
+        $\langle\psi|\sigma_z|\psi\rangle = \cos\theta$ for
+        $|\psi\rangle = \cos\tfrac\theta2|0\rangle + e^{i\varphi}\sin\tfrac\theta2|1\rangle$, using
+        $\sigma_z = \mathrm{diag}(1,-1)$. That one line is the entire bridge between "average spin
+        along $z$" and "height on the Bloch sphere."</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="../index.html"><span class="dir">←</span> Contents</a>
+      <a class="next" href="06-linearity-no-cloning.html"><span class="dir">Next essay →</span> 06 · Linearity &amp; the no-cloning theorem</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 01 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>

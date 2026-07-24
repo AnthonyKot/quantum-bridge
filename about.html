@@ -1,0 +1,86 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — The Bridge</title>
+<meta name="description" content="The method behind The Bridge: how each essay crosses from a Landau &amp; Lifshitz course topic to a Nielsen &amp; Chuang result, and the editions cited.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="index.html">Contents</a>
+      <a href="about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">The method</p>
+    <h1>About this book</h1>
+    <p class="lede">One shelf holds a physics course; another holds a computing book. The claim of
+      <em>The Bridge</em> is that they are the same shelf, walked in a different order.</p>
+
+    <h2>The two ends of every crossing</h2>
+    <p>The <strong style="color:var(--course)">course side</strong> is
+      <strong>Landau &amp; Lifshitz, <em>Quantum Mechanics (Non-relativistic Theory)</em></strong>,
+      Volume 3 of the <em>Course of Theoretical Physics</em>. It is the same tradition featured in the
+      sibling collection, <a href="https://anthonykot.github.io/quantum-quartet/">The Quantum
+      Quartet</a>, and it is chosen deliberately: L&amp;L builds quantum mechanics from the
+      superposition principle and the algebra of operators rather than from wave mechanics alone, so
+      its scaffolding already looks like the linear-algebraic language of quantum information.</p>
+    <p>The <strong style="color:var(--result)">result side</strong> is
+      <strong>Nielsen &amp; Chuang, <em>Quantum Computation and Quantum Information</em></strong>
+      (the 10th-anniversary edition). Each essay ends on a specific, named object from that book — a
+      theorem, a protocol, an algorithm — and cites the section where it lives.</p>
+
+    <h2>The four moves</h2>
+    <p>Every essay has the same shape, so the crossing is always visible:</p>
+    <ol>
+      <li><strong style="color:var(--course)">In the course.</strong> The topic as a physics student
+        meets it, in L&amp;L's own framing, with its section numbers.</li>
+      <li><strong>The step across.</strong> The single reinterpretation that turns a statement
+        <em>about physics</em> into a statement <em>about information</em>. This is where the essay
+        earns its title.</li>
+      <li><strong style="color:var(--result)">The result.</strong> The Nielsen &amp; Chuang object,
+        stated precisely, with a short worked example so it is concrete rather than quoted.</li>
+      <li><strong>Reading.</strong> Where to find both ends — L&amp;L § and N&amp;C § — to check the
+        crossing for yourself.</li>
+    </ol>
+
+    <h2>Level and notation</h2>
+    <p>The intended reader has had, or is having, a first serious quantum-mechanics course: comfortable
+      with Hilbert spaces, Hermitian operators, and Dirac notation, but not assumed to have seen any
+      quantum computing. Mathematics is written out — displayed equations render through
+      <a href="https://katex.org/">KaTeX</a> — but every step is motivated. Where L&amp;L and N&amp;C
+      use different notation for the same object (L&amp;L's $\hat{H}$ and N&amp;C's gate matrices, for
+      instance), the essay says so explicitly.</p>
+
+    <h2>On sources</h2>
+    <p>This book reproduces <strong>no copyrighted text</strong> from either work. It cites section
+      numbers and states results in original prose and original examples, in the same spirit as its
+      sibling collection. Readers are pointed toward legitimately available copies of both books; the
+      value here is the crossing between them, not a substitute for either.</p>
+
+    <h2>Status</h2>
+    <p>The scaffold and the full fifteen-essay map are in place. Three essays are written in full —
+      <a href="chapters/01-superposition-qubit.html">the qubit</a>,
+      <a href="chapters/06-linearity-no-cloning.html">no-cloning</a>, and
+      <a href="chapters/09-teleportation-superdense.html">teleportation</a> — chosen to fix the voice
+      across a foundations essay, a theorem essay, and a protocol essay. The remaining twelve are
+      mapped on the <a href="index.html">contents page</a> and will be filled in.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · a companion in the manner of <a href="https://anthonykot.github.io/quantum-quartet/">The Quantum Quartet</a>.
+      Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>

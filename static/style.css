@@ -1,0 +1,217 @@
+/* ============================================================
+   The Bridge — shared stylesheet
+   Plain CSS, light/dark themes, print-friendly.
+   ============================================================ */
+
+:root {
+  /* light theme (default) */
+  --bg:            #fbfaf7;
+  --bg-raised:     #ffffff;
+  --ink:           #1c1b19;
+  --ink-soft:      #4a4843;
+  --ink-faint:     #78756d;
+  --rule:          #e4e1d9;
+  --accent:        #7a4b2b;   /* warm sienna — the "bridge" colour */
+  --accent-soft:   #b98a5e;
+  --link:          #8a5223;
+  --link-hover:    #5e3616;
+  --course:        #2f5d50;   /* L&L / course side  */
+  --result:        #6a3b7a;   /* N&C / result side  */
+  --code-bg:       #f1eee7;
+  --max:           44rem;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:          #161513;
+    --bg-raised:   #1e1d1a;
+    --ink:         #ece9e2;
+    --ink-soft:    #c3bfb5;
+    --ink-faint:   #8f8b81;
+    --rule:        #33312c;
+    --accent:      #d79b6a;
+    --accent-soft: #a9784f;
+    --link:        #e0a978;
+    --link-hover:  #f0c79c;
+    --course:      #7bc0ac;
+    --result:      #c79bd6;
+    --code-bg:     #26241f;
+  }
+}
+
+/* explicit toggle wins over OS preference in both directions */
+:root[data-theme="light"] {
+  --bg:#fbfaf7; --bg-raised:#ffffff; --ink:#1c1b19; --ink-soft:#4a4843;
+  --ink-faint:#78756d; --rule:#e4e1d9; --accent:#7a4b2b; --accent-soft:#b98a5e;
+  --link:#8a5223; --link-hover:#5e3616; --course:#2f5d50; --result:#6a3b7a;
+  --code-bg:#f1eee7;
+}
+:root[data-theme="dark"] {
+  --bg:#161513; --bg-raised:#1e1d1a; --ink:#ece9e2; --ink-soft:#c3bfb5;
+  --ink-faint:#8f8b81; --rule:#33312c; --accent:#d79b6a; --accent-soft:#a9784f;
+  --link:#e0a978; --link-hover:#f0c79c; --course:#7bc0ac; --result:#c79bd6;
+  --code-bg:#26241f;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.62;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- layout ---- */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.25rem; }
+
+.site-header {
+  border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: saturate(1.4) blur(6px);
+}
+.site-header .wrap {
+  display: flex; align-items: center; gap: 1rem;
+  padding-top: .7rem; padding-bottom: .7rem;
+}
+.brand {
+  font-family: var(--sans);
+  font-weight: 700; letter-spacing: .02em;
+  font-size: .95rem; text-transform: uppercase;
+  color: var(--ink); text-decoration: none; white-space: nowrap;
+}
+.brand span { color: var(--accent); }
+.site-nav { margin-left: auto; display: flex; align-items: center; gap: 1.1rem; }
+.site-nav a { font-family: var(--sans); font-size: .85rem; color: var(--ink-soft); text-decoration: none; }
+.site-nav a:hover { color: var(--link-hover); }
+
+.theme-toggle {
+  font-family: var(--sans); font-size: .85rem;
+  background: transparent; border: 1px solid var(--rule);
+  color: var(--ink-soft); border-radius: 999px;
+  padding: .28rem .7rem; cursor: pointer; line-height: 1;
+}
+.theme-toggle:hover { border-color: var(--accent-soft); color: var(--ink); }
+
+main { padding: 2.6rem 0 4rem; }
+
+/* ---- typography ---- */
+h1, h2, h3 { font-family: var(--sans); line-height: 1.22; color: var(--ink); }
+h1 { font-size: 2.1rem; font-weight: 800; letter-spacing: -.01em; margin: 0 0 .4rem; }
+h2 { font-size: 1.4rem; font-weight: 700; margin: 2.6rem 0 .8rem; }
+h3 { font-size: 1.08rem; font-weight: 700; margin: 1.8rem 0 .5rem; }
+
+p { margin: 0 0 1.1rem; }
+a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: .5px; }
+a:hover { color: var(--link-hover); }
+
+strong { color: var(--ink); }
+em { color: var(--ink-soft); }
+
+blockquote {
+  margin: 1.4rem 0; padding: .2rem 0 .2rem 1.2rem;
+  border-left: 3px solid var(--accent-soft);
+  color: var(--ink-soft); font-style: italic;
+}
+
+code, kbd {
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", "Fira Code", Menlo, Consolas, monospace;
+  font-size: .86em; background: var(--code-bg); padding: .1em .38em; border-radius: 4px;
+}
+pre { background: var(--code-bg); padding: 1rem 1.1rem; border-radius: 8px; overflow-x: auto; line-height: 1.5; }
+pre code { background: none; padding: 0; font-size: .8rem; }
+
+hr { border: none; border-top: 1px solid var(--rule); margin: 2.4rem 0; }
+
+/* ---- eyebrow / kicker ---- */
+.kicker {
+  font-family: var(--sans); font-size: .78rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+  margin: 0 0 .6rem;
+}
+.lede { font-size: 1.28rem; line-height: 1.5; color: var(--ink-soft); margin: 0 0 1.6rem; }
+
+/* ---- the bridge motif ---- */
+.bridge {
+  display: flex; flex-wrap: wrap; align-items: stretch; gap: .75rem;
+  margin: 1.6rem 0 2rem; font-family: var(--sans);
+}
+.bridge .side {
+  flex: 1 1 12rem; border: 1px solid var(--rule); border-radius: 10px;
+  padding: .85rem 1rem; background: var(--bg-raised);
+}
+.bridge .side .tag { font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; display: block; margin-bottom: .3rem; }
+.bridge .from .tag { color: var(--course); }
+.bridge .to   .tag { color: var(--result); }
+.bridge .side .what { font-size: 1rem; font-weight: 600; color: var(--ink); }
+.bridge .arrow { align-self: center; color: var(--accent); font-size: 1.5rem; line-height: 1; }
+
+/* section markers inside an essay */
+.move { scroll-margin-top: 4rem; }
+.move > h2 { display: flex; align-items: baseline; gap: .6rem; }
+.move > h2 .num {
+  font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+  color: var(--bg); background: var(--accent);
+  border-radius: 999px; padding: .18em .6em; font-family: var(--sans);
+  position: relative; top: -.15em;
+}
+
+/* ---- table of contents (landing) ---- */
+.part { margin: 2.4rem 0; }
+.part-head { font-family: var(--sans); font-size: .82rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); border-bottom: 1px solid var(--rule); padding-bottom: .4rem; margin-bottom: .3rem; }
+.toc { list-style: none; margin: 0; padding: 0; }
+.toc li { border-bottom: 1px solid var(--rule); }
+.toc a, .toc .stub { display: block; padding: .85rem .2rem; color: inherit; text-decoration: none; }
+.toc a:hover { background: var(--bg-raised); }
+.toc .stub { cursor: default; opacity: .62; }
+.toc .n { font-family: var(--sans); font-size: .8rem; color: var(--ink-faint); margin-right: .7rem; }
+.toc .bridge-line { display: block; margin-top: .2rem; font-size: .92rem; color: var(--ink-soft); }
+.toc .bridge-line .b-from { color: var(--course); }
+.toc .bridge-line .b-to { color: var(--result); }
+.toc .soon { font-family: var(--sans); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); border: 1px solid var(--rule); border-radius: 999px; padding: .1em .5em; margin-left: .5rem; }
+
+/* ---- prev/next footer nav ---- */
+.chapter-nav {
+  display: flex; justify-content: space-between; gap: 1rem;
+  margin-top: 3rem; padding-top: 1.4rem; border-top: 1px solid var(--rule);
+  font-family: var(--sans); font-size: .9rem;
+}
+.chapter-nav a { text-decoration: none; color: var(--ink-soft); max-width: 45%; }
+.chapter-nav a:hover { color: var(--link-hover); }
+.chapter-nav .dir { display: block; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+.chapter-nav .next { text-align: right; margin-left: auto; }
+
+.site-footer { border-top: 1px solid var(--rule); color: var(--ink-faint); font-family: var(--sans); font-size: .82rem; }
+.site-footer .wrap { padding: 1.6rem 1.25rem 2.4rem; }
+
+/* KaTeX display blocks scroll on small screens rather than overflow the page */
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: .2rem 0; }
+
+img, svg, table { max-width: 100%; }
+
+/* ---- responsive ---- */
+@media (max-width: 34rem) {
+  body { font-size: 1.06rem; }
+  h1 { font-size: 1.7rem; }
+  .lede { font-size: 1.14rem; }
+  .bridge .arrow { transform: rotate(90deg); align-self: center; }
+}
+
+/* ---- print ---- */
+@media print {
+  :root { --bg:#fff; --bg-raised:#fff; --ink:#000; --ink-soft:#222; --ink-faint:#555; --rule:#ccc; }
+  .site-header, .theme-toggle, .site-nav, .chapter-nav, .site-footer { display: none !important; }
+  body { font-size: 11pt; color: #000; background: #fff; }
+  main { padding: 0; }
+  a { color: #000; text-decoration: none; }
+  .move > h2 .num { color: #000; background: none; border: 1px solid #000; }
+}

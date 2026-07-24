@@ -1,0 +1,160 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Bridge — from a quantum-mechanics course to Nielsen &amp; Chuang</title>
+<meta name="description" content="Essays that carry each topic of a university quantum-mechanics course forward to a concrete result in Nielsen &amp; Chuang's Quantum Computation and Quantum Information.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="index.html">Contents</a>
+      <a href="about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Essays in quantum information</p>
+    <h1>The Bridge</h1>
+    <p class="lede">Every result in <em>Quantum Computation and Quantum Information</em> is already
+      latent in an ordinary quantum-mechanics course. These essays make the crossing explicit — each
+      one starts from a topic in Landau &amp; Lifshitz and walks it, step by step, to a named result
+      in Nielsen&nbsp;&amp;&nbsp;Chuang.</p>
+
+    <p>The premise is a single observation: quantum computing did not add new physics. It took the
+      postulates you already meet in a first serious course — superposition, unitary evolution,
+      measurement, the density matrix — and asked what they <em>let you do</em> once you treat a
+      two-level system as a carrier of information. The no-cloning theorem is the linearity of the
+      Schrödinger equation, read differently. Teleportation is a change of basis on a Bell pair.
+      Shor's algorithm is Fourier analysis on a finite group. This book is a set of such crossings.</p>
+
+    <p>Each essay follows the same four moves: <strong class="_c" style="color:var(--course)">In the
+      course</strong> (the topic as L&amp;L presents it), <strong>The step across</strong> (the one
+      idea that reinterprets it), <strong style="color:var(--result)">The result</strong> (the N&amp;C
+      statement, with a worked example), and <strong>Reading</strong> (section pointers). See
+      <a href="about.html">About</a> for the method and the editions cited.</p>
+
+    <!-- ===================== TABLE OF CONTENTS ===================== -->
+
+    <section class="part">
+      <p class="part-head">Part I · States</p>
+      <ul class="toc">
+        <li><a href="chapters/01-superposition-qubit.html">
+          <span class="n">01</span>Superposition &amp; the Hilbert space
+          <span class="bridge-line"><span class="b-from">L&amp;L §2, §11 — the superposition principle</span>
+            &nbsp;→&nbsp; <span class="b-to">the qubit, the Bloch sphere, tensor products</span></span>
+        </a></li>
+        <li><span class="stub">
+          <span class="n">02</span>Observables &amp; measurement <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">L&amp;L §3, §7 — operators &amp; measurement</span>
+            &nbsp;→&nbsp; <span class="b-to">projective measurement, POVMs</span></span>
+        </span></li>
+        <li><span class="stub">
+          <span class="n">03</span>The density matrix <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">L&amp;L §14 — the density matrix</span>
+            &nbsp;→&nbsp; <span class="b-to">mixed states, partial trace, reduced states</span></span>
+        </span></li>
+      </ul>
+    </section>
+
+    <section class="part">
+      <p class="part-head">Part II · Dynamics</p>
+      <ul class="toc">
+        <li><span class="stub">
+          <span class="n">04</span>Unitary evolution <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">L&amp;L §8 — the Schrödinger equation</span>
+            &nbsp;→&nbsp; <span class="b-to">quantum gates, circuits, universality</span></span>
+        </span></li>
+        <li><span class="stub">
+          <span class="n">05</span>Spin-½ &amp; two-level systems <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">L&amp;L Ch VIII — spin</span>
+            &nbsp;→&nbsp; <span class="b-to">single-qubit gates, rotations, the Pauli group</span></span>
+        </span></li>
+        <li><a href="chapters/06-linearity-no-cloning.html">
+          <span class="n">06</span>Linearity &amp; the impossible copier
+          <span class="bridge-line"><span class="b-from">the linearity of quantum mechanics</span>
+            &nbsp;→&nbsp; <span class="b-to">the no-cloning theorem</span></span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="part">
+      <p class="part-head">Part III · Entanglement</p>
+      <ul class="toc">
+        <li><span class="stub">
+          <span class="n">07</span>Composite systems <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">L&amp;L Ch IX — identity of particles</span>
+            &nbsp;→&nbsp; <span class="b-to">entanglement, Bell states, Schmidt decomposition</span></span>
+        </span></li>
+        <li><span class="stub">
+          <span class="n">08</span>EPR &amp; the completeness question <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">EPR &amp; hidden variables</span>
+            &nbsp;→&nbsp; <span class="b-to">Bell / CHSH inequalities, nonlocality</span></span>
+        </span></li>
+        <li><a href="chapters/09-teleportation-superdense.html">
+          <span class="n">09</span>Moving a state you cannot read
+          <span class="bridge-line"><span class="b-from">state distinguishability &amp; measurement</span>
+            &nbsp;→&nbsp; <span class="b-to">quantum teleportation &amp; superdense coding</span></span>
+        </a></li>
+      </ul>
+    </section>
+
+    <section class="part">
+      <p class="part-head">Part IV · Interference &amp; algorithms</p>
+      <ul class="toc">
+        <li><span class="stub">
+          <span class="n">10</span>Interference as computation <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">superposition &amp; interference</span>
+            &nbsp;→&nbsp; <span class="b-to">Deutsch &amp; Deutsch–Jozsa algorithms</span></span>
+        </span></li>
+        <li><span class="stub">
+          <span class="n">11</span>Fourier analysis on a finite group <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">Fourier methods in QM</span>
+            &nbsp;→&nbsp; <span class="b-to">the quantum Fourier transform, phase estimation, Shor</span></span>
+        </span></li>
+        <li><span class="stub">
+          <span class="n">12</span>Amplitude as a resource <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">amplitudes &amp; probability</span>
+            &nbsp;→&nbsp; <span class="b-to">Grover's search algorithm</span></span>
+        </span></li>
+      </ul>
+    </section>
+
+    <section class="part">
+      <p class="part-head">Part V · Open systems &amp; information</p>
+      <ul class="toc">
+        <li><span class="stub">
+          <span class="n">13</span>When a system is not alone <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">decoherence &amp; reduced dynamics</span>
+            &nbsp;→&nbsp; <span class="b-to">quantum channels &amp; operations (Kraus)</span></span>
+        </span></li>
+        <li><span class="stub">
+          <span class="n">14</span>Protecting the fragile <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">redundancy &amp; symmetry</span>
+            &nbsp;→&nbsp; <span class="b-to">quantum error correction</span></span>
+        </span></li>
+        <li><span class="stub">
+          <span class="n">15</span>Entropy, told twice <span class="soon">soon</span>
+          <span class="bridge-line"><span class="b-from">von Neumann entropy</span>
+            &nbsp;→&nbsp; <span class="b-to">quantum entropy, the Holevo bound, capacity</span></span>
+        </span></li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · a companion in the manner of <a href="https://anthonykot.github.io/quantum-quartet/">The Quantum Quartet</a>.
+      Original prose; no copyrighted source text reproduced. Built with plain HTML and KaTeX.</p>
+  </div>
+</footer>
