@@ -1,0 +1,143 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10 · Interference &amp; the Deutsch–Jozsa algorithm — The Bridge</title>
+<meta name="description" content="Hadamard–oracle–Hadamard–measure is a Mach–Zehnder interferometer in gate notation. Deutsch's algorithm works by phase kickback and interference — not by trying all answers at once, which is free and useless.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part IV · Interference &amp; algorithms — Essay 10</p>
+    <h1>Interference, and the myth of trying everything at once</h1>
+    <p class="lede">Hadamard, oracle, Hadamard, measure is a Mach–Zehnder interferometer drawn in gate
+      notation. Deutsch's algorithm is a two-path interference experiment — and understanding it means
+      dismantling the most popular story about how quantum computers work.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">Sakurai §2.7, §3.2.3 — two-path interferometry; a phase in one arm shifts the fringes</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §1.4.3–1.4.4 — Deutsch and Deutsch–Jozsa: phase kickback and interference</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>The interferometer is a computation the reader has already run. A particle meets a beamsplitter
+        and takes both arms in superposition; a relative phase $\varphi$ builds up between the arms; a
+        second beamsplitter recombines them; and which detector clicks depends on $\varphi$ through a
+        $\cos^2(\varphi/2)$ fringe. Sakurai works exactly this out — the gravity-induced neutron
+        interferometer of §2.7, the $2\pi$-rotation interferometry of §3.2.3 — a phase in one arm sliding
+        the interference pattern across the detectors.</p>
+      <p>Now redraw it in gate notation. The two arms are the two states of a qubit; a balanced
+        beamsplitter is the <strong>Hadamard</strong> $H$, which sends $|0\rangle$ to
+        $(|0\rangle+|1\rangle)/\sqrt2$; a relative phase between the arms is a phase gate; the recombining
+        beamsplitter is a second $H$; and the detectors are a computational measurement. The device is
+        <strong>Hadamard&nbsp;→&nbsp;phase&nbsp;→&nbsp;Hadamard&nbsp;→&nbsp;measure</strong>. That circuit
+        is a Mach–Zehnder interferometer with no change of physics — only of notation. The reader who has
+        computed a two-path fringe pattern has computed the skeleton of a quantum algorithm.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>The one new idea is that the phase shifter can be a <em>function</em>. Take a data register
+        $|x\rangle$ and an ancilla prepared in $|{-}\rangle = (|0\rangle-|1\rangle)/\sqrt2$, and let the
+        oracle compute $f$ in the reversible way the course would demand,
+        $U_f:|x\rangle|y\rangle \mapsto |x\rangle|y\oplus f(x)\rangle$. On the $|{-}\rangle$ ancilla it
+        does something cleaner than it looks:</p>
+      <p>$$ U_f\,|x\rangle|{-}\rangle \;=\; |x\rangle\,\frac{|f(x)\rangle - |1\oplus f(x)\rangle}{\sqrt2} \;=\; (-1)^{f(x)}\,|x\rangle|{-}\rangle. $$</p>
+      <p>The ancilla is returned untouched and the function's value reappears as a <strong>phase</strong>
+        $(-1)^{f(x)}$ on the $|x\rangle$ branch. This is <strong>phase kickback</strong>: the oracle that
+        looked like “evaluate $f$ into a register” is really a programmable phase shifter, writing $f$
+        into the arms of the interferometer. And it is the inversion this series keeps meeting. In the
+        course a phase is given and you predict how the fringes fall; here you <em>write the answer into
+        a phase</em> so that the fringes will fall where it can be read — the same turn as a spin's
+        precession becoming a chosen gate (<a href="05-spin-single-qubit.html">Essay&nbsp;05</a>) and a
+        Bloch eigenvalue becoming an output (<a href="11-qft-translations.html">Essay&nbsp;11</a>).</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p><strong>Deutsch's algorithm</strong> (N&amp;C §1.4.3) is the one-qubit interferometer with an
+        oracle in the middle. Start the data qubit in $|0\rangle$ and the ancilla in $|1\rangle$; apply
+        $H$ to each (the ancilla becomes $|{-}\rangle$); apply $U_f$, which by kickback leaves the data
+        qubit in $\tfrac{1}{\sqrt2}\big((-1)^{f(0)}|0\rangle + (-1)^{f(1)}|1\rangle\big)$; apply $H$ again
+        and measure. The second Hadamard interferes the two branches, and the outcome is</p>
+      <p>$$ \text{measure } 0 \iff f(0)=f(1)\ (\text{constant}), \qquad \text{measure } 1 \iff f(0)\ne f(1)\ (\text{balanced}). $$</p>
+      <p>One query settles a question that classically needs both values of $f$. The
+        <strong>Deutsch–Jozsa</strong> algorithm (§1.4.4) scales it to $n$ bits: $H^{\otimes n}$, oracle,
+        $H^{\otimes n}$, measure decides whether an $f$ promised to be constant or balanced is which, in
+        a <em>single</em> query, where a deterministic classical algorithm can need $2^{n-1}+1$.</p>
+
+      <h3>What is actually doing the work — and what is not</h3>
+      <p>Here is the essay's real job, because the popular account is wrong. After the first Hadamard
+        layer the data register is $\tfrac{1}{\sqrt{2^n}}\sum_x |x\rangle$, and the oracle then stamps
+        every one of the $2^n$ values of $f$ into the state at once. This is the image everyone carries:
+        the machine “tries all answers in parallel.” It is true, and by itself it is <strong>worthless</strong>.
+        Measure the post-oracle state $\tfrac{1}{\sqrt{2^n}}\sum_x (-1)^{f(x)}|x\rangle$ and you get one
+        uniformly random $x$ — a single sample, telling you $f$ at one input, exactly what one classical
+        query would give. The exponentially many evaluations are inaccessible; you may read only one draw
+        from them. Quantum parallelism, on its own, buys nothing.</p>
+      <p>The power is entirely in the <em>second</em> Hadamard layer, which makes the $2^n$ branches
+        interfere. The amplitude landing on the all-zeros outcome is $\tfrac{1}{2^n}\sum_x (-1)^{f(x)}$:
+        for a constant $f$ every term has the same sign and they add to $\pm 1$, so $0^n$ is certain;
+        for a balanced $f$ the $+$ and $-$ terms are equal in number and <strong>cancel exactly</strong>,
+        so $0^n$ is impossible. The algorithm works by the destructive interference of the wrong-answer
+        branches, not by parallel evaluation. Every quantum speedup is an exercise in arranging phases so
+        that the answers you do not want annihilate — the parallelism is free, and the interference is
+        the whole art.</p>
+
+      <h3>An honest measure of the separation</h3>
+      <p>The exponential gap — one query against $2^{n-1}+1$ — is a statement about <em>deterministic</em>
+        classical algorithms. A randomized one settles the question in a handful of queries with
+        overwhelming confidence: sample a few inputs at random; two different values prove “balanced” on
+        the spot, and $k$ agreeing values leave “constant” wrong with probability at most $2^{-(k-1)}$. So
+        the separation is real and it is a query-model statement about determinism — not, by itself,
+        evidence of a practical speedup.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side.</strong> Sakurai &amp; Napolitano, two-path interferometry: the
+        gravity-induced neutron interferometer (§2.7) and the $2\pi$-rotation interferometry (§3.2.3),
+        where a relative phase between the arms shifts the fringes — the physics the gate circuit redraws.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang §1.4.3 (Deutsch) and §1.4.4 (Deutsch–Jozsa),
+        with §1.4.2 on quantum parallelism — the “evaluate $f$ everywhere” step that Move 3 shows is inert
+        without the closing interference.</p>
+      <p><strong>Scope, three fences.</strong> No Simon's algorithm, no query-complexity formalism, and no
+        complexity classes. The essay stays with one interferometer and one promise problem.</p>
+      <p><strong>How it connects.</strong> Phase kickback is the same eigenvalue-to-output inversion as
+        Essays 05 and 11. And the mechanism generalizes: Grover's search (Essay&nbsp;12)
+        is this same interference of phase-marked branches, only applied repeatedly to drive amplitude
+        onto the answer rather than in a single shot.</p>
+      <p><strong>Check the crossing.</strong> Verify $U_f|x\rangle|{-}\rangle = (-1)^{f(x)}|x\rangle|{-}\rangle$;
+        trace $H\,$–$\,U_f\,$–$\,H$ on Deutsch's data qubit and confirm it reads $0$ exactly when $f$ is
+        constant; then measure the post-oracle superposition on its own and watch it yield one useless
+        sample — proof that the final Hadamard, not the parallelism, is where the algorithm lives.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="09-teleportation-superdense.html"><span class="dir">← Previous</span> 09 · Teleportation &amp; superdense coding</a>
+      <a class="next" href="11-qft-translations.html"><span class="dir">Next essay →</span> 11 · Bloch waves &amp; the quantum Fourier transform</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 10 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>
