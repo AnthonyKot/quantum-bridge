@@ -1,0 +1,165 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14 · Error correction &amp; the commuting observables — The Bridge</title>
+<meta name="description" content="A code space is the joint eigenspace of a complete set of commuting observables — the machinery a course already uses to label hydrogen. Measuring the syndrome makes a continuous error digital because you looked.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part V · Open systems &amp; information — Essay 14</p>
+    <h1>Error correction, and why looking makes errors digital</h1>
+    <p class="lede">It was widely argued that quantum error correction could not exist: you cannot copy
+      an unknown state, cannot measure it without ruin, and its errors form a continuum. One code
+      answered all three — and the deepest answer is that measuring the syndrome turns a continuous
+      error into a discrete one.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §3–4 — a complete set of commuting observables; a joint eigenspace is a subspace</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C Ch 10 — the code space, the syndrome, and the nine-qubit code</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>A first course spends more time than it admits on one construction: the <strong>complete set of
+        commuting observables</strong>. Landau &amp; Lifshitz set it up in §3–4. Two Hermitian operators
+        can be measured together exactly when they commute, and commuting operators share a common
+        eigenbasis; a state is then pinned down by naming the simultaneous eigenvalues of a maximal such
+        set. This is not abstract hygiene — it is how the course labels everything real. A hydrogen level
+        is written $|n,\ell,m\rangle$ because $\{\hat H, \hat L^2, \hat L_z\}$ commute (L&amp;L's
+        angular-momentum and central-field chapters, §26–31 onward), and the three eigenvalues are the
+        state's address.</p>
+      <p>One feature of this machinery is easy to pass over and turns out to be everything. When the
+        eigenvalue of a commuting set is <em>degenerate</em>, its eigenspace is not a single ray but a
+        <strong>subspace</strong> — many states share that address. Measuring the set then projects onto
+        that subspace and, by the projection postulate, leaves any vector already inside it completely
+        unchanged. You can read a state's commuting labels without disturbing the finer structure those
+        labels do not resolve. Hold onto that; the whole essay turns on it.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>Classically, you protect a bit by copying it: store <code>000</code>, and a single flip is
+        outvoted. Every step of that recipe is illegal for a qubit. You cannot copy an unknown state
+        (<a href="06-linearity-no-cloning.html">Essay&nbsp;06</a>). You cannot look at it to see whether
+        it flipped without collapsing its superposition (Essays&nbsp;<a href="02-observables-measurement.html">02</a>
+        and <a href="03-density-matrix.html">03</a>). And where a classical bit suffers one kind of error,
+        a qubit suffers a continuum — any tiny rotation
+        $E = a\,I + b\,X + c\,Y + d\,Z$ is a possible error, and you cannot enumerate a continuum to fix
+        it. On these three grounds it was widely argued, in the early 1990s, that the task was hopeless.</p>
+      <p>The step across is to build the redundancy out of Move 1's machinery. Choose a
+        <strong>code space</strong>: a subspace of several physical qubits, defined as the joint
+        $+1$ eigenspace of a chosen set of commuting observables — the check operators. Encode the whole
+        logical qubit $\alpha|0_L\rangle + \beta|1_L\rangle$ as a vector <em>inside</em> that subspace.
+        An error knocks the state into an orthogonal subspace, and — because the check operators commute
+        and are engineered for the job — the eigenvalues you read off them, the <strong>syndrome</strong>,
+        name <em>which subspace</em>, i.e. which error occurred, while saying nothing about $\alpha$ and
+        $\beta$. Two consequences fall out, and they are the payoff:</p>
+      <ul>
+        <li><strong>The syndrome tells you which error, not which state.</strong> The check operators are
+          joint parities, not single-qubit readouts; measuring them collapses the state onto one error
+          subspace but leaves the logical superposition inside it untouched — because a code space is a
+          subspace, not a ray, exactly as in Move 1. Nothing about $\alpha,\beta$ leaks, so nothing about
+          them is destroyed.</li>
+        <li><strong>Errors become digital because you looked.</strong> Feed in the continuous error
+          $a I + b X + c Y + d Z$. Syndrome measurement is a measurement whose outcomes are precisely the
+          distinct Pauli-error subspaces, so it <em>collapses</em> that superposition of errors onto a
+          single branch — $I$, $X$, $Y$, or $Z$ — with the corresponding probability. The continuum was
+          never really there once you agreed to measure. You are left with one discrete Pauli to undo.</li>
+      </ul>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>Nielsen &amp; Chuang build this in Chapter 10, smallest case first. The <strong>three-qubit
+        bit-flip code</strong> (§10.1.1) encodes</p>
+      <p>$$ |0_L\rangle = |000\rangle, \qquad |1_L\rangle = |111\rangle, $$</p>
+      <p>and takes as its commuting check operators the two adjacent parities
+        $Z_1 Z_2$ and $Z_2 Z_3$. Both give $+1$ on $|000\rangle$ and on $|111\rangle$, so the code space
+        is their joint $+1$ eigenspace — a two-dimensional subspace, room for one logical qubit and no
+        more. A bit flip $X_i$ moves the state into a new joint eigenspace, and the pair of eigenvalues
+        pinpoints $i$:</p>
+      <ul>
+        <li>$(Z_1Z_2,\,Z_2Z_3) = (+1,+1)$ — no error</li>
+        <li>$(-1,+1)$ — flip on qubit&nbsp;1</li>
+        <li>$(-1,-1)$ — flip on qubit&nbsp;2</li>
+        <li>$(+1,-1)$ — flip on qubit&nbsp;3</li>
+      </ul>
+      <p>Here is the crucial line. $Z_1 Z_2$ measures the <em>parity</em> of qubits 1 and 2 — whether
+        they agree — not their values; on $\alpha|000\rangle + \beta|111\rangle$ it returns $+1$ for
+        either term and so reveals nothing of $\alpha,\beta$. After a flip on qubit 1 the state is
+        $\alpha|100\rangle + \beta|011\rangle$; the syndrome reads $(-1,+1)$ regardless of $\alpha,\beta$,
+        you apply $X_1$, and the logical qubit is restored with its superposition intact. The
+        <strong>phase-flip code</strong> (§10.1.2) is the same construction rotated by a Hadamard on each
+        qubit: $|0_L\rangle=|{+}{+}{+}\rangle$, $|1_L\rangle=|{-}{-}{-}\rangle$, checks $X_1X_2, X_2X_3$,
+        and it catches a $Z$.</p>
+
+      <h3>The nine-qubit code, and why it finishes the job</h3>
+      <p>Shor's <strong>nine-qubit code</strong> (§10.2) nests one inside the other: take the phase-flip
+        code across three blocks, and encode each of its three qubits in turn with the bit-flip code.
+        The inner blocks catch any $X$; the outer structure catches any $Z$; and since
+        $Y \propto XZ$, a $Y$ is just both at once. So the code corrects <em>any</em> Pauli error on
+        <em>any single</em> qubit. And that — by Move 2's discretization — is already the whole continuum.
+        An arbitrary single-qubit error is some combination $a I + b X + c Y + d Z$; syndrome measurement
+        collapses it onto one of those four Paulis, each of which the code undoes. A finite set of checks
+        corrects a continuous infinity of possible errors, because measurement digitizes them first. The
+        three impossibilities dissolve together: no state was copied, no logical information was read, and
+        the continuum was discretized by the very act of looking.</p>
+      <p><em>Where this essay stops.</em> The check operators here are the beginning of the
+        <em>stabilizer formalism</em> — a compact notation for exactly the commuting sets used above — and
+        beyond it lie CSS codes and the threshold theorem that makes fault tolerance scalable. Those are a
+        later essay; the point here is only that the code space is a complete set of commuting observables,
+        and the reader has been measuring those since hydrogen.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side.</strong> Landau &amp; Lifshitz §3–4 for commuting operators, common
+        eigenbases, and the complete set of simultaneously measurable quantities; §26–31 and the
+        central-field chapter for the working example — hydrogen labelled $|n,\ell,m\rangle$ by the
+        commuting set $\{\hat H,\hat L^2,\hat L_z\}$. There is no gap in this machinery; error correction
+        simply chooses its commuting set to be parity checks, and “stabilizer” is later notation for it.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang, Chapter 10: §10.1.1 (three-qubit bit-flip
+        code), §10.1.2 (phase-flip code), and §10.2 (the nine-qubit Shor code). The discretization of
+        errors — that correcting the Pauli set suffices for all errors — is the pivot of the whole
+        chapter.</p>
+      <p><strong>Where the paper is the story.</strong> The nine-qubit code is Shor, <em>Phys. Rev. A</em>
+        <strong>52</strong> (1995) R2493; Steane's codes followed in 1996. The historical framing above is
+        the standard account of why the result was a surprise — it is safest read as “it was widely argued
+        that…,” not as a documented census of opinion.</p>
+      <p><strong>Check the crossing.</strong> Confirm $Z_1Z_2$ and $Z_2Z_3$ commute and both fix
+        $|000\rangle,|111\rangle$ at $+1$; then build the four-row syndrome table by acting with each
+        $X_i$ and reading the eigenvalues. Verify the key property directly: $Z_1Z_2$ returns the same
+        value on $|000\rangle$ and $|111\rangle$, so on $\alpha|000\rangle+\beta|111\rangle$ it reveals the
+        error location and nothing of $\alpha,\beta$. That single fact is the difference between reading an
+        error and destroying a state.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="09-teleportation-superdense.html"><span class="dir">← Previous</span> 09 · Teleportation &amp; superdense coding</a>
+      <a class="next" href="../index.html"><span class="dir">→</span> Back to contents</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 14 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>
