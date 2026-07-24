@@ -1,0 +1,167 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>08 · EPR &amp; Bell's theorem — The Bridge</title>
+<meta name="description" content="EPR argued quantum mechanics is incomplete, not wrong. Bell turned that argument into a number you can measure — and in doing so produced genuinely new physics from the old postulates.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part III · Entanglement — Essay 08</p>
+    <h1>EPR, and the theorem that made it physics</h1>
+    <p class="lede">For thirty years the EPR argument was considered philosophy — a matter of taste about
+      an untestable question. Then Bell turned it into a number. This is the one essay where the book's
+      slogan bends, and it is more interesting for bending.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">EPR (1935): quantum mechanics is <em>incomplete</em>, not wrong — a claim about local realism</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.6 — the CHSH / Bell inequality and its quantum violation</span></div>
+    </div>
+
+    <p><strong>A word before the four moves.</strong> The course canon barely reaches this essay, and it
+      is honest to say so up front. Landau &amp; Lifshitz contains no EPR argument and no Bell
+      inequality; Feynman's two-state chapters do not either. Only Sakurai, of the standard texts, treats
+      them head-on. So the "course side" here is not a textbook section but a 1935 paper — and that is
+      the point. This is the crossing where old postulates, asked a new question, produce new physics.</p>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>Start with what Einstein, Podolsky, and Rosen actually argued, because it is not what the
+        folklore says. EPR did <em>not</em> claim quantum mechanics is wrong, and they did not celebrate
+        "spooky action at a distance." They argued the opposite: that quantum mechanics is
+        <strong>incomplete</strong>, precisely <em>because</em> they wanted to keep locality. Their
+        engine is a criterion of reality:</p>
+      <blockquote>If, without in any way disturbing a system, we can predict with certainty the value of
+        a physical quantity, then there exists an element of physical reality corresponding to it.</blockquote>
+      <p>Take two spin-½ particles prepared in the singlet $|\beta_{11}\rangle =
+        \tfrac{1}{\sqrt2}(|01\rangle - |10\rangle)$ (Bohm's sharpening of the original position–momentum
+        version) and let them fly apart. Measure particle&nbsp;A's spin along $z$: the outcome fixes
+        particle&nbsp;B's spin along $z$ with certainty, without touching B. By the criterion, B's
+        $z$-spin is an element of reality. But you could equally have measured A along $x$, fixing B's
+        $x$-spin — also, then, an element of reality. Locality says your free choice at A cannot
+        physically alter B, so <em>both</em> B's $x$- and $z$-spin must have been real all along. Quantum
+        mechanics, which forbids simultaneous sharp values of non-commuting $\sigma_x$ and $\sigma_z$,
+        cannot describe both. Therefore — EPR conclude — the wavefunction is an incomplete description;
+        there must be finer variables it omits.</p>
+      <p>Read the logic carefully: it is <em>local realism $\Rightarrow$ hidden variables</em>. Einstein's
+        preference was to keep locality and add the missing variables, demoting quantum indeterminacy to
+        ignorance of them. Nothing in the argument is testable. For three decades it read as a standoff
+        between two consistent worldviews, settled by temperament.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>John Bell's move in 1964 is one of the great steps in physics, and it is exactly the kind this
+        book is about: he took a postulate structure that was already on the table and asked an
+        <em>information-theoretic</em> question of it — how strongly can the outcomes at two distant
+        detectors be correlated? Crucially, he asked it of EPR's own hypothesis, not of quantum
+        mechanics. <em>Assume</em> local hidden variables: each particle carries a shared instruction
+        set $\lambda$, and each detector's outcome depends only on $\lambda$ and its own local setting,
+        never on the distant setting. Then derive a constraint every such theory must satisfy.</p>
+      <p>The step across is the conversion of a philosophical posit — "elements of reality" — into a
+        measurable ceiling on correlations. Once the posit predicts a <em>number</em>, and quantum
+        mechanics predicts a <em>different</em> number, the standoff becomes an experiment. This is
+        where reinterpreting the old postulates stops being a matter of clothing and starts producing
+        physics no one knew was there.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>The sharpest form is the <strong>CHSH inequality</strong> (Clauser, Horne, Shimony &amp; Holt
+        1969), the version Nielsen &amp; Chuang present in §2.6. Alice picks one of two settings
+        $a, a'$; Bob picks one of two settings $b, b'$; each measurement returns $\pm 1$. In a local
+        hidden-variable theory the outcomes are functions $A(a,\lambda),\,B(b,\lambda) \in \{+1,-1\}$ of
+        a shared variable $\lambda$ drawn from some distribution $p(\lambda)$, and the correlation is</p>
+      <p>$$ E(a,b) = \int A(a,\lambda)\,B(b,\lambda)\,p(\lambda)\,d\lambda. $$</p>
+      <p>Form the combination</p>
+      <p>$$ S = E(a,b) - E(a,b') + E(a',b) + E(a',b'). $$</p>
+      <p>The bound comes from a single line of arithmetic <em>inside</em> the integral. Group the terms:</p>
+      <p>$$ A(a,\lambda)\big[B(b,\lambda) - B(b',\lambda)\big] + A(a',\lambda)\big[B(b,\lambda) + B(b',\lambda)\big]. $$</p>
+      <p>Because $B(b,\lambda)$ and $B(b',\lambda)$ are each $\pm 1$, one bracket is $0$ and the other is
+        $\pm 2$; the whole expression is therefore $\pm 2$ for every $\lambda$. Averaging cannot enlarge
+        it, so <strong>any local hidden-variable theory obeys</strong></p>
+      <p>$$ |S| \le 2. $$</p>
+
+      <h3>What quantum mechanics predicts</h3>
+      <p>Now compute $S$ for the singlet using nothing but the course's own spin machinery. Measuring
+        $\boldsymbol\sigma\!\cdot\!\hat a$ on A and $\boldsymbol\sigma\!\cdot\!\hat b$ on B, the quantum
+        correlation is</p>
+      <p>$$ E(a,b) = \langle \beta_{11}|\,(\boldsymbol\sigma\!\cdot\!\hat a)\otimes(\boldsymbol\sigma\!\cdot\!\hat b)\,|\beta_{11}\rangle = -\,\hat a\cdot\hat b = -\cos\theta_{ab}. $$</p>
+      <p>Choose four coplanar directions at $\hat a = 0^\circ$, $\hat a' = 90^\circ$, $\hat b = 45^\circ$,
+        $\hat b' = 135^\circ$. Then $\theta_{ab}=\theta_{a'b}=\theta_{a'b'}=45^\circ$ while
+        $\theta_{ab'}=135^\circ$, so</p>
+      <p>$$ S = -\cos 45^\circ - \big(-\cos 135^\circ\big) + \big(-\cos 45^\circ\big) + \big(-\cos 45^\circ\big)
+             = -\tfrac{4}{\sqrt2} = -2\sqrt2. $$</p>
+      <p>Thus $|S| = 2\sqrt2 \approx 2.83$, cleanly above the local-realist ceiling of $2$. The gap is not
+        a rounding error or an idealization; $2\sqrt2$ is <em>Tsirelson's bound</em>, the exact maximum
+        quantum mechanics allows. And it is real: Aspect's 1982 experiments saw the violation, and the
+        loophole-free tests of 2015 closed the last escape routes. Nature sides with $2\sqrt2$.</p>
+
+      <h3>Why this essay bends the slogan</h3>
+      <p>The landing page says quantum computing "did not add new physics." Here is the one place that is
+        arguably false, and it is worth confronting rather than hiding. EPR was a reinterpretation — the
+        kind of crossing this book makes everywhere. But Bell's theorem is not a reinterpretation. It is
+        a <em>new empirical prediction</em>: that the correlations of an entangled pair cannot be
+        reproduced by <em>any</em> local theory with hidden variables, a fact about the physical world
+        that no one before 1964 knew was even decidable. So the honest thesis is finer than the slogan:</p>
+      <blockquote>Quantum information added no new <em>postulates</em>. But Bell shows that asking an
+        information-theoretic question of the old postulates — how correlated can outcomes be? — can
+        produce genuinely new <em>physics</em>: a prediction that rules out a whole class of theories,
+        confirmed in the laboratory.</blockquote>
+      <p>That is a stronger and more interesting claim than "nothing new here," and this essay is where
+        the book earns it. The postulates were old; the question was new; the result was physics.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side — and the gap, named.</strong> Neither Landau &amp; Lifshitz nor Feynman's
+        two-state chapters treat EPR or Bell; do not go looking for a section that is not there. Among the
+        standard texts only <strong>Sakurai &amp; Napolitano, <em>Modern Quantum Mechanics</em></strong>
+        (3rd ed., Napolitano) treats them head-on — in the angular-momentum chapter, under
+        “Spin Correlation Measurements and Bell's Inequality” (§3.10, with the spin-singlet correlations
+        at §3.10.1). That is the closest the ordinary course canon comes, and it is where a reader should
+        go to see EPR and Bell handled inside a standard course.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang, §2.6 ("EPR and the Bell inequality",
+        p.&nbsp;111 in the 10th Anniversary Edition), where the CHSH inequality and its quantum
+        violation are derived.</p>
+      <p><strong>Where the paper is the story.</strong> This is one of the few essays where the originals
+        repay reading, because their <em>motive</em> is the point. Einstein, Podolsky &amp; Rosen,
+        <em>Phys. Rev.</em> <strong>47</strong> (1935) 777 — note the actual conclusion, incompleteness,
+        not paradox. Bell, <em>Physics</em> <strong>1</strong> (1964) 195 — four pages that turned it into
+        a number. CHSH, <em>Phys. Rev. Lett.</em> <strong>23</strong> (1969) 880; Tsirelson's bound,
+        Cirel'son, <em>Lett. Math. Phys.</em> <strong>4</strong> (1980) 93; Aspect et&nbsp;al. (1982) and
+        the loophole-free tests of Hensen et&nbsp;al., <em>Nature</em> <strong>526</strong> (2015) 682.</p>
+      <p><strong>Check the crossing.</strong> Confirm $|S|\le 2$ yourself from the bracket argument (one
+        of $B(b)\pm B(b')$ is always zero), then substitute $E(a,b)=-\cos\theta_{ab}$ with the four
+        angles above to recover $-2\sqrt2$. The whole theorem lives in the gap between "$\pm 2$ for every
+        $\lambda$" and "$2\sqrt2$ for the singlet."</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="06-linearity-no-cloning.html"><span class="dir">← Previous</span> 06 · Linearity &amp; the no-cloning theorem</a>
+      <a class="next" href="09-teleportation-superdense.html"><span class="dir">Next essay →</span> 09 · Teleportation &amp; superdense coding</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 08 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>

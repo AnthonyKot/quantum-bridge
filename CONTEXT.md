@@ -37,11 +37,20 @@ Header, footer, and prev/next nav are copied verbatim between chapters (adjust t
 - **Pointer discipline (credibility is the whole game):** only cite a § you can verify against an
   actual copy in the working dir. When unverified, cite at chapter/topic granularity. Sakurai's
   numbering varies by edition — cite it by chapter and topic, never a bare § number.
-- **Verified L&L §** (Vol. 3, Ch I–IX): §2 superposition, §3–4 operators, §7 wavefunction &
-  measurement, §8 Hamiltonian/time-dependent equation, §14 density matrix, Ch VIII Spin, Ch IX
-  Identity of particles. **Do not reuse** the earlier wrong pointers: §5 is the *continuous spectrum*
-  (not composite systems); §11 is *Matrices* (not superposition). Re-verify all others when the
-  source PDFs land in `sources/` (git-ignored).
+- **Provisional L&L § (from memory — NOT verified; no machine-readable L&L on disk yet):** §2
+  superposition, §3–4 operators, §7 wavefunction & measurement, §8 Hamiltonian/time-dependent equation,
+  §14 density matrix, Ch VIII Spin, Ch IX Identity of particles. **Do not reuse** the earlier wrong
+  pointers: §5 is the *continuous spectrum* (not composite systems); §11 is *Matrices* (not
+  superposition). These stay provisional until a readable L&L (OCR or clean PDF) lands in `sources/`.
+- **Verified N&C §** (10th Anniversary Ed. 2010, `sources/nielsen-chuang-full.pdf`): §1.2 qubit/Bloch,
+  §1.3.5 *“Qubit copying circuit?”* (no-cloning), §1.3.7 teleportation, §2.2.3/2.2.5/2.2.6
+  measurement/projective/POVM, §2.2.8 composite systems, §2.3 superdense coding, §2.4 density operator,
+  §2.5 Schmidt, §2.6 *EPR and the Bell inequality*, §12.1 distinguishing states/accessible info,
+  §1.4.3–1.4.4 Deutsch(–Jozsa); chapters 4/5/6/8/10/11/12 confirmed for the stubs. There is **no** "Box
+  12.1" — don't cite it.
+- **Verified Sakurai §** (3rd ed., Napolitano, `sources/sakurai-napolitano-3e.pdf`): §3.10 *Spin
+  Correlation Measurements and Bell's Inequality* (EPR/Bell, essay 08), §3.10.1 spin-singlet
+  correlations. Cite topic-first, `(§3.10)` parenthetical.
 
 ## Spine (L&L → N&C map)
 
@@ -56,7 +65,7 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 | 05 | spin-single-qubit | Ch VIII spin | §2.1.3, §4.2 single-qubit gates, Pauli group | stub |
 | 06 | linearity-no-cloning | linearity of QM | §1.3.5, Box 12.1 no-cloning theorem | **written** |
 | 07 | composite-entanglement | Ch IX symmetrization → singlet; Sakurai coupled spins (**gap:** L&L has no entanglement-as-resource — name it) | §2.5 entanglement, Bell states, Schmidt | stub |
-| 08 | epr-bell | Sakurai EPR & Bell (**gap:** L&L has neither) | §2.6 Bell / CHSH inequalities | stub |
+| 08 | epr-bell | Sakurai §3.10 EPR & Bell's inequality (**gap:** L&L/Feynman have neither) | §2.6 EPR and the Bell inequality | **written** |
 | 09 | teleportation-superdense | §7 measurement; Sakurai EPR (**gap:** entanglement-as-resource is the book's step) | §1.3.7, §2.3 teleportation, superdense coding | **written** |
 | 10 | interference-deutsch | superposition & interference | §1.4.3–1.4.4 Deutsch, Deutsch–Jozsa | stub |
 | 11 | fourier-shor | Fourier methods | Ch 5 QFT, phase estimation, Shor | stub |

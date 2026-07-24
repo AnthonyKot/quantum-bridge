@@ -30,7 +30,7 @@
     <div class="bridge">
       <div class="side from"><span class="tag">In the course</span><span class="what">the linearity of quantum mechanics — unitary evolution respects superposition</span></div>
       <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §1.3.5, Box 12.1 — the no-cloning theorem</span></div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §1.3.5 (“Qubit copying circuit?”) — the no-cloning theorem</span></div>
     </div>
 
     <section class="move">
@@ -70,8 +70,8 @@
     <section class="move">
       <h2><span class="num">Move 3</span> The result</h2>
       <p>The collision is the <strong>no-cloning theorem</strong> (Wootters &amp; Zurek, and Dieks,
-        1982), which Nielsen &amp; Chuang prove in §1.3.5 and revisit in Box&nbsp;12.1. The proof is
-        four lines and uses nothing but linearity.</p>
+        1982), which Nielsen &amp; Chuang prove in §1.3.5 — the section pointedly titled
+        <em>“Qubit copying circuit?”</em>. The proof is four lines and uses nothing but linearity.</p>
 
       <h3>The proof</h3>
       <p>Suppose such a $\hat U$ exists. In particular it copies the two basis states of a qubit:</p>
@@ -132,8 +132,8 @@
       <h3>Why it matters downstream</h3>
       <p>No-cloning is the load-bearing wall of quantum information. It is why an eavesdropper cannot
         silently duplicate a key in quantum cryptography; why quantum error correction has to protect
-        states without ever reading or copying them (Essay&nbsp;14); and why teleportation, in the next
-        essay we have written, necessarily <em>destroys</em> the original as it recreates it elsewhere —
+        states without ever reading or copying them (Essay&nbsp;14); and why teleportation (Essay&nbsp;09)
+        necessarily <em>destroys</em> the original as it recreates it elsewhere —
         a faithful move, never a copy. Each of those results is downstream of the four-line argument
         above, which in turn is downstream of a single word from the physics course: linear.</p>
     </section>
@@ -146,10 +146,11 @@
         linearity is explicit in Sakurai's construction of the time-evolution operator
         $\hat U = e^{-i\hat H t/\hbar}$ (<em>Modern Quantum Mechanics</em>, the time-evolution chapter).
         No gap here — linearity is stated plainly in every course; the surprise is only what it costs.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang, §1.3.5 for the statement and proof, and
-        Box&nbsp;12.1 for the information-theoretic reading. The original papers are Wootters &amp;
-        Zurek, <em>Nature</em> <strong>299</strong> (1982) 802, and Dieks, <em>Phys. Lett. A</em>
-        <strong>92</strong> (1982) 271.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang, §1.3.5 (“Qubit copying circuit?”) for the
+        statement and proof; the information-theoretic reading — that only distinguishable, i.e.
+        orthogonal, states can be copied — is the theme of §12.1, “Distinguishing quantum states and the
+        accessible information.” The original papers are Wootters &amp; Zurek, <em>Nature</em>
+        <strong>299</strong> (1982) 802, and Dieks, <em>Phys. Lett. A</em> <strong>92</strong> (1982) 271.</p>
       <p><strong>Check the crossing.</strong> Verify the one-line version: expand
         $\langle \psi b|\hat U^\dagger \hat U|\phi b\rangle$ two ways, once using unitarity
         ($\hat U^\dagger\hat U = I$) and once using the cloning relations, and set them equal. The
@@ -158,7 +159,7 @@
 
     <nav class="chapter-nav">
       <a href="01-superposition-qubit.html"><span class="dir">← Previous</span> 01 · Superposition &amp; the qubit</a>
-      <a class="next" href="09-teleportation-superdense.html"><span class="dir">Next essay →</span> 09 · Teleportation &amp; superdense coding</a>
+      <a class="next" href="08-epr-bell.html"><span class="dir">Next essay →</span> 08 · EPR &amp; Bell's theorem</a>
     </nav>
   </div>
 </main>
