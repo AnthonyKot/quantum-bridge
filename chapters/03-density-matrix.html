@@ -1,0 +1,150 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 · The density matrix &amp; the state of a part — The Bridge</title>
+<meta name="description" content="Landau &amp; Lifshitz already wrote the density matrix as the state of a subsystem. What quantum information changes is not the object but the occasion: entanglement with an inaccessible partner as the normal condition of a qubit.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part I · States — Essay 03</p>
+    <h1>The density matrix, and the state of a part</h1>
+    <p class="lede">This is the essay where the course was already right. Landau &amp; Lifshitz write the
+      density matrix as the state of a subsystem — the modern object, decades early. What quantum
+      information changes is not the definition but the occasion for reaching for it.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §14 — the density matrix, as the description of a subsystem</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.4 — mixed states, the reduced density operator, the partial trace</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>Four essays in, it is worth admitting that the course does not always fall short — sometimes it
+        hands you the finished object and only the use has to change. The density matrix is that case.
+        Landau &amp; Lifshitz introduce it in §14, and they introduce it, strikingly, as the correct
+        description of a system that is <em>part of a larger one</em> with which it has interacted. When
+        a subsystem cannot be assigned a wavefunction of its own, its state is a Hermitian operator</p>
+      <p>$$ \rho \;=\; \sum_i p_i\,|\psi_i\rangle\langle\psi_i|, \qquad \rho = \rho^\dagger,\quad \rho \ge 0,\quad \operatorname{Tr}\rho = 1, $$</p>
+      <p>and every prediction comes from it by the same rule that governed wavefunctions: the expectation
+        of an observable $\hat A$ is $\langle \hat A\rangle = \operatorname{Tr}(\rho\,\hat A)$. The
+        density matrix cleanly separates two situations that a wavefunction cannot tell apart. If
+        $\rho = |\psi\rangle\langle\psi|$ then $\rho^2 = \rho$ and $\operatorname{Tr}\rho^2 = 1$: the
+        state is <strong>pure</strong>, a single ray. Otherwise $\operatorname{Tr}\rho^2 < 1$ and the
+        state is <strong>mixed</strong>. That number, the purity, is the whole diagnostic.</p>
+      <p>Notice how close this already is to the modern view. L&amp;L do not present $\rho$ only as
+        bookkeeping for a badly-known state; they present it as what the state of a <em>part</em>
+        genuinely is. The object needs no repair. The question the course leaves open is only: when is a
+        system a part, rather than a whole?</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>The crossing here is not a fix but a shift in default. In the course, one reaches for $\rho$ in
+        special circumstances — a beam of atoms from a hot source, a state prepared with classical
+        uncertainty, an ensemble one is ignorant about. The mixedness reads as <em>ignorance</em>: the
+        system really is in some definite $|\psi_i\rangle$, and $\rho$ averages over which. Quantum
+        information takes the opposite circumstance as normal. A qubit that has ever interacted with
+        anything — and no real qubit has not — is <strong>entangled</strong> with a partner you do not
+        hold, and then it has no pure state of its own, not through ignorance but as a matter of
+        principle. Its density matrix is the complete and correct description, and there is nothing
+        underneath it to be ignorant of.</p>
+      <p>The construction that produces it is one we already built. In <a href="02-observables-measurement.html">Essay&nbsp;02</a>
+        we coupled a system to an ancilla, measured the enlarged system, and read off the marginal
+        statistics on the system alone; what survived was a POVM. Run the very same picture with the
+        <em>measurement removed</em>. A pure joint state $|\Psi\rangle_{AB}$, described by
+        $\rho_{AB} = |\Psi\rangle\langle\Psi|$, is handed down to subsystem $A$ by summing the partner
+        $B$ out of the description — the <strong>partial trace</strong>:</p>
+      <p>$$ \rho_A \;=\; \operatorname{Tr}_B\big(|\Psi\rangle\langle\Psi|\big) \;=\; \sum_j \big(I_A \otimes \langle j|_B\big)\,\rho_{AB}\,\big(I_A \otimes |j\rangle_B\big). $$</p>
+      <p>The symmetry with Essay&nbsp;02 is exact, and it is the point of this essay:</p>
+      <blockquote>A POVM is what a projective measurement looks like after tracing out the ancilla.
+        A mixed state is what a pure state looks like after tracing out the ancilla. One operation — the
+        partial trace over an inaccessible partner — casts two shadows.</blockquote>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>Nielsen &amp; Chuang make $\rho$ a first-class citizen (§2.4): the state postulate itself is
+        restated for density operators, with mixedness measured by $\operatorname{Tr}\rho^2 \le 1$, and
+        the reduced density operator and partial trace defined for subsystems (§2.4.3). The definitions
+        are L&amp;L's; the emphasis is inverted. Watch what the inversion buys on the smallest possible
+        example.</p>
+
+      <h3>A worked example: the part of a Bell state is blank</h3>
+      <p>Take the maximally entangled pure state of two qubits,
+        $|\beta_{00}\rangle = \tfrac{1}{\sqrt2}(|00\rangle + |11\rangle)$, and ask what qubit $A$ alone
+        looks like. Expand the projector and trace out $B$:</p>
+      <p>$$ \rho_A = \operatorname{Tr}_B\!\Big[\tfrac12\big(|00\rangle+|11\rangle\big)\big(\langle00|+\langle11|\big)\Big]
+             = \tfrac12\big(|0\rangle\langle0| + |1\rangle\langle1|\big) = \tfrac{I}{2}. $$</p>
+      <p>The cross terms $|00\rangle\langle11|$ and $|11\rangle\langle00|$ vanish under the trace because
+        $\langle 1|0\rangle = 0$, and what remains is the <strong>maximally mixed state</strong>,
+        $\rho_A = I/2$, with purity $\operatorname{Tr}\rho_A^2 = \tfrac12$. Read what that says. The
+        joint state is pure and perfectly definite — measure $A$ and $B$ in the same basis and their
+        outcomes always agree. Yet each half, examined alone, is a fair coin: maximally uncertain,
+        carrying no state of its own. The whole is sharp; the parts are blank. Compare a mere product
+        $|0\rangle_A|0\rangle_B$, whose reduced state is the pure $|0\rangle\langle0|$: there the part
+        keeps a state. So the mixedness of $\rho_A$ is not ignorance about $A$ — it is the exact
+        signature of $A$'s entanglement with $B$, and its purity is a first measure of how entangled
+        they are.</p>
+
+      <h3>The change of use, stated plainly</h3>
+      <p>Nothing in this example contradicts L&amp;L. The course computes $\rho$ for a subsystem; so do
+        we. What moved is the sense of the <em>normal case</em>. For the course, a qubit is pure until
+        proven statistical, and $\rho$ is the tool you fetch when knowledge runs out. For quantum
+        information, a qubit is entangled until proven isolated, and $\rho$ is simply its state — because
+        the partner is out there, held by the environment or an eavesdropper or the far end of a Bell
+        pair, and it is not coming back. The density matrix did not need new content. It needed to be
+        promoted from the exception to the rule.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side — credit where due.</strong> Landau &amp; Lifshitz §14, the density matrix,
+        introduced as the state of a subsystem of a larger system — genuinely close to the modern
+        reduced-state view. This essay names no gap in the course, because there is none to name; the
+        honest report is that L&amp;L had the object and quantum information changed the occasion for
+        using it.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang §2.4 for the density operator (with §2.4.1 on
+        ensembles and §2.4.2 on its general properties — $\rho \ge 0$, $\operatorname{Tr}\rho = 1$,
+        $\operatorname{Tr}\rho^2 \le 1$), and §2.4.3 for the reduced density operator and the partial
+        trace used above.</p>
+      <p><strong>How it connects.</strong> This is the twin of <a href="02-observables-measurement.html">Essay&nbsp;02</a>:
+        tracing out a partner turns a pure state into a mixed one exactly as it turns a projective
+        measurement into a POVM. The Schmidt decomposition (Essay&nbsp;07) will make the pairing precise,
+        showing $\rho_A$ and $\rho_B$ share the same spectrum; and the von Neumann entropy
+        $S(\rho_A) = -\operatorname{Tr}\rho_A\log\rho_A$ (Essay&nbsp;15) will turn the purity into a real
+        number of bits of entanglement — $1$ bit for the Bell state above.</p>
+      <p><strong>Check the crossing.</strong> Reproduce $\rho_A = I/2$ for $|\beta_{00}\rangle$ by
+        tracing out $B$ term by term, then confirm $\operatorname{Tr}\rho_A^2 = \tfrac12 < 1$. For
+        contrast, trace out $B$ from a product state and watch the purity return to $1$. The distance of
+        $\operatorname{Tr}\rho_A^2$ below $1$ is the distance of the joint state from being a product.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="02-observables-measurement.html"><span class="dir">← Previous</span> 02 · Measurement &amp; the subspace</a>
+      <a class="next" href="06-linearity-no-cloning.html"><span class="dir">Next essay →</span> 06 · Linearity &amp; the no-cloning theorem</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 03 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>

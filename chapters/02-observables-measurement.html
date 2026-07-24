@@ -47,9 +47,9 @@
         course rarely flags as assumptions. First, orthogonality caps the number of distinct outcomes at
         the dimension $d$ of the space — a qubit measurement has at most two. Second, idempotence makes
         the measurement <em>repeatable</em>: measure again and you get the same $n$ with certainty. This
-        is presented, in L&amp;L and in every first course, as <em>the</em> account of measurement.
-        Nielsen &amp; Chuang note the same habit dryly: “Many introductions to quantum mechanics only
-        discuss projective measurements.” The question is what that habit quietly assumes.</p>
+        is presented, in L&amp;L and in every first course, as <em>the</em> account of measurement — most
+        introductions stop exactly here, at the projective case, and never let on that a more general
+        notion of measurement exists at all. The question is what that habit quietly assumes.</p>
     </section>
 
     <section class="move">
@@ -107,9 +107,10 @@
       <h3>Naimark: nothing was actually added</h3>
       <p>Move 2 built a POVM by measuring projectively on a larger space. The remarkable converse —
         <strong>Naimark's dilation theorem</strong> — is that <em>every</em> POVM arises this way. Any
-        general measurement on a system is a projective measurement on that system plus an ancilla,
-        after a suitable unitary. N&amp;C state it outright in Box 2.5: “projective measurements
-        augmented by unitary operations turn out to be completely equivalent to general measurements.”
+        general measurement on a system is a projective measurement on that system together with an
+        ancilla, after a suitable unitary — a POVM is the shadow such a measurement casts back on the
+        smaller space. N&amp;C make this equivalence explicit in Box 2.5: projective measurement dressed
+        with ancillas and unitaries, and the general POVM formalism, describe exactly the same physics.
         So the loosening of Move 2 added no new physics to the postulates — it revealed that the
         course's projective measurement was already the general one, seen through the keyhole of a
         subspace. The three extra outcomes Bob used were projective outcomes upstairs, in dimensions his
@@ -121,9 +122,10 @@
       <p><strong>Course side — and the gap, named.</strong> Landau &amp; Lifshitz §7, “The wave function
         and measurements,” for projective measurement — and note that it <em>stops there</em>, as does
         Sakurai and every standard course. This is not an oversight to tiptoe around; it is the essay's
-        subject. N&amp;C's own Box 2.5 explains why physicists skip POVMs (“most physical systems can
-        only be measured in a very coarse way”), which is exactly the admission that the course works in
-        a subspace.</p>
+        subject. N&amp;C's own Box 2.5 gives the reason physicists skip it: in most real experiments the
+        apparatus is too coarse to realize anything finer than a crude projective measurement, so the
+        general formalism is rarely needed — which is exactly the admission that the course works in a
+        subspace.</p>
       <p><strong>Result side.</strong> Nielsen &amp; Chuang: §2.2.5 for projective measurements, §2.2.6
         for POVMs, §2.2.4 with Box 2.3 for distinguishing states, and Box 2.5 (with the composite-system
         construction of §2.2.8) for the projective-measurement-on-a-larger-space equivalence — the
@@ -141,7 +143,7 @@
 
     <nav class="chapter-nav">
       <a href="01-superposition-qubit.html"><span class="dir">← Previous</span> 01 · Superposition &amp; the qubit</a>
-      <a class="next" href="06-linearity-no-cloning.html"><span class="dir">Next essay →</span> 06 · Linearity &amp; the no-cloning theorem</a>
+      <a class="next" href="03-density-matrix.html"><span class="dir">Next essay →</span> 03 · The density matrix &amp; the state of a part</a>
     </nav>
   </div>
 </main>

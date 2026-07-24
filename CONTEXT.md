@@ -53,6 +53,28 @@ Header, footer, and prev/next nav are copied verbatim between chapters (adjust t
   Correlation Measurements and Bell's Inequality* (EPR/Bell, essay 08), §3.10.1 spin-singlet
   correlations. Cite topic-first, `(§3.10)` parenthetical.
 
+## Sourcing discipline — TWO PASSES (hard rule)
+
+The source PDFs and generation want **opposite** access to the same file. With a book's sentence sitting
+in the context window, the path of least resistance is to reproduce it — which is exactly how essay 02
+first shipped three verbatim N&C quotes and essay 08 a verbatim EPR sentence. So separate the passes:
+
+- **Verification pass — sources OPEN.** Confirm § numbers, titles, and values against the PDFs. Pin every
+  pointer you'll need.
+- **Writing pass — sources CLOSED.** Do NOT read the PDFs while drafting. State every fact (theorem,
+  definition, result) in your own words, from understanding. A theorem's *content* is free to state; its
+  author's *sentence* is not.
+- Order: verify first, close the files, then write.
+
+**No-reproduction line is held absolutely** (the footer promises it — do not weaken the footer instead).
+Allowed: section/chapter TITLES as bibliographic citations (e.g. §2.6 *EPR and the Bell inequality*), and
+standard field terminology (*element of reality*, *spooky action*). Not allowed: any sentence or phrase of
+source *exposition*, quoted or lightly reworded.
+
+**Verification checklist — quotation scan (new step):** after writing, `grep` the essay for ASCII `\"`,
+read every `<blockquote>` by eye, and eyeball each hit. Multibyte trap: a bracket-class regex like `[“"]`
+is unreliable on curly quotes in this locale — never trust one regex; read the blockquotes.
+
 ## Spine (L&L → N&C map)
 
 Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mirrors more cleanly.
@@ -61,7 +83,7 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 |---|------|-------------------|-------------------|--------|
 | 01 | superposition-qubit | §2 superposition; Sakurai two-state systems | §1.2, §2.1–2.2 qubit, Bloch sphere, tensor product | **written** |
 | 02 | observables-measurement | §7 projective measurement (**gap:** no course does POVMs — that gap IS the essay) | §2.2.5 projective, §2.2.6 POVM, Box 2.3/2.5 (Naimark) | **written** |
-| 03 | density-matrix | §14 density matrix | §2.4 mixed states, partial trace | stub |
+| 03 | density-matrix | §14 density matrix (**no manufactured gap:** L&L already frames ρ as a subsystem's state; N&C changes the *use*, not the object) | §2.4 density operator, §2.4.3 reduced density operator/partial trace | **written** |
 | 04 | unitary-gates | §8 Schrödinger equation | Ch 4 gates, circuits, universality | stub |
 | 05 | spin-single-qubit | Ch VIII spin | §2.1.3, §4.2 single-qubit gates, Pauli group | stub |
 | 06 | linearity-no-cloning | linearity of QM | §1.3.5, Box 12.1 no-cloning theorem | **written** |
