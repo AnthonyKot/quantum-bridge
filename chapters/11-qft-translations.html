@@ -1,0 +1,146 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11 · Bloch waves &amp; the quantum Fourier transform — The Bridge</title>
+<meta name="description" content="The Bloch wave a course computes to label a crystal state is the quantum Fourier transform of a position state. Period-finding runs the same diagonalization to read the eigenvalue as an answer — and the QFT is not a fast FFT.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part IV · Interference &amp; algorithms — Essay 11</p>
+    <h1>Bloch waves, and the eigenvalue that becomes an answer</h1>
+    <p class="lede">The Bloch wave a course writes down to label a state in a periodic lattice is, letter
+      for letter, the quantum Fourier transform of a position state. Period-finding runs the very same
+      diagonalization — and asks the eigenvalue to be the answer instead of a label.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §15 (momentum generates translations) + Bloch's theorem — Bloch waves diagonalize translations on $\mathbb{Z}_N$</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §5.1, §5.2, §5.4.1 — the QFT, phase estimation, period-finding</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>Momentum, in the course, is the generator of spatial translation (L&amp;L §15): the operator
+        that shifts a state by $a$ is $\hat T_a = e^{-ia\hat p/\hbar}$, and its eigenstates are the plane
+        waves $e^{ikx}$. To diagonalize translations is to pass to the momentum — the Fourier — basis.
+        Now make the translations discrete. In a periodic lattice of $N$ sites with periodic boundary
+        conditions, the translations form the finite cyclic group $\mathbb{Z}_N$, and <strong>Bloch's
+        theorem</strong> gives the simultaneous eigenstates of every lattice shift:</p>
+      <p>$$ |k\rangle = \frac{1}{\sqrt N}\sum_{x=0}^{N-1} e^{2\pi i k x / N}\,|x\rangle, \qquad k = 0,1,\dots,N-1, $$</p>
+      <p>labelled by the crystal momentum $k$; the shift $\hat S:|x\rangle\mapsto|x+1\rangle$ acts on
+        $|k\rangle$ by the pure phase $e^{-2\pi i k/N}$. The course computes these Bloch waves to name the
+        stationary states of an electron in a crystal. And here is the whole essay in one observation:
+        that sum is <em>identically</em> the discrete Fourier transform of the position state $|x\rangle$.
+        The reader has already written the quantum Fourier transform. It was called a Bloch wave.</p>
+      <p><em>Where this sits.</em> Momentum as the generator of translations is Volume 3 (§15), verified.
+        Bloch's theorem for a periodic lattice is standard course material but lives in the solid-state /
+        statistical side of the curriculum, outside the Volume 3 this book checks against — so it is cited
+        by topic only, unverified, on the same footing as the thermodynamics of Essay 15.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>The mathematics is settled; what moves is the purpose of the eigenvalue. The physicist
+        diagonalizes translations in order to <em>label</em>: crystal momentum $k$ is a quantum number, a
+        tag hung on a stationary state, and the eigenvalue is bookkeeping. Period-finding diagonalizes the
+        same translations because the eigenvalue is the <em>output</em>. Given a function $f$ with an
+        unknown period $r$, its periodicity makes the relevant state invariant under translation by $r$;
+        so in the Bloch basis the amplitude concentrates on the momenta $k$ that a period $r$ forces —
+        near multiples of $N/r$ — and a single measurement in that basis returns the period, read out of
+        the phase. Same change of basis, exactly; the eigenvalue has simply moved from label to answer.</p>
+      <p>It is the same inversion Essay 05 made when a spin's precession became a gate you apply: the
+        machinery is untouched and only the intent turns over. The general form of the trick is
+        <strong>phase estimation</strong> — extract the eigenphase of a unitary — and period-finding is
+        phase estimation aimed at a shift.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>Nielsen &amp; Chuang make the Bloch transform a gate. The <strong>quantum Fourier transform</strong>
+        (§5.1) is the unitary</p>
+      <p>$$ |x\rangle \;\longmapsto\; \frac{1}{\sqrt N}\sum_{k=0}^{N-1} e^{2\pi i x k/N}\,|k\rangle, $$</p>
+      <p>the change of basis of Move 1, and its circuit uses only $O(n^2)$ elementary gates on
+        $n=\log_2 N$ qubits. <strong>Phase estimation</strong> (§5.2) builds on it: to learn the phase
+        $\varphi$ of an eigenstate $U|u\rangle = e^{2\pi i\varphi}|u\rangle$, apply the controlled powers
+        $U^{2^j}$ into a register and run the inverse QFT, which spells $\varphi$ out in binary.
+        <strong>Period-finding</strong> (§5.4.1) is that procedure pointed at the shift, and it returns
+        $r$. (Those controlled powers $U^{2^j}$ are exactly the arbitrary unitaries
+        <a href="04-unitary-gates.html">Essay&nbsp;04</a> guarantees can be built from a finite gate set —
+        universality is what makes the phase-estimation circuit legal.)</p>
+
+      <h3>The QFT is not a fast FFT</h3>
+      <p>This is the point almost every short account blurs, and stating it plainly is worth a paragraph.
+        The QFT's $O(n^2)$ gates do stand against the fast Fourier transform's $O(N\log N)$ operations —
+        exponentially fewer, since $N = 2^n$. But this is <em>not</em> "we compute Fourier transforms
+        faster," because <strong>you cannot read the transformed amplitudes</strong>. The QFT leaves the
+        Fourier coefficients as the amplitudes of a quantum state, and a measurement returns a single
+        <em>sample</em> $k$ drawn from the transformed distribution $|\tilde f(k)|^2$ — one draw, not the
+        array. There is no way to extract the whole spectrum; the classical FFT hands you every
+        coefficient, and the QFT never will. What the QFT actually does is rotate into a basis where
+        <em>one</em> measurement is likely to hand you the <em>one number</em> you were after. That is
+        useless for signal processing and decisive for period-finding, where the answer is a single
+        integer hiding in the spectrum. The speedup is real; it is the speedup of a perfectly aimed
+        sample, not of a faster transform.</p>
+
+      <h3>Where this essay stops</h3>
+      <p>Period-finding is the end of the crossing. Turning it into Shor's factoring algorithm — reducing
+        factoring to order-finding, and pulling the exact order out of an approximate phase with continued
+        fractions — is number theory, and it has no course side at all. It is not a bridge back to the
+        physics course; it is an import from another discipline, and this book's method is to trace
+        results back to the course, not to narrate mathematics the course never touches. So the completion
+        is pointed to — Nielsen &amp; Chuang §5.3, order-finding and factoring — and left there. Naming the
+        boundary is the same discipline as naming where the physics canon falls short, run the other way:
+        here the canon reaches all the way to the transform, and the number theory is simply not its
+        territory to claim.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side.</strong> Landau &amp; Lifshitz §15 for momentum as the generator of
+        translations, with plane waves as the eigenstates — verified, Volume 3. For the discrete case,
+        Bloch's theorem in a periodic lattice, where the eigenstates are the Bloch waves that <em>are</em>
+        the discrete Fourier transform; that is standard solid-state material outside Volume 3, so it is
+        cited by topic only and flagged unverified.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang §5.1 for the quantum Fourier transform, §5.2
+        for phase estimation, and §5.4.1 for period-finding. The number-theoretic completion of Shor's
+        algorithm is §5.3, deliberately outside this essay's scope.</p>
+      <p><strong>Scope, three fences.</strong> No success-probability analysis, no continued fractions,
+        and no reduction of factoring to order-finding. The essay ends at the transform and the period.</p>
+      <p><strong>How it connects.</strong> The eigenvalue-becomes-output inversion is the same shape as the
+        precession-becomes-gate of <a href="05-spin-single-qubit.html">Essay&nbsp;05</a>, and the
+        controlled powers phase estimation needs are what <a href="04-unitary-gates.html">Essay&nbsp;04</a>'s
+        universality lets you build.</p>
+      <p><strong>Check the crossing.</strong> Confirm that $|k\rangle = N^{-1/2}\sum_x e^{2\pi i kx/N}|x\rangle$
+        is at once the Bloch eigenstate of the shift $\hat S$ (with eigenvalue $e^{-2\pi i k/N}$) and the
+        quantum Fourier transform of $|x\rangle$. Then confirm the cost claim honestly: $O(n^2)$ gates,
+        but a single sample from $|\tilde f(k)|^2$ on measurement — not the spectrum.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="09-teleportation-superdense.html"><span class="dir">← Previous</span> 09 · Teleportation &amp; superdense coding</a>
+      <a class="next" href="13-open-systems-channels.html"><span class="dir">Next essay →</span> 13 · Open systems &amp; quantum channels</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 11 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>

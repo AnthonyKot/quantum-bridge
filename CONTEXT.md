@@ -114,7 +114,7 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 | 08 | epr-bell | Sakurai §3.10 EPR & Bell's inequality (**gap:** L&L/Feynman have neither) | §2.6 EPR and the Bell inequality | **written** |
 | 09 | teleportation-superdense | §7 measurement; Sakurai EPR (**gap:** entanglement-as-resource is the book's step) | §1.3.7, §2.3 teleportation, superdense coding | **written** |
 | 10 | interference-deutsch | superposition & interference | §1.4.3–1.4.4 Deutsch, Deutsch–Jozsa | stub |
-| 11 | fourier-shor | **CROSSING REWRITTEN** (old "Fourier on ℤ_N" was borrowed from harmonic analysis, not in any course). New: momentum eigenstates = eigenstates of the *translation operator*; the QM Fourier transform is the change of basis that diagonalizes translations; the QFT is the same for translations on the cyclic group ℤ_N; period-finding reads off that eigenvalue. L&L has the translation operator + momentum as its generator. | Ch 5 §5.1 QFT, §5.2 phase estimation, §5.3 factoring | stub — **SPLIT**: period-finding (11) vs number theory/factoring (11b) |
+| 11 | qft-translations | **crossing = diagonalizing translations** (course: Bloch waves *label* crystal states, eigenvalue is bookkeeping; period-finding: eigenvalue is the ANSWER). Bloch wave = QFT of a position state. **QFT is NOT a fast FFT** — O(n²) gates but one sample, not the spectrum; said plainly. **Decision: no split, no number-theory slot** — 11 ends at period-finding; factoring→order-finding + continued fractions have no course side, pointed to N&C §5.3. L&L §15 momentum/translations verified; Bloch's theorem topic-only (not in Vol 3). Callbacks: 05 (label→output ≈ precession→gate), 04 (controlled-U^{2^j} buildable). | §5.1 QFT, §5.2 phase estimation, §5.4.1 period-finding | **written** |
 | 12 | amplitude-grover | amplitudes & probability | Ch 6 Grover search | stub |
 | 13 | open-systems-channels | **crossing = spontaneous emission → amplitude damping** (L&L §40–43 golden rule/decay, T₁; N&C abstracts env into an inaccessible ancilla and asks the whole space = CPTP maps — no course counterpart; shared "instances→whole space" spine with 04 & 15). Pays 02's debt: E_m = A_m†A_m, POVM = channel with the outcome discarded. Kraus/Stinespring stated as fact + ancilla construction (like Naimark). No Lindblad. | Ch 8 §8.2.3 operator-sum, §8.2.4 CPTP, §8.3.5 amplitude damping | **written** |
 | 14 | error-correction | **crossing = the CSCO** (L&L §3–4: complete set of commuting observables — verified; code space = their joint eigenspace, syndrome = measuring that CSCO; hydrogen labelled by {H,L²,L_z}). Move 2: syndrome = which *error* not which *state* (subspace not ray → callback 02/03); continuous a·I+b·X+c·Y+d·Z collapses to one Pauli, "digital because you looked". History stated as "widely argued", not documented consensus. Ends at 9-qubit + discretization (no stabilizer/CSS/threshold). | Ch 10 §10.1.1 bit-flip, §10.1.2 phase-flip, §10.2 Shor 9-qubit | **written** |
@@ -128,9 +128,9 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 - **14 is self-contained** — good for momentum/story. Bit-flip, phase-flip, and the 9-qubit code need
   only Pauli errors, so it does **not** wait on 13. The "digital because you looked" syndrome argument
   is the Move 2 step across, not a footnote.
-- **11 is blocked on itself** until the crossing is rewritten (translation operator, above) **and split**
-  into period-finding vs number-theory. The N&C side (QFT circuit, §5.1/§5.3) is the safest material in
-  the book; the risk was always the course side. Don't write until reframed.
+- **11 is written.** Crossing reframed to diagonalizing translations (Bloch waves = the QFT); the planned
+  split was resolved as **no split** — the number-theoretic half of Shor has no course side, so 11 ends at
+  period-finding and points to N&C §5.3 rather than manufacturing a slot for it.
 - **After 12 (all essays written): one human read-through, 01 → 15 in contents order.** The write order
   diverged far from the read order (14 before 13, 15 before 05, 04 before the rotations it uses), and
   forward-dependency — an essay leaning on something a *later* essay builds — is a defect no per-essay
