@@ -84,9 +84,9 @@
       <h3>A worked example: telling apart states you shouldn't be able to</h3>
       <p>Alice hands Bob a qubit she promises is either $|0\rangle$ or $|{+}\rangle =
         \tfrac{1}{\sqrt2}(|0\rangle+|1\rangle)$. These are not orthogonal — $\langle 0|{+}\rangle =
-        1/\sqrt2$ — and N&amp;C's Box 2.3 proves no measurement can sort non-orthogonal states without
-        <em>ever</em> erring. A projective measurement must sometimes guess wrong. A POVM can refuse to
-        guess. Take three elements, with $c = \tfrac{\sqrt2}{1+\sqrt2}$:</p>
+        1/\sqrt2$ — and N&amp;C's Box 2.3 proves no measurement can <em>reliably</em> tell them apart:
+        none can always name which state it was handed. A projective measurement, forced to answer on
+        every shot, must sometimes answer wrong; a POVM escapes by sometimes declining to answer at all. Take three elements, with $c = \tfrac{\sqrt2}{1+\sqrt2}$:</p>
       <p>$$ E_1 = c\,|1\rangle\langle 1|, \qquad
              E_2 = c\,|{-}\rangle\langle{-}|, \qquad
              E_3 = I - E_1 - E_2, $$</p>
@@ -130,7 +130,7 @@
         for POVMs, §2.2.4 with Box 2.3 for distinguishing states, and Box 2.5 (with the composite-system
         construction of §2.2.8) for the projective-measurement-on-a-larger-space equivalence — the
         content of Naimark's dilation theorem.</p>
-      <p><strong>Why this essay is load-bearing.</strong> POVMs are the vocabulary the rest of Part&nbsp;I
+      <p><strong>What this essay unblocks.</strong> POVMs are the vocabulary the rest of Part&nbsp;I
         and Part&nbsp;V are written in. The density operator (Essay&nbsp;03) is the state on which POVMs
         act; quantum operations and Kraus operators (Essay&nbsp;13) are barely more than a POVM with the
         post-measurement states kept; and accessible information and the Holevo bound (Essay&nbsp;15) are

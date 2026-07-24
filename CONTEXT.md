@@ -81,7 +81,8 @@ only by the sweep, not by suspicion.
 
 **Verification checklist — self-assessment scan (STANDING):** grep for the essay grading itself —
 `cleanest|clearest|sharpest|best|most (elegant|interesting|important)`, `in the whole book`, `of its
-thesis`, `worth saying`, and verdict-aphorisms of the form "X fails because Y succeeds". Replace each
+thesis`, `worth saying`, the load-bearing-paragraph construction (`worth a paragraph`, `the rest of this
+book cannot offer`), and verdict-aphorisms of the form "X fails because Y succeeds". Replace each
 verdict with the observation that earns it: *show* it's the cleanest instance, don't say so. Recurring
 tic — caught in 06 and 07; the Quartet had the same habit in its codas. Triage the hits: a verdict
 about the *essay/book/thesis* is the tic (fix it); an ordinary descriptive superlative about the

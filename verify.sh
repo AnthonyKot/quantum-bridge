@@ -63,7 +63,7 @@ lifted=$(grep -rIn "Many introductions\|augmented by unitary operations\|coarse 
 if [ -n "$lifted" ]; then echo "  FAIL lifted source prose:"; echo "$lifted"; fail=1; else echo "  no known lifted phrases"; fi
 
 echo "== self-assessment scan (essay must not grade itself) =="
-hits=$(grep -rniE "cleanest|clearest|sharpest|in the whole book|of its thesis|worth saying|fails because .* succeeds" chapters/*.html)
+hits=$(grep -rniE "cleanest|clearest|sharpest|in the whole book|of its thesis|worth saying|worth a paragraph|worth an entire|the rest of this book|this book cannot|essay is load-bearing|fails because .* succeeds" chapters/*.html)
 if [ -n "$hits" ]; then echo "  triage (physics superlative = ok; verdict about the essay = fix):"; echo "$hits"; else echo "  none"; fi
 
 echo "== no copyrighted PDFs tracked by git =="
