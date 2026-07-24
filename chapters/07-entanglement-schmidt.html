@@ -1,0 +1,155 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>07 · Entanglement &amp; the Schmidt decomposition — The Bridge</title>
+<meta name="description" content="The two-particle wavefunction that won't factorize is a nuisance in a physics course and the defining resource in Nielsen &amp; Chuang. The Schmidt decomposition is essay 03 read backwards.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part III · Entanglement — Essay 07</p>
+    <h1>Entanglement, and the wavefunction that won't factorize</h1>
+    <p class="lede">The essays on Bell (08) and teleportation (09) came first and both live on this
+      concept; here, at last, is the concept. A course meets it as a computational nuisance. Nielsen
+      &amp; Chuang meet the same fact as the resource that defines the field.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L — a two-particle $\psi(x_1,x_2)$ that will not separate, met as an obstacle</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.5 — entanglement as a resource, and the Schmidt decomposition</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>The workhorse technique for any multi-particle problem in the course is separation of variables.
+        Faced with a two-particle Schrödinger equation, you guess that the wavefunction factorizes,</p>
+      <p>$$ \psi(x_1, x_2) = \varphi(x_1)\,\chi(x_2), $$</p>
+      <p>substitute, and hope the equation splits into two one-particle problems you can already solve.
+        It works precisely when the two particles do not interact — when the Hamiltonian carries no term
+        coupling $x_1$ to $x_2$. The instant an interaction $V(x_1,x_2)$ appears, the trick fails: the
+        equation refuses to separate, and the true solution is a genuinely two-variable function that
+        cannot be written as any product $\varphi(x_1)\chi(x_2)$. The helium atom is the standard
+        casualty; the course reaches for perturbation theory and self-consistent fields precisely because
+        the exact state will not factor.</p>
+      <p>So the course does meet entanglement — a non-factorizing joint state is exactly what
+        entanglement is — but it meets it wearing the wrong clothes. A state that will not separate is,
+        to a problem-solver, the <em>hard case</em>: the reason the easy method broke, an obstacle to be
+        approximated away. The whole of this essay is the observation that this obstacle is the prize.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>Take the identical fact and change only the attitude. A pure state of two subsystems is either a
+        product,</p>
+      <p>$$ |\Psi\rangle_{AB} = |\psi\rangle_A \otimes |\phi\rangle_B, $$</p>
+      <p>or it is not; when it is not, N&amp;C call it <strong>entangled</strong>, and rather than
+        deploring the fact they build a discipline on it. The non-separability that cost the course its
+        favourite method is the thing that lets an entangled pair carry correlations no product state can
+        — the fuel of the Bell violation in <a href="08-epr-bell.html">Essay&nbsp;08</a> and of
+        teleportation in <a href="09-teleportation-superdense.html">Essay&nbsp;09</a>. Nothing about the
+        mathematics changed between the course and the computer; the sign flipped on how it is valued. An
+        obstacle became an asset. This is the cleanest instance in the whole book of its thesis — the
+        physics is untouched, and only the question asked of it is new.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>To make “how entangled” a number, N&amp;C prove the <strong>Schmidt decomposition</strong>
+        (§2.5): every pure bipartite state can be written</p>
+      <p>$$ |\Psi\rangle_{AB} = \sum_i \lambda_i\,|i\rangle_A\,|i\rangle_B, \qquad
+             \lambda_i \ge 0,\quad \sum_i \lambda_i^2 = 1, $$</p>
+      <p>with orthonormal <em>Schmidt bases</em> $\{|i\rangle_A\}$, $\{|i\rangle_B\}$ chosen to match the
+        state. The recipe is pure linear algebra: collect the amplitudes into a coefficient matrix
+        $C = (c_{jk})$ from $|\Psi\rangle = \sum_{jk} c_{jk}|j\rangle_A|k\rangle_B$, and the Schmidt
+        coefficients $\lambda_i$ are simply the <strong>singular values of $C$</strong>. The number of
+        non-zero $\lambda_i$ — the <strong>Schmidt rank</strong> — is the rank of $C$, and it is the
+        whole diagnostic: <em>rank 1 means the state is a product means it is not entangled.</em></p>
+
+      <h3>This is Essay 03 read backwards</h3>
+      <p>The callback is exact and quantitative. In <a href="03-density-matrix.html">Essay&nbsp;03</a> we
+        traced out $B$ to get the reduced state $\rho_A$. In Schmidt form that trace is immediate:</p>
+      <p>$$ \rho_A = \operatorname{Tr}_B|\Psi\rangle\langle\Psi| = \sum_i \lambda_i^2\,|i\rangle_A\langle i|_A, $$</p>
+      <p>so the eigenvalues of the reduced density matrix are precisely the <em>squared Schmidt
+        coefficients</em> $\lambda_i^2$ (and $\rho_B$ has the very same spectrum). The two essays measure
+        one thing from two sides: the mixedness of the part (03) and the entanglement of the whole (07)
+        are the same list of numbers $\lambda_i^2$. Take the Bell state
+        $|\beta_{00}\rangle = \tfrac{1}{\sqrt2}(|00\rangle+|11\rangle)$: its coefficient matrix is
+        $C = \tfrac{1}{\sqrt2}I$, singular values $\lambda_0=\lambda_1=\tfrac{1}{\sqrt2}$, Schmidt rank 2
+        — entangled — and $\rho_A = \sum_i \lambda_i^2 |i\rangle\langle i| = \tfrac{I}{2}$, the maximally
+        mixed state of Essay 03, eigenvalues $\tfrac12,\tfrac12$. A product like $|0\rangle|{+}\rangle$
+        has rank 1 and a pure $\rho_A$. What was “the part of a Bell state is blank” in 03 is “the Bell
+        state has Schmidt rank 2” here — one fact, entered from either door.</p>
+
+      <h3>A caution: the entanglement that isn't a resource</h3>
+      <p>Here is where a reader, and the original plan for this essay, can go wrong. Identical particles
+        must carry a symmetric or antisymmetric joint state; two fermions, in first-quantized notation,
+        are forced into</p>
+      <p>$$ |\Psi\rangle = \tfrac{1}{\sqrt2}\big(|a\rangle_1|b\rangle_2 - |b\rangle_1|a\rangle_2\big), $$</p>
+      <p>which has Schmidt rank 2 and so, by the letter of the definition, “looks maximally entangled.”
+        It is not entanglement in the sense this essay cares about. The subscripts $1$ and $2$ are not
+        physical addresses — identical particles have no individuality, and there is no “particle 1” you
+        can package up and hand to Bob while keeping particle 2 for Alice. The apparent correlation is an
+        artefact of writing indistinguishable particles as though they were labelled. Resource
+        entanglement requires <em>separately addressable</em> parties — Alice's qubit and Bob's qubit,
+        systems you can act on locally and far apart — and antisymmetrization supplies no such split.</p>
+      <p>The clean way to hold the two ideas apart: <strong>symmetrization is a constraint on which
+        states are legal; entanglement is a property of a state you already have.</strong> The
+        exchange-antisymmetry of L&amp;L's identical-particles chapter tells you which multi-particle
+        wavefunctions may exist at all; entanglement, as a resource, is about what two agents can do with
+        a state distributed between them. Conflating the two is a common confusion, and Chapter IX is
+        exactly where the course invites it — which is why naming the distinction is worth an entire
+        paragraph that neither a physics text nor a computing text usually spends.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side.</strong> Separation of variables is the technique throughout — see the
+        central-field problem (L&amp;L §32 onward) for the separable case that works — and the
+        non-factorizing two-particle state is met wherever an interaction spoils it (the two-electron
+        atom). For the <em>caution</em>, Landau &amp; Lifshitz Chapter IX on the identity of particles
+        (§61 indistinguishability, §62 exchange interaction, §63 symmetry with respect to interchange):
+        read the antisymmetric state there as a legality constraint, <em>not</em> as distributable
+        entanglement.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang §2.5, the Schmidt decomposition and
+        purifications, and §2.2.8 on composite systems for the product-versus-entangled distinction;
+        Bell states are introduced in §1.3.6.</p>
+      <p><strong>How it connects.</strong> This essay is the concept beneath the two entanglement essays
+        already written — the resource that <a href="08-epr-bell.html">Bell (08)</a> proves is real and
+        that <a href="09-teleportation-superdense.html">teleportation (09)</a> spends. And it is the twin
+        of <a href="03-density-matrix.html">the density matrix (03)</a>: the squared Schmidt coefficients
+        are the reduced-state eigenvalues, so the von Neumann entropy $S(\rho_A)$ of Essay 15 will turn
+        the Schmidt spectrum into a single number of <em>ebits</em>.</p>
+      <p><strong>Check the crossing.</strong> Form the coefficient matrix $C=\tfrac{1}{\sqrt2}I$ for
+        $|\beta_{00}\rangle$, take its singular values to get $\lambda_0=\lambda_1=\tfrac{1}{\sqrt2}$
+        (Schmidt rank 2), then confirm $\rho_A = CC^\dagger = \tfrac{I}{2}$ so that the reduced-state
+        eigenvalues equal $\lambda_i^2$. Repeat for a product state and watch $C$ drop to rank 1 and
+        $\rho_A$ become pure — the crossing between 03 and 07 in two lines.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="06-linearity-no-cloning.html"><span class="dir">← Previous</span> 06 · Linearity &amp; the no-cloning theorem</a>
+      <a class="next" href="08-epr-bell.html"><span class="dir">Next essay →</span> 08 · EPR &amp; Bell's theorem</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 07 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>
