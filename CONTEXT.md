@@ -37,11 +37,12 @@ Header, footer, and prev/next nav are copied verbatim between chapters (adjust t
 - **Pointer discipline (credibility is the whole game):** only cite a § you can verify against an
   actual copy in the working dir. When unverified, cite at chapter/topic granularity. Sakurai's
   numbering varies by edition — cite it by chapter and topic, never a bare § number.
-- **Provisional L&L § (from memory — NOT verified; no machine-readable L&L on disk yet):** §2
-  superposition, §3–4 operators, §7 wavefunction & measurement, §8 Hamiltonian/time-dependent equation,
-  §14 density matrix, Ch VIII Spin, Ch IX Identity of particles. **Do not reuse** the earlier wrong
-  pointers: §5 is the *continuous spectrum* (not composite systems); §11 is *Matrices* (not
-  superposition). These stay provisional until a readable L&L (OCR or clean PDF) lands in `sources/`.
+- **Verified L&L §** (OCR'd the Contents of `sources/landau-lifshitz-vol3-qm.pdf`, a scan): §2 The
+  principle of superposition (p6), §3–4 operators, §7 The wave function and measurements (p21), §8 The
+  Hamiltonian operator (p25), §14 The density matrix (p38), Ch VIII Spin = §54–60 (Spin §54, Spinors §55,
+  partial polarisation §59), Ch IX Identity of particles = §61–65 (indistinguishability §61, exchange
+  interaction §62 — where two-spin singlet/triplet live). **Confirmed wrong, never reuse:** §5 =
+  *continuous spectrum*, §11 = *Matrices*, and note §17 (not §8) is "Schrödinger's equation" proper.
 - **Verified N&C §** (10th Anniversary Ed. 2010, `sources/nielsen-chuang-full.pdf`): §1.2 qubit/Bloch,
   §1.3.5 *“Qubit copying circuit?”* (no-cloning), §1.3.7 teleportation, §2.2.3/2.2.5/2.2.6
   measurement/projective/POVM, §2.2.8 composite systems, §2.3 superdense coding, §2.4 density operator,
