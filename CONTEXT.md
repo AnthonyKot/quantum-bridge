@@ -52,6 +52,8 @@ Header, footer, and prev/next nav are copied verbatim between chapters (adjust t
 - **Verified Sakurai §** (3rd ed., Napolitano, `sources/sakurai-napolitano-3e.pdf`): §3.10 *Spin
   Correlation Measurements and Bell's Inequality* (EPR/Bell, essay 08), §3.10.1 spin-singlet
   correlations. Cite topic-first, `(§3.10)` parenthetical.
+- **L&L Vol 5 (Statistical Physics) is NOT owned.** Essay 15's thermodynamic-entropy course side is
+  cited by topic only and flagged unverified — do not invent Vol 5 § numbers. Wanted in `sources/`.
 
 ## Sourcing discipline — TWO PASSES (hard rule)
 
@@ -85,6 +87,11 @@ tic — caught in 06 and 07; the Quartet had the same habit in its codas. Triage
 about the *essay/book/thesis* is the tic (fix it); an ordinary descriptive superlative about the
 *physics* ("the simplest two-level system") is fine.
 
+**Verification checklist — contents/count sync (STANDING):** after wiring a new essay, update
+`about.html` Status (the written count + which Parts are complete) and grep the landing page and part
+intros for any stale count. The site's value is verifiable pointers; it must not miscount its own
+contents. (About Status sat stale at "three" through nine essays before this was caught.)
+
 ## Spine (L&L → N&C map)
 
 Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mirrors more cleanly.
@@ -105,7 +112,7 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 | 12 | amplitude-grover | amplitudes & probability | Ch 6 Grover search | stub |
 | 13 | open-systems-channels | **crossing = spontaneous emission → amplitude damping** (L&L §40–43 golden rule/decay, T₁; N&C abstracts env into an inaccessible ancilla and asks the whole space = CPTP maps — no course counterpart; shared "instances→whole space" spine with 04 & 15). Pays 02's debt: E_m = A_m†A_m, POVM = channel with the outcome discarded. Kraus/Stinespring stated as fact + ancilla construction (like Naimark). No Lindblad. | Ch 8 §8.2.3 operator-sum, §8.2.4 CPTP, §8.3.5 amplitude damping | **written** |
 | 14 | error-correction | **crossing = the CSCO** (L&L §3–4: complete set of commuting observables — verified; code space = their joint eigenspace, syndrome = measuring that CSCO; hydrogen labelled by {H,L²,L_z}). Move 2: syndrome = which *error* not which *state* (subspace not ray → callback 02/03); continuous a·I+b·X+c·Y+d·Z collapses to one Pauli, "digital because you looked". History stated as "widely argued", not documented consensus. Ends at 9-qubit + discretization (no stabilizer/CSS/threshold). | Ch 10 §10.1.1 bit-flip, §10.1.2 phase-flip, §10.2 Shor 9-qubit | **written** |
-| 15 | entropy-holevo | von Neumann entropy (§14 density matrix; needs 02 POVMs) | Ch 11 §11.3 von Neumann entropy, §12.1.1 Holevo | stub |
+| 15 | entropy-holevo | **crossing = thermodynamic/statistical entropy → von Neumann entropy.** ⚠ course side is **L&L Vol 5 (Statistical Physics), NOT Vol 3 — not owned; topic-level pointers only, unverified** (like Sakurai pre-arrival). Spine hook = the 09-vs-Holevo collision (1 qubit = 2 bits vs ≤ 1 bit), resolved by counting the pre-shared ebit. Callbacks: 07 {½,½}=1 ebit, 03 ρ_A, 13 channels degrade it. State Holevo, don't prove (rests on §11.4 strong subadditivity). End at bound + entanglement entropy (no HSW/capacity). | §11.3 von Neumann entropy, §11.4 strong subadditivity, §12.1.1 Holevo bound | **written** |
 
 ### Sequencing notes (write order, by dependency)
 

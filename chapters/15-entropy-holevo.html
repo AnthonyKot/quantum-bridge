@@ -1,0 +1,141 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>15 · Entropy &amp; the Holevo bound — The Bridge</title>
+<meta name="description" content="Essay 09 says one qubit carries two classical bits; the Holevo bound says at most one. Resolving that collision is what turns von Neumann entropy into the accounting rule of the series.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part V · Open systems &amp; information — Essay 15</p>
+    <h1>Entropy, and the bit a qubit is allowed to carry</h1>
+    <p class="lede">Two essays in this book contradict each other. Essay 09 proved that one qubit can
+      carry two classical bits. This essay proves it can carry at most one. If both readings sit right,
+      stop and feel the collision — resolving it is the whole point, and the resolver is entropy.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L Vol 5 (Statistical Physics) — thermodynamic entropy $S=-\sum p_i\ln p_i$ (topic only; see note)</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §11.3, §12.1.1 — von Neumann entropy and the Holevo bound</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>Entropy enters a physics education as a fact about heat and disorder. In its Gibbs form, the
+        entropy of a system spread over microstates with probabilities $p_i$ is</p>
+      <p>$$ S = -k_B \sum_i p_i \ln p_i, $$</p>
+      <p>a measure of how much you do not know about which microstate you actually have. Strip the units
+        and take the logarithm base two — Shannon's move — and the same functional counts that ignorance
+        in bits, $H = -\sum_i p_i \log_2 p_i$. Either way, the course knows entropy as a number attached
+        to a <em>probability distribution</em>: a scalar summary of a spread of classical alternatives.</p>
+      <p><em>A note on where this lives.</em> Unlike every earlier essay, the course side here is not in
+        Landau &amp; Lifshitz Volume 3 at all; thermodynamic entropy is the subject of <strong>Volume 5,
+        Statistical Physics</strong>. That volume is not among the sources this book verifies against, so
+        — by the same rule applied to Sakurai before a copy was in hand — its pointers are given by topic,
+        not section number, and are flagged unverified. The verifiable citations resume on the
+        Nielsen&nbsp;&amp;&nbsp;Chuang side.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>The step is the one this book keeps making: replace the classical distribution with a density
+        matrix. The <strong>von Neumann entropy</strong></p>
+      <p>$$ S(\rho) = -\operatorname{Tr}\big(\rho\log\rho\big) = -\sum_i \lambda_i \log_2 \lambda_i $$</p>
+      <p>is nothing but the Gibbs–Shannon entropy evaluated on the eigenvalues $\lambda_i$ of the state
+        itself. A pure state has a single eigenvalue $1$ and the rest zero, so $S=0$ — a definite state
+        hides nothing. A mixed state has $S>0$. And the callback is immediate and quantitative: for a
+        bipartite pure state, $S(\rho_A)$ of the reduced state is the <strong>entanglement entropy</strong>,
+        and the spectrum $\{\tfrac12,\tfrac12\}$ that <a href="07-entanglement-schmidt.html">Essay&nbsp;07</a>
+        extracted from the Bell state — the same list <a href="03-density-matrix.html">Essay&nbsp;03</a>
+        built by tracing out a partner — is worth exactly</p>
+      <p>$$ S(\rho_A) = -\tfrac12\log_2\tfrac12 - \tfrac12\log_2\tfrac12 = 1 \text{ bit}. $$</p>
+      <p>One ebit of entanglement. Essay 03 produced the reduced state, Essay 07 produced its spectrum,
+        and entropy turns that spectrum into a single number. The same functional, it turns out, also
+        caps how much <em>classical</em> information a quantum carrier can deliver — which is where the
+        collision with Essay 09 gets settled.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>Suppose Alice draws a classical symbol $x$ with probability $p_x$ and encodes it in a quantum
+        state $\rho_x$, sending the ensemble whose average is $\rho = \sum_x p_x \rho_x$. However
+        cleverly Bob measures — over <em>all</em> POVMs (<a href="02-observables-measurement.html">Essay&nbsp;02</a>)
+        — the classical information he can extract about $x$ is capped by the <strong>Holevo bound</strong>
+        (N&amp;C §12.1.1):</p>
+      <p>$$ I(X{:}Y) \;\le\; \chi \;=\; S(\rho) - \sum_x p_x\, S(\rho_x). $$</p>
+      <p>Since $\chi \le S(\rho) \le \log_2 d$, a $d$-dimensional carrier yields at most $\log_2 d$ bits;
+        a qubit, at most <strong>one</strong>. (The bound rests on strong subadditivity of the entropy,
+        N&amp;C §11.4; that is a chapter to prove and we take it as given.) So: <em>one qubit carries at
+        most one classical bit.</em></p>
+
+      <h3>The collision, and the accounting that resolves it</h3>
+      <p>But <a href="09-teleportation-superdense.html">Essay&nbsp;09</a> was explicit that superdense
+        coding sends <em>two</em> classical bits down a single transmitted qubit. Both statements are
+        correct, and the reconciliation is pure bookkeeping. Superdense coding does not send a qubit cold;
+        Alice and Bob <strong>pre-share an entangled pair</strong>, so Bob already holds one qubit before
+        Alice transmits hers. Taken alone, the qubit Alice sends is maximally mixed, $\rho = I/2$, worth
+        exactly the one bit Holevo allows. Bob beats that only because he decodes with <em>both</em>
+        qubits at once — a two-qubit system, whose two bits sit comfortably under $S \le \log_2 4 = 2$.</p>
+      <p>Count honestly and the paradox evaporates. Two qubits were spent in total: one distributed in
+        advance to build the pair, one sent to carry the message — two qubits, two bits, one bit apiece,
+        and Holevo untouched. The entanglement was the hidden second resource, paid for earlier. This is
+        what the entropy buys the series: an accounting rule under which Essay 09's “two bits per qubit”
+        and this essay's “one bit per qubit” are the same law, read with the shared pair on the books or
+        off them.</p>
+      <p>And it closes Part V on itself. Essay&nbsp;13 showed channels that raise a state's entropy and
+        drain its entanglement; Essay&nbsp;14 showed how to defend against them; here entropy is the meter
+        that says how much was lost and how much a noisy carrier can still deliver. Noise, protection, and
+        the measure of both.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side (different volume, unverified pointers).</strong> Thermodynamic and
+        statistical entropy is Landau &amp; Lifshitz <em>Volume 5, Statistical Physics</em> — the Gibbs
+        entropy $S=-k_B\sum p_i\ln p_i$ and its information-theoretic descendant. Volume 5 is not in this
+        book's verified sources, so it is cited by topic only; treat the section numbers as absent rather
+        than guessed.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang §11.3 for the von Neumann entropy, §11.4 for
+        the strong subadditivity that underwrites the bound (stated here, not proved), and §12.1.1 for the
+        Holevo bound itself.</p>
+      <p><strong>How it connects.</strong> This measures what <a href="03-density-matrix.html">Essay&nbsp;03</a>
+        and <a href="07-entanglement-schmidt.html">Essay&nbsp;07</a> constructed — the reduced-state
+        spectrum, now a number of ebits — resolves the tension it has with
+        <a href="09-teleportation-superdense.html">Essay&nbsp;09</a>, and quantifies the damage done by the
+        channels of <a href="13-open-systems-channels.html">Essay&nbsp;13</a>. <em>Scope, on purpose:</em>
+        we state Holevo and stop at the bound and the entanglement entropy. Optimizing the accessible
+        information, the Holevo–Schumacher–Westmoreland capacity, and channel capacities generally are a
+        separate essay — the same boundary Lindblad marked in Essay 13.</p>
+      <p><strong>Check the crossing.</strong> Compute $S(I/2) = 1$ bit from the Bell reduced state of
+        Essay 07; confirm $\chi \le \log_2 2 = 1$ for any single-qubit ensemble; then verify that
+        superdense coding's two bits respect Holevo once the pre-shared pair is counted as a spent qubit.
+        The bound is never beaten — only the resources are moved around in time.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="14-error-correction.html"><span class="dir">← Previous</span> 14 · Quantum error correction</a>
+      <a class="next" href="../index.html"><span class="dir">→</span> Back to contents</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 15 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>
