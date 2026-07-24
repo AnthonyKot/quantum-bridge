@@ -29,6 +29,34 @@ print("  OK" if not bad else f"  {bad} problem(s)")
 sys.exit(1 if bad else 0)
 PY
 
+echo "== prev/next chain contiguity (a link resolving != the chain being right) =="
+python3 - <<'PY' || fail=1
+import re,os,sys
+idx=open("index.html").read()
+order=re.findall(r'href="chapters/([0-9][^"#]*\.html)"', idx)
+seen=set(); order=[x for x in order if not (x in seen or seen.add(x))]
+CONTENTS="../index.html"
+def norm(h):
+    if not h: return None
+    return "CONTENTS" if h.endswith("index.html") else os.path.basename(h)
+prob=0
+for i,name in enumerate(order):
+    p=os.path.join("chapters",name)
+    if not os.path.exists(p): print(f"  {name}: listed on contents but file missing"); prob+=1; continue
+    m=re.search(r'<nav class="chapter-nav">(.*?)</nav>', open(p).read(), re.S)
+    if not m: print(f"  {name}: no chapter-nav"); prob+=1; continue
+    nav=m.group(1)
+    nx=re.search(r'<a class="next" href="([^"]+)"', nav)
+    nxh=nx.group(1) if nx else None
+    pvh=next((a for a in re.findall(r'<a[^>]*href="([^"]+)"', nav) if a!=nxh), None)
+    exp_prev = order[i-1] if i>0 else CONTENTS
+    exp_next = order[i+1] if i<len(order)-1 else CONTENTS
+    if norm(pvh)!=norm(exp_prev): print(f"  {name}: prev={pvh}  expected {exp_prev}"); prob+=1
+    if norm(nxh)!=norm(exp_next): print(f"  {name}: next={nxh}  expected {exp_next}"); prob+=1
+print(f"  {len(order)} essays in contents order, chain contiguous" if not prob else f"  {prob} chain problem(s)")
+sys.exit(1 if prob else 0)
+PY
+
 echo "== quotation scan (no reproduced source prose) =="
 grep -rn "<blockquote>" chapters/*.html >/dev/null && echo "  (read each <blockquote> by eye — curly-quote regex is unreliable)"
 lifted=$(grep -rIn "Many introductions\|augmented by unitary operations\|coarse way\|without in any way disturbing\|element of physical reality corresponding" chapters/ 2>/dev/null)
