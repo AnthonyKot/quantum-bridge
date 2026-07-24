@@ -92,6 +92,12 @@ about the *essay/book/thesis* is the tic (fix it); an ordinary descriptive super
 intros for any stale count. The site's value is verifiable pointers; it must not miscount its own
 contents. (About Status sat stale at "three" through nine essays before this was caught.)
 
+**These checks are executable — run `./verify.sh` before every commit.** It computes the count-sync
+(contents links vs chapter files), resolves every internal link, checks math-delimiter balance, and
+surfaces the quotation and self-assessment scans; it exits non-zero on hard failures. Counts are
+computed there, not typed — the About-Status prose count is the one number still typed by hand, so keep
+it in the checklist above.
+
 ## Spine (L&L → N&C map)
 
 Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mirrors more cleanly.
@@ -101,7 +107,7 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 | 01 | superposition-qubit | §2 superposition; Sakurai two-state systems | §1.2, §2.1–2.2 qubit, Bloch sphere, tensor product | **written** |
 | 02 | observables-measurement | §7 projective measurement (**gap:** no course does POVMs — that gap IS the essay) | §2.2.5 projective, §2.2.6 POVM, Box 2.3/2.5 (Naimark) | **written** |
 | 03 | density-matrix | §14 density matrix (**no manufactured gap:** L&L already frames ρ as a subsystem's state; N&C changes the *use*, not the object) | §2.4 density operator, §2.4.3 reduced density operator/partial trace | **written** |
-| 04 | unitary-gates | **CROSSING REWRITTEN** (old "unitary → gates" duplicates 05's two-level rotations). Real non-overlapping content = **universality**: a finite gate set densely generates the whole unitary group — a question with **no course-side counterpart** (physics never asks which Hamiltonians suffice to reach every other). Gap-shaped essay. | Ch 4 §4.5 universal quantum gates (§4.5.2 single-qubit+CNOT, §4.5.3 discrete sets) | stub — rewrite crossing before writing (like 11) |
+| 04 | unitary-gates | **crossing = continuous → discrete reachability** (correction to the earlier "no counterpart": the course DOES answer it, continuously — [Jₓ,J_y]=iJ_z ⟹ two generators reach all of SU(2), L&L §26–31, a universality theorem in Lie clothing). Step across: finite alphabet → countable words can't cover uncountable U(2^n), so "reach" weakens to "approximate/dense". Solovay–Kitaev's engine = the group commutator ABA⁻¹B⁻¹ (same one that closes su(2)). Fences: don't prove SK; don't prove CNOT+1-qubit universality (sketch only); assume Bloch rotations (05's job, keep disjoint). | Ch 4 §4.5.2 CNOT+single-qubit, §4.5.3 discrete sets / Solovay–Kitaev | **written** |
 | 05 | spin-single-qubit | Ch VIII spin → Bloch rotations (**owns the two-level rotations; keep disjoint from 04's universality**) | §2.1.3 Pauli matrices, §4.2 single qubit operations | stub |
 | 06 | linearity-no-cloning | linearity of QM | §1.3.5, Box 12.1 no-cloning theorem | **written** |
 | 07 | entanglement-schmidt | **crossing = failure of separation of variables** (course: ψ(x₁,x₂) won't factor = nuisance; N&C: same non-product state = defining resource — obstacle→asset, cleanest thesis instance). Schmidt = essay 03 backwards (singular values of coeff matrix; λ_i² = reduced-density eigenvalues; rank 1 ⟺ product). **Caution not crossing:** identical-particle antisymmetry (L&L Ch IX §61–63) looks entangled but isn't a resource (not separately addressable); symmetrization = constraint on legal states, entanglement = property of a state you have. | §2.5 Schmidt & purifications; §2.2.8 composite systems | **written** |
