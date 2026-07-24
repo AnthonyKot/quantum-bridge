@@ -79,8 +79,10 @@
         space; each two-level rotation is a single-qubit rotation conditioned on the other qubits; and a
         conditioned rotation is assembled from CNOTs and single-qubit gates. So an entangling two-qubit
         interaction plus arbitrary one-qubit rotations is enough — interaction to correlate, rotations to
-        steer. (Those single-qubit rotations are the subject of Essay&nbsp;05;
-        here we simply assume they exist and never re-derive them.)</p>
+        steer. (Those single-qubit rotations are nothing but the $\mathrm{SU}(2)$ elements Move 1's
+        commutator already generates; <a href="05-spin-single-qubit.html">Essay&nbsp;05</a> gives them
+        their explicit qubit form and names, but this essay needs only that they exist — which Move 1
+        supplied.)</p>
       <p>Second, the discrete layer (§4.5.3). Replace “all single-qubit gates” by a fixed finite set —
         a couple of well-chosen rotations — whose generated subgroup is dense. By Move 2 that is the best
         one can ask, and the <strong>Solovay–Kitaev theorem</strong> makes the approximation not merely
@@ -117,8 +119,10 @@
         theorem.</p>
       <p><strong>Scope, three fences.</strong> Solovay–Kitaev is stated, not proved. The universality of
         {CNOT + single-qubit gates} is stated with a plausibility sketch, not proved. And single-qubit
-        rotations are assumed to exist and are never re-derived — that is Essay&nbsp;05's
-        job, kept out of this one deliberately so the two do not collapse together.</p>
+        rotations are taken as given — Move 1 already generates them as $\mathrm{SU}(2)$, so the forward
+        reference to <a href="05-spin-single-qubit.html">Essay&nbsp;05</a>, which builds them explicitly
+        as qubit gates, is a courtesy and not a prerequisite; the two essays stay disjoint (04 asks which
+        rotations suffice, 05 says what the rotations are).</p>
       <p><strong>Check the crossing.</strong> Confirm that $[\hat J_x,\hat J_y]=i\hat J_z$ closes the
         $\mathfrak{su}(2)$ algebra, so two generators reach the whole group (continuous universality).
         Then run the cardinality argument — a finite alphabet spells countably many words, $\mathrm{U}(2^n)$
@@ -128,7 +132,7 @@
 
     <nav class="chapter-nav">
       <a href="03-density-matrix.html"><span class="dir">← Previous</span> 03 · The density matrix &amp; the state of a part</a>
-      <a class="next" href="06-linearity-no-cloning.html"><span class="dir">Next essay →</span> 06 · Linearity &amp; the no-cloning theorem</a>
+      <a class="next" href="05-spin-single-qubit.html"><span class="dir">Next essay →</span> 05 · Spin &amp; single-qubit gates</a>
     </nav>
   </div>
 </main>

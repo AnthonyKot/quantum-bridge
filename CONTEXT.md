@@ -108,7 +108,7 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 | 02 | observables-measurement | §7 projective measurement (**gap:** no course does POVMs — that gap IS the essay) | §2.2.5 projective, §2.2.6 POVM, Box 2.3/2.5 (Naimark) | **written** |
 | 03 | density-matrix | §14 density matrix (**no manufactured gap:** L&L already frames ρ as a subsystem's state; N&C changes the *use*, not the object) | §2.4 density operator, §2.4.3 reduced density operator/partial trace | **written** |
 | 04 | unitary-gates | **crossing = continuous → discrete reachability** (correction to the earlier "no counterpart": the course DOES answer it, continuously — [Jₓ,J_y]=iJ_z ⟹ two generators reach all of SU(2), L&L §26–31, a universality theorem in Lie clothing). Step across: finite alphabet → countable words can't cover uncountable U(2^n), so "reach" weakens to "approximate/dense". Solovay–Kitaev's engine = the group commutator ABA⁻¹B⁻¹ (same one that closes su(2)). Fences: don't prove SK; don't prove CNOT+1-qubit universality (sketch only); assume Bloch rotations (05's job, keep disjoint). | Ch 4 §4.5.2 CNOT+single-qubit, §4.5.3 discrete sets / Solovay–Kitaev | **written** |
-| 05 | spin-single-qubit | Ch VIII spin → Bloch rotations (**owns the two-level rotations; keep disjoint from 04's universality**) | §2.1.3 Pauli matrices, §4.2 single qubit operations | stub |
+| 05 | spin-single-qubit | spin precessing in a field → single-qubit gates (Ch VIII §54–55, §111–113). The gate IS the precession, timed: R_x(π)=−iX. Pauli group = alphabet of 14's stabilizers. **Disjoint from 04** (04 = which rotations suffice; 05 = what they are). | §2.1.3 Pauli matrices, §4.2 single qubit operations | **written** |
 | 06 | linearity-no-cloning | linearity of QM | §1.3.5, Box 12.1 no-cloning theorem | **written** |
 | 07 | entanglement-schmidt | **crossing = failure of separation of variables** (course: ψ(x₁,x₂) won't factor = nuisance; N&C: same non-product state = defining resource — obstacle→asset, cleanest thesis instance). Schmidt = essay 03 backwards (singular values of coeff matrix; λ_i² = reduced-density eigenvalues; rank 1 ⟺ product). **Caution not crossing:** identical-particle antisymmetry (L&L Ch IX §61–63) looks entangled but isn't a resource (not separately addressable); symmetrization = constraint on legal states, entanglement = property of a state you have. | §2.5 Schmidt & purifications; §2.2.8 composite systems | **written** |
 | 08 | epr-bell | Sakurai §3.10 EPR & Bell's inequality (**gap:** L&L/Feynman have neither) | §2.6 EPR and the Bell inequality | **written** |
@@ -131,6 +131,11 @@ Course-side column lists L&L pointers first, Sakurai (chapter/topic) where it mi
 - **11 is blocked on itself** until the crossing is rewritten (translation operator, above) **and split**
   into period-finding vs number-theory. The N&C side (QFT circuit, §5.1/§5.3) is the safest material in
   the book; the risk was always the course side. Don't write until reframed.
+- **After 12 (all essays written): one human read-through, 01 → 15 in contents order.** The write order
+  diverged far from the read order (14 before 13, 15 before 05, 04 before the rotations it uses), and
+  forward-dependency — an essay leaning on something a *later* essay builds — is a defect no per-essay
+  check catches, because every essay is internally correct. `verify.sh` proves the chain is *contiguous*;
+  it cannot tell whether the *argument* runs forward. This read-through is the one pass that stays human.
 
 ## Adding a stub → full essay
 

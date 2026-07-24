@@ -1,0 +1,135 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>05 · Spin &amp; single-qubit gates — The Bridge</title>
+<meta name="description" content="A spin precessing in a magnetic field and a single-qubit gate are the same unitary. The Pauli matrices are the spin; the bit-flip gate is a timed half-turn. This essay builds the rotations essay 04 assumed.">
+<script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
+<link rel="stylesheet" href="../static/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous"></script>
+<script defer src="../static/theme.js"></script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
+    <nav class="site-nav">
+      <a href="../index.html">Contents</a>
+      <a href="../about.html">About</a>
+      <button class="theme-toggle" type="button">☾ Dark</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="kicker">Part II · Dynamics — Essay 05</p>
+    <h1>Spin, and the gates that are rotations of it</h1>
+    <p class="lede">A spin precessing in a magnetic field and a single-qubit gate are the same unitary,
+      read with different intent. The Pauli matrices the course uses for spin are the elementary gates;
+      the bit-flip gate is a spin turned half a turn. This essay builds the rotations that Essay 04 took
+      for granted.</p>
+
+    <div class="bridge">
+      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L Ch VIII (§54–55, §111–113) — spin-½, the Pauli operators, precession in a field</span></div>
+      <div class="arrow">→</div>
+      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.1.3, §4.2 — the Pauli gates, Bloch-sphere rotations, the Pauli group</span></div>
+    </div>
+
+    <section class="move">
+      <h2><span class="num">Move 1</span> In the course</h2>
+      <p>The course's spin-½ comes with a triple of operators — the spin components
+        $\hat{\mathbf S} = \tfrac{\hbar}{2}\boldsymbol\sigma$, where
+        $\boldsymbol\sigma = (\sigma_x,\sigma_y,\sigma_z)$ are the Pauli matrices (L&amp;L Ch VIII,
+        §54–55). Put that spin in a magnetic field $\mathbf B = B\,\hat{\mathbf n}$ and the coupling of
+        its magnetic moment gives a Hamiltonian proportional to $\hat{\mathbf n}\cdot\boldsymbol\sigma$,</p>
+      <p>$$ \hat H = \tfrac{\hbar\omega}{2}\,\hat{\mathbf n}\cdot\boldsymbol\sigma, $$</p>
+      <p>and the course computes what happens next: the spin <strong>precesses</strong> about
+        $\hat{\mathbf n}$ at the Larmor frequency $\omega$ (L&amp;L §111–113, spin in a magnetic field).
+        Its time evolution is the unitary</p>
+      <p>$$ U(t) = e^{-i\hat H t/\hbar} = \exp\!\Big(\!-i\,\tfrac{\theta}{2}\,\hat{\mathbf n}\cdot\boldsymbol\sigma\Big), \qquad \theta = \omega t. $$</p>
+      <p>That is the whole of the physics: a two-level magnetic moment turns steadily about the field
+        direction, and after a time $t$ it has rotated through $\theta = \omega t$. The course treats
+        this as something that <em>happens to</em> the spin under a field it is subjected to.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 2</span> The step across</h2>
+      <p>The step is to stop suffering the precession and start commanding it. The same unitary
+        $\exp(-i\tfrac{\theta}{2}\,\hat{\mathbf n}\cdot\boldsymbol\sigma)$ that the course reads as “the
+        field turned the spin by $\theta$ about $\hat{\mathbf n}$” is, to a quantum computer, a
+        <strong>single-qubit gate</strong>: a rotation $R_{\hat n}(\theta)$ you apply deliberately by
+        pulsing a field for exactly the right duration. Only the agency changed — evolution you observe
+        becomes an operation you choose. And the course's spin observables become the elementary gates
+        directly: the Pauli matrices are the <strong>bit-flip</strong> $X=\sigma_x$, the
+        <strong>phase-flip</strong> $Z=\sigma_z$, and their product $Y=\sigma_y$.</p>
+      <p>A note on what this essay is <em>not</em> doing, to keep it clear of its neighbour.
+        <a href="04-unitary-gates.html">Essay&nbsp;04</a> asked which rotations suffice — how a finite set
+        of them densely generates every unitary. That question is settled there and not reopened here.
+        This essay only says <em>what the rotations are</em>: it builds the single-qubit gates that
+        Essay 04 consumed as given. The two are the two halves of one subject, deliberately kept apart —
+        04 the sufficiency, 05 the construction.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 3</span> The result</h2>
+      <p>Nielsen &amp; Chuang package the precession as the <strong>rotation operators</strong> (§2.1.3,
+        §4.2). Expanding the exponential,</p>
+      <p>$$ R_{\hat n}(\theta) = \exp\!\Big(\!-i\tfrac{\theta}{2}\,\hat{\mathbf n}\cdot\boldsymbol\sigma\Big)
+             = \cos\tfrac{\theta}{2}\,I \;-\; i\sin\tfrac{\theta}{2}\,(\hat{\mathbf n}\cdot\boldsymbol\sigma), $$</p>
+      <p>and the content of §4.2 is that <em>every</em> single-qubit unitary is one of these up to a global
+        phase, $U = e^{i\alpha}R_{\hat n}(\theta)$ — a rigid rotation of the Bloch sphere of Essay 01.
+        The named gates are particular rotations: $X$, $Y$, $Z$ are half-turns about the three axes;
+        $S$ and $T$ are $\tfrac{\pi}{2}$ and $\tfrac{\pi}{4}$ rotations about $\hat z$; and the Hadamard
+        $H = \tfrac{1}{\sqrt2}(X+Z)$ is the half-turn about the diagonal axis $(\hat x + \hat z)/\sqrt2$
+        that interchanges the $x$ and $z$ directions ($HXH = Z$, $HZH = X$).</p>
+
+      <h3>A worked example: the bit-flip gate is a half-turn</h3>
+      <p>Take a $\pi$-pulse about $\hat x$ — the field left on just long enough that $\theta = \pi$. Then</p>
+      <p>$$ R_{\hat x}(\pi) = \cos\tfrac{\pi}{2}\,I - i\sin\tfrac{\pi}{2}\,\sigma_x = -i\,\sigma_x = -i\,X. $$</p>
+      <p>Up to the global phase $-i$, that is exactly the $X$ gate. The bit flip $|0\rangle \leftrightarrow
+        |1\rangle$ is not a separate piece of machinery bolted onto the qubit; it is the course's spin,
+        precessed half a turn about $\hat x$ and stopped. Every gate in the set is a precession, timed —
+        the crossing could not be more literal.</p>
+
+      <h3>The Pauli group</h3>
+      <p>The three gates $X,Y,Z$ square to the identity and anticommute in pairs, with
+        $\sigma_x\sigma_y = i\sigma_z$ and its cyclic partners. Under multiplication they generate, with
+        the phases $\{\pm 1, \pm i\}$, a finite group of sixteen elements — the <strong>Pauli group</strong>
+        on one qubit. It is worth naming because it is the alphabet of a later essay: the check operators
+        of quantum error correction (<a href="14-error-correction.html">Essay&nbsp;14</a>) are products of
+        Paulis, and the commuting sets among them are precisely the complete set of commuting observables
+        that defines a code space. The gates built here from spin are the letters that spell the codes
+        there.</p>
+    </section>
+
+    <section class="move">
+      <h2><span class="num">Move 4</span> Reading</h2>
+      <p><strong>Course side.</strong> Landau &amp; Lifshitz Chapter VIII, §54–55, for spin-½ and the
+        Pauli operators, and §111–113 for a spin in a magnetic field — the precession whose unitary is
+        the gate. The magnetic moment is what makes the field a control knob.</p>
+      <p><strong>Result side.</strong> Nielsen &amp; Chuang §2.1.3 for the Pauli matrices and §4.2 for
+        single-qubit operations — the rotation operators $R_{\hat n}(\theta)$ and the statement that they
+        (up to phase) exhaust the single-qubit unitaries.</p>
+      <p><strong>How it connects.</strong> This builds what <a href="04-unitary-gates.html">Essay&nbsp;04</a>
+        assumed: the single-qubit rotations whose finite subsets 04 showed to be universal. The division
+        of labour is deliberate — 04 asks which rotations suffice, 05 says what they are — so the two do
+        not re-derive each other. Forward, the Pauli group here is the vocabulary of the stabilizer codes
+        in <a href="14-error-correction.html">Essay&nbsp;14</a>.</p>
+      <p><strong>Check the crossing.</strong> Verify that $R_{\hat n}(\theta) = \cos\tfrac{\theta}{2}I -
+        i\sin\tfrac{\theta}{2}(\hat{\mathbf n}\cdot\boldsymbol\sigma)$ is a Bloch-sphere rotation by
+        $\theta$ about $\hat{\mathbf n}$; that $R_{\hat x}(\pi) = -iX$, so a half-turn is the bit flip;
+        and that $X,Y,Z$ anticommute and close into the sixteen-element Pauli group.</p>
+    </section>
+
+    <nav class="chapter-nav">
+      <a href="04-unitary-gates.html"><span class="dir">← Previous</span> 04 · Universality &amp; the one word that changes</a>
+      <a class="next" href="06-linearity-no-cloning.html"><span class="dir">Next essay →</span> 06 · Linearity &amp; the no-cloning theorem</a>
+    </nav>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>The Bridge · Essay 05 · Original prose; no copyrighted source text reproduced.</p>
+  </div>
+</footer>
