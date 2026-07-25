@@ -33,7 +33,35 @@
     btn.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function renderMath() {
+    if (window.renderMathInElement) {
+      window.renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "$",  right: "$",  display: false },
+          { left: "\\(", right: "\\)", display: false },
+          { left: "\\[", right: "\\]", display: true }
+        ],
+        throwOnError: false
+      });
+      return true;
+    }
+    return false;
+  }
+
+  function tryRenderMath() {
+    if (!renderMath()) {
+      var attempts = 0;
+      var timer = setInterval(function () {
+        attempts++;
+        if (renderMath() || attempts > 100) {
+          clearInterval(timer);
+        }
+      }, 50);
+    }
+  }
+
+  function init() {
     var btn = document.querySelector(".theme-toggle");
     if (btn) {
       updateLabel(currentTheme());
@@ -42,15 +70,14 @@
       });
     }
 
-    // Render TeX written as $…$ and $$…$$ once the page is ready.
-    if (window.renderMathInElement) {
-      window.renderMathInElement(document.body, {
-        delimiters: [
-          { left: "$$", right: "$$", display: true },
-          { left: "$",  right: "$",  display: false }
-        ],
-        throwOnError: false
-      });
-    }
-  });
+    tryRenderMath();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  window.addEventListener("load", tryRenderMath);
 })();
