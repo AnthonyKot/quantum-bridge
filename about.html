@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About — The Bridge</title>
-<meta name="description" content="The method behind The Bridge: how each essay crosses from a Landau &amp; Lifshitz course topic to a Nielsen &amp; Chuang result, and the editions cited.">
+<title>How to read this book — The Bridge</title>
+<meta name="description" content="Prerequisites, notation, problem-solving guidance, and references for The Bridge.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="static/style.css">
 <link rel="stylesheet" href="static/katex/katex.min.css">
@@ -10,130 +12,52 @@
 <script defer src="static/katex/auto-render.min.js"></script>
 <script defer src="static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="index.html">Contents</a>
-      <a href="about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">The method</p>
-    <h1>About this book</h1>
-    <p class="lede">One shelf holds a physics course; another holds a computing book. The claim of
-      <em>The Bridge</em> is that they are the same shelf, walked in a different order.</p>
-    <p>One essay tests that claim rather than repeating it. Essay&nbsp;08 (EPR and Bell) is the place
-      where “no new physics” is arguably false — Bell's theorem is a genuinely new empirical prediction —
-      and the book confronts it rather than hiding it, refining the thesis instead of defending it:
-      quantum information added no new <em>postulates</em>, but asking information-theoretic questions of
-      the old ones can produce new <em>physics</em>.</p>
-
-    <h2>The two ends of every crossing</h2>
-    <p>The <strong style="color:var(--course)">course side</strong> is two texts read together.
-      <strong>Landau &amp; Lifshitz, <em>Quantum Mechanics</em></strong> (Vol. 3 of the
-      <em>Course of Theoretical Physics</em>) is the anchor — the same tradition featured in the
-      sibling collection, <a href="https://anthonykot.github.io/quantum-quartet/">The Quantum
-      Quartet</a> — chosen because it builds the subject from the superposition principle and the
-      algebra of operators, so its scaffolding already looks like the linear algebra of quantum
-      information. But L&amp;L is also the most austere course text in the canon: it has no
-      two-level-system tensor products, no notion of information, and no Bell inequality. Where it
-      stops short, the essays bring in <strong>Sakurai, <em>Modern Quantum Mechanics</em></strong>,
-      whose opening chapters — Stern–Gerlach, two-state systems, spin — are very nearly qubits already,
-      and which treats EPR and Bell explicitly. The two are cited side by side, whichever mirrors a
-      given result more cleanly.</p>
-    <p>And where <em>neither</em> course reaches the information-theoretic idea — entanglement as a
-      usable resource, say — the essay says so in as many words, rather than pretending the crossing was
-      there all along. Naming the gap is part of the method, not an admission against it: half the point
-      of the book is to show exactly how far the standard curriculum carries you and where the genuinely
-      new step is taken.</p>
-    <p>The <strong style="color:var(--result)">result side</strong> is
-      <strong>Nielsen &amp; Chuang, <em>Quantum Computation and Quantum Information</em></strong>
-      (the 10th-anniversary edition). Each essay ends on a specific, named object from that book — a
-      theorem, a protocol, an algorithm — and cites the section where it lives.</p>
-
-    <h2>The four moves</h2>
-    <p>Every essay has the same shape, so the crossing is always visible:</p>
-    <ol>
-      <li><strong style="color:var(--course)">In the course.</strong> The topic as a physics student
-        meets it, in L&amp;L's (or Sakurai's) own framing, with section pointers.</li>
-      <li><strong>The step across.</strong> The single reinterpretation that turns a statement
-        <em>about physics</em> into a statement <em>about information</em>. This is where the essay
-        earns its title.</li>
-      <li><strong style="color:var(--result)">The result.</strong> The Nielsen &amp; Chuang object,
-        stated precisely, with a short worked example so it is concrete rather than quoted.</li>
-      <li><strong>Reading.</strong> Where to find both ends — L&amp;L § and N&amp;C § — to check the
-        crossing for yourself.</li>
-    </ol>
-
-    <h2>Level and notation</h2>
-    <p>The intended reader has had, or is having, a first serious quantum-mechanics course: comfortable
-      with Hilbert spaces, Hermitian operators, and Dirac notation, but not assumed to have seen any
-      quantum computing. Mathematics is written out — displayed equations render through
-      <a href="https://katex.org/">KaTeX</a> — but every step is motivated. Where L&amp;L and N&amp;C
-      use different notation for the same object (L&amp;L's $\hat{H}$ and N&amp;C's gate matrices, for
-      instance), the essay says so explicitly.</p>
-    <p>That level carries most of the book, and it is worth being exact about where it does not. The
-      Nielsen&nbsp;&amp;&nbsp;Chuang side — every “The result” and every “Check the crossing” — is pitched
-      for a first-year throughout. But six of the fifteen essays reach into later-year material for their
-      <em>course-side</em> starting point, the Move&nbsp;1. Each is flagged on the
-      <a href="index.html">contents page</a> with the prerequisite it assumes, and the list below says
-      where to meet it. The essays are not rewritten to dodge the assumption — the crossing is correct as it
-      stands — this is simply the discipline the book applies to its sources, turned toward the reader.</p>
-    <h3>Prerequisites, and where to pick them up</h3>
-    <ul>
-      <li><strong>04 · universality</strong> — the angular-momentum commutation relations and how a few
-        generators fill out a group (L&amp;L §26–31, or any QM course's angular-momentum chapter);
-        “dense subgroup” needs comfort with approximation, not point-set topology.</li>
-      <li><strong>07 · entanglement</strong> — the singular-value decomposition (any linear-algebra text;
-        the Schmidt decomposition is its direct application).</li>
-      <li><strong>11 · quantum Fourier transform</strong> — Bloch's theorem and Bloch waves (a solid-state
-        or advanced-QM course — Ashcroft &amp; Mermin, or the periodic-potential section of a QM text).</li>
-      <li><strong>12 · Grover search</strong> — Rabi oscillation in a driven two-level system (L&amp;L §113,
-        or any treatment of magnetic resonance).</li>
-      <li><strong>13 · quantum channels</strong> — time-dependent perturbation theory and Fermi's golden
-        rule (L&amp;L §40–43, or any QM course's chapter on transitions).</li>
-      <li><strong>15 · entropy</strong> — the Gibbs–Boltzmann entropy $S = -\sum_i p_i \ln p_i$ (any
-        statistical-mechanics course; L&amp;L Volume 5).</li>
-    </ul>
-    <p>The other nine — 01, 02, 03, 05, 06, 08, 09, 10, and 14 — sit at the level stated above; 14 is the
-      happiest case, since a complete set of commuting observables is early material and its crossing to
-      the code space is exact.</p>
-
-    <h2>On sources</h2>
-    <p>This book reproduces <strong>no copyrighted text</strong> from either work. It cites section
-      numbers and states results in original prose and original examples, in the same spirit as its
-      sibling collection. Readers are pointed toward legitimately available copies of the books; the
-      value here is the crossing between them, not a substitute for either. Section pointers are given
-      only at a granularity that can be stood behind — and because Sakurai's numbering shifts between
-      editions, its crossings are cited by chapter and topic rather than by a section number that might
-      not match your copy.</p>
-    <p>For the record, the reference editions: <strong>N&amp;C</strong> is the 10th Anniversary Edition
-      (2010), and its pointers have been checked against the text — §1.3.5 (“Qubit copying circuit?”),
-      §1.3.7 (teleportation), §2.3 (superdense coding), §2.6 (“EPR and the Bell inequality”) are verified.
-      <strong>Sakurai</strong> is the 3rd edition (Napolitano); its EPR/Bell material is §3.10, cited
-      topic-first with the section in parentheses. <strong>L&amp;L</strong> is a scan of the 3rd
-      edition; its Contents was OCR'd, and every L&amp;L section cited across the essays — from the
-      superposition principle, operators, and measurement through angular momentum, spin, and
-      time-dependent perturbation theory — has been confirmed against it. Two course-side pointers sit
-      outside the verified Volume 3 and are flagged as such in their essays: thermodynamic entropy is
-      Volume 5, and Bloch's theorem is solid-state material.</p>
-
-    <h2>Status</h2>
-    <p>The scaffold and the full fifteen-essay map are complete: <strong>all fifteen essays are written
-      in full</strong>, across Parts&nbsp;I–V. What remains is not more essays but a single human
-      read-through in contents order, 01&nbsp;→&nbsp;15 — the pass that checks the argument runs forward,
-      the one thing a per-essay check cannot do.</p>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · a companion in the manner of <a href="https://anthonykot.github.io/quantum-quartet/">The Quantum Quartet</a>.
-      Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="index.html">Contents</a><a href="about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Reader’s guide</p><h1>How to read this book</h1>
+<p class="lede">Work with the state or probability distribution on paper. Each chapter gives enough intermediate steps to check where its result comes from.</p>
+<h2>Background and reading order</h2>
+<p>You should be comfortable with complex conjugation, matrix multiplication, inner products, eigenvalues, and elementary probability. Chapter 1 introduces bras, kets, qubits, and tensor products. Chapter 5 also uses the Schrödinger equation. You do not need prior quantum computing or access to a particular textbook.</p>
+<p>Read Chapters 1–3 before working with measurements or reduced states. Chapters 4–5 establish gate conventions and control. Chapters 6–9 develop entanglement and communication; Chapters 10–12 calculate algorithms. Chapters 13–15 cover noise, recovery, and information. Each chapter lists the prerequisites relevant to its calculation.</p>
+<p>All fifteen chapters are written, with thirty problems and worked answers. Their length varies with the calculation: a protocol needs its register states, a bound needs its assumptions, and an algorithm needs its output distribution and resource count.</p>
+<h2 id="notation">Notation used throughout</h2>
+<div class="table-scroll"><table><caption>Conventions and symbols</caption><thead><tr><th>Symbol</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>$|\psi\rangle$, $\langle\psi|$</td><td>Column state vector and its conjugate transpose.</td></tr>
+<tr><td>$\langle\phi|\psi\rangle$</td><td>Inner product; its absolute square is a projective measurement probability for normalised vectors.</td></tr>
+<tr><td>$|\psi\rangle\langle\psi|$</td><td>Outer product, the density matrix of a normalised pure state.</td></tr>
+<tr><td>$AB|\psi\rangle$</td><td>$B$ acts first, then $A$.</td></tr>
+<tr><td>$|ab\rangle$</td><td>$|a\rangle\otimes|b\rangle$. Two-qubit basis order is $00,01,10,11$.</td></tr>
+<tr><td>$X,Y,Z$; $H$</td><td>Pauli matrices; Hadamard gate. A Hamiltonian is written $\mathcal H$.</td></tr>
+<tr><td>$\rho$; $\operatorname{Tr}_B$</td><td>Density matrix; partial trace over subsystem $B$.</td></tr>
+<tr><td>$E_m$; $M_m$</td><td>Measurement effect; measurement operator. $E_m=M_m^\dagger M_m$ in the single-operator case.</td></tr>
+<tr><td>$\oplus$; $x\cdot z$</td><td>Addition modulo two; bitwise dot product modulo two.</td></tr>
+<tr><td>$S(\rho)$; $H(X)$</td><td>Von Neumann entropy; Shannon entropy. All information logarithms are base two.</td></tr>
+<tr><td>$\|A\|$</td><td>Operator norm: the largest value of $\|A|\psi\rangle\|$ on a unit vector.</td></tr>
+<tr><td>$[A,B]$</td><td>Commutator $AB-BA$.</td></tr>
+<tr><td>$X_1$, $Z_1Z_2$</td><td>A Pauli acting on the numbered qubit, identity elsewhere; products act on several qubits.</td></tr>
+<tr><td>$|\Phi^+\rangle$; $|\beta_{ab}\rangle$</td><td>$(|00\rangle+|11\rangle)/\sqrt2$; the four Bell states $(I\otimes X^bZ^a)|\Phi^+\rangle$.</td></tr>
+<tr><td>GHZ state</td><td>$(|000\rangle\pm|111\rangle)/\sqrt2$, a superposition of the all-zero and all-one strings.</td></tr>
+<tr><td>POVM; $\{E_y\}$</td><td>A general measurement: effects $E_y\ge0$ with $\sum_yE_y=I$ (Chapter 2).</td></tr>
+<tr><td>$K_j$; $\operatorname{Tr}_E$</td><td>Kraus operators of a channel; partial trace over an environment (Chapter 13).</td></tr>
+<tr><td>$\rho^{T_B}$</td><td>Partial transpose: transpose the second tensor factor only.</td></tr>
+<tr><td>$h_2(p)$</td><td>Binary entropy $-p\log_2p-(1-p)\log_2(1-p)$.</td></tr>
+<tr><td>$I(X{:}Y)$; $\chi$</td><td>Mutual information; Holevo quantity $S(\bar\rho)-\sum_xp_xS(\rho_x)$ (Chapter 15).</td></tr>
+<tr><td>$O(g)$, $\Theta(g)$</td><td>Asymptotic upper bound; matching upper and lower bounds up to constants (Chapter 12).</td></tr>
+</tbody></table></div>
+<h2>How to check your understanding</h2>
+<p>After a state transformation, check its norm. After a probability calculation, check positivity and that probabilities sum to one. For density matrices, check trace and eigenvalues. For a protocol, identify which party holds each register and which records they know. For an algorithm, distinguish the probability of an answer from the cost of obtaining it.</p>
+<p>The problems change an input, a measurement, or an assumption from the worked example. Their answers are hidden until opened, and use intermediate calculations rather than a verdict alone. If an answer disagrees with yours, first check basis order, conjugation, and which matrix acts first.</p>
+<h2>Sources and proof boundaries</h2>
+<p>The main reference is Michael A. Nielsen and Isaac L. Chuang, <em>Quantum Computation and Quantum Information</em>, 10th Anniversary Edition (2010). Section pointers were checked against that edition’s contents. Sakurai and Napolitano’s <em>Modern Quantum Mechanics</em> provides further physical background where identified. Primary papers are linked in the relevant chapters.</p>
+<p>References support the mathematics and provide longer treatments. The chapters are independent explanations, not a comparison of textbooks. No chapter needs to argue that a physics course missed an idea before introducing it.</p>
+<p>The book derives small-system calculations in full and explicitly identifies the larger theorems it uses without proof, including universality, the unstructured-search lower bound, the general recovery criterion, and the Holevo bound. These references are the next reading step if you need those proofs. Source prose and textbook PDFs are not included in the published site.</p>
+<p><a href="index.html">Browse the chapters →</a></p>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

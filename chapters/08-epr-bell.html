@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>08 · EPR &amp; Bell's theorem — The Bridge</title>
-<meta name="description" content="EPR argued quantum mechanics is incomplete, not wrong. Bell turned that argument into a number you can measure — and in doing so produced genuinely new physics from the old postulates.">
+<title>Bell correlations and the CHSH inequality — The Bridge</title>
+<meta name="description" content="Entanglement predicts correlations that no local hidden-variable model can reproduce. The CHSH inequality makes the assumptions and the disagreement numerical.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,159 +12,56 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">Part III · Entanglement — Essay 08</p>
-    <h1>EPR, and the theorem that made it physics</h1>
-    <p class="lede">For thirty years the EPR argument was considered philosophy — a matter of taste about
-      an untestable question. Then Bell turned it into a number. This is the one essay where the book's
-      slogan bends, and it is more interesting for bending.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">EPR (1935): quantum mechanics is <em>incomplete</em>, not wrong — a claim about local realism</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.6 — the CHSH / Bell inequality and its quantum violation</span></div>
-    </div>
-
-    <p><strong>A word before the four moves.</strong> The course canon barely reaches this essay, and it
-      is honest to say so up front. Landau &amp; Lifshitz contains no EPR argument and no Bell
-      inequality; Feynman's two-state chapters do not either. Only Sakurai, of the standard texts, treats
-      them head-on. So the "course side" here is not a textbook section but a 1935 paper — and that is
-      the point. This is the crossing where old postulates, asked a new question, produce new physics.</p>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>Start with what Einstein, Podolsky, and Rosen actually argued, because it is not what the
-        folklore says. EPR did <em>not</em> claim quantum mechanics is wrong, and they did not celebrate
-        "spooky action at a distance." They argued the opposite: that quantum mechanics is
-        <strong>incomplete</strong>, precisely <em>because</em> they wanted to keep locality. Their
-        engine is a criterion of reality, which in paraphrase runs: if you can predict a quantity with
-        certainty while <em>leaving the system completely untouched</em>, then something physically real —
-        an element of reality — must already have fixed that value.</p>
-      <p>Take two spin-½ particles prepared in the singlet $|\beta_{11}\rangle =
-        \tfrac{1}{\sqrt2}(|01\rangle - |10\rangle)$ (Bohm's sharpening of the original position–momentum
-        version) and let them fly apart. Measure particle&nbsp;A's spin along $z$: the outcome fixes
-        particle&nbsp;B's spin along $z$ with certainty, without touching B. By the criterion, B's
-        $z$-spin is an element of reality. But you could equally have measured A along $x$, fixing B's
-        $x$-spin — also, then, an element of reality. Locality says your free choice at A cannot
-        physically alter B, so <em>both</em> B's $x$- and $z$-spin must have been real all along. Quantum
-        mechanics, which forbids simultaneous sharp values of non-commuting $\sigma_x$ and $\sigma_z$,
-        cannot describe both. Therefore — EPR conclude — the wavefunction is an incomplete description;
-        there must be finer variables it omits.</p>
-      <p>Read the logic carefully: it is <em>local realism $\Rightarrow$ hidden variables</em>. Einstein's
-        preference was to keep locality and add the missing variables, demoting quantum indeterminacy to
-        ignorance of them. Nothing in the argument is testable. For three decades it read as a standoff
-        between two consistent worldviews, settled by temperament.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>John Bell's move in 1964 is one of the great steps in physics, and it is exactly the kind this
-        book is about: he took a postulate structure that was already on the table and asked an
-        <em>information-theoretic</em> question of it — how strongly can the outcomes at two distant
-        detectors be correlated? Crucially, he asked it of EPR's own hypothesis, not of quantum
-        mechanics. <em>Assume</em> local hidden variables: each particle carries a shared instruction
-        set $\lambda$, and each detector's outcome depends only on $\lambda$ and its own local setting,
-        never on the distant setting. Then derive a constraint every such theory must satisfy.</p>
-      <p>The step across is the conversion of a philosophical posit — "elements of reality" — into a
-        measurable ceiling on correlations. Once the posit predicts a <em>number</em>, and quantum
-        mechanics predicts a <em>different</em> number, the standoff becomes an experiment. This is
-        where reinterpreting the old postulates stops being a matter of clothing and starts producing
-        physics no one knew was there.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p>The tight, experimentally usable form is the <strong>CHSH inequality</strong> (Clauser, Horne, Shimony &amp; Holt
-        1969), the version Nielsen &amp; Chuang present in §2.6. Alice picks one of two settings
-        $a, a'$; Bob picks one of two settings $b, b'$; each measurement returns $\pm 1$. In a local
-        hidden-variable theory the outcomes are functions $A(a,\lambda),\,B(b,\lambda) \in \{+1,-1\}$ of
-        a shared variable $\lambda$ drawn from some distribution $p(\lambda)$, and the correlation is</p>
-      <p>$$ E(a,b) = \int A(a,\lambda)\,B(b,\lambda)\,p(\lambda)\,d\lambda. $$</p>
-      <p>Form the combination</p>
-      <p>$$ S = E(a,b) - E(a,b') + E(a',b) + E(a',b'). $$</p>
-      <p>The bound comes from a single line of arithmetic <em>inside</em> the integral. Group the terms:</p>
-      <p>$$ A(a,\lambda)\big[B(b,\lambda) - B(b',\lambda)\big] + A(a',\lambda)\big[B(b,\lambda) + B(b',\lambda)\big]. $$</p>
-      <p>Because $B(b,\lambda)$ and $B(b',\lambda)$ are each $\pm 1$, one bracket is $0$ and the other is
-        $\pm 2$; the whole expression is therefore $\pm 2$ for every $\lambda$. Averaging cannot enlarge
-        it, so <strong>any local hidden-variable theory obeys</strong></p>
-      <p>$$ |S| \le 2. $$</p>
-
-      <h3>What quantum mechanics predicts</h3>
-      <p>Now compute $S$ for the singlet using nothing but the course's own spin machinery. Measuring
-        $\boldsymbol\sigma\!\cdot\!\hat a$ on A and $\boldsymbol\sigma\!\cdot\!\hat b$ on B, the quantum
-        correlation is</p>
-      <p>$$ E(a,b) = \langle \beta_{11}|\,(\boldsymbol\sigma\!\cdot\!\hat a)\otimes(\boldsymbol\sigma\!\cdot\!\hat b)\,|\beta_{11}\rangle = -\,\hat a\cdot\hat b = -\cos\theta_{ab}. $$</p>
-      <p>Choose four coplanar directions at $\hat a = 0^\circ$, $\hat a' = 90^\circ$, $\hat b = 45^\circ$,
-        $\hat b' = 135^\circ$. Then $\theta_{ab}=\theta_{a'b}=\theta_{a'b'}=45^\circ$ while
-        $\theta_{ab'}=135^\circ$, so</p>
-      <p>$$ S = -\cos 45^\circ - \big(-\cos 135^\circ\big) + \big(-\cos 45^\circ\big) + \big(-\cos 45^\circ\big)
-             = -\tfrac{4}{\sqrt2} = -2\sqrt2. $$</p>
-      <p>Thus $|S| = 2\sqrt2 \approx 2.83$, cleanly above the local-realist ceiling of $2$. The gap is not
-        a rounding error or an idealization; $2\sqrt2$ is <em>Tsirelson's bound</em>, the exact maximum
-        quantum mechanics allows. And it is real: Aspect's 1982 experiments saw the violation, and the
-        loophole-free tests of 2015 closed the last escape routes. Nature sides with $2\sqrt2$.</p>
-
-      <h3>Why this essay bends the slogan</h3>
-      <p>The landing page says quantum computing "did not add new physics." Here is the one place that is
-        arguably false, and it is worth confronting rather than hiding. EPR was a reinterpretation — the
-        kind of crossing this book makes everywhere. But Bell's theorem is not a reinterpretation. It is
-        a <em>new empirical prediction</em>: that the correlations of an entangled pair cannot be
-        reproduced by <em>any</em> local theory with hidden variables, a fact about the physical world
-        that no one before 1964 knew was even decidable. So the honest thesis is finer than the slogan:</p>
-      <blockquote>Quantum information added no new <em>postulates</em>. But Bell shows that asking an
-        information-theoretic question of the old postulates — how correlated can outcomes be? — can
-        produce genuinely new <em>physics</em>: a prediction that rules out a whole class of theories,
-        confirmed in the laboratory.</blockquote>
-      <p>That is a stronger and more interesting claim than "nothing new here," and this essay is where
-        the book earns it. The postulates were old; the question was new; the result was physics.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side — and the gap, named.</strong> Neither Landau &amp; Lifshitz nor Feynman's
-        two-state chapters treat EPR or Bell; do not go looking for a section that is not there. Among the
-        standard texts only <strong>Sakurai &amp; Napolitano, <em>Modern Quantum Mechanics</em></strong>
-        (3rd ed., Napolitano) treats them head-on — in the angular-momentum chapter, under
-        “Spin Correlation Measurements and Bell's Inequality” (§3.10, with the spin-singlet correlations
-        at §3.10.1). That is the closest the ordinary course canon comes, and it is where a reader should
-        go to see EPR and Bell handled inside a standard course.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang, §2.6 ("EPR and the Bell inequality",
-        p.&nbsp;111 in the 10th Anniversary Edition), where the CHSH inequality and its quantum
-        violation are derived.</p>
-      <p><strong>Where the paper is the story.</strong> This is one of the few essays where the originals
-        repay reading, because their <em>motive</em> is the point. Einstein, Podolsky &amp; Rosen,
-        <em>Phys. Rev.</em> <strong>47</strong> (1935) 777 — note the actual conclusion, incompleteness,
-        not paradox. Bell, <em>Physics</em> <strong>1</strong> (1964) 195 — four pages that turned it into
-        a number. CHSH, <em>Phys. Rev. Lett.</em> <strong>23</strong> (1969) 880; Tsirelson's bound,
-        Cirel'son, <em>Lett. Math. Phys.</em> <strong>4</strong> (1980) 93; Aspect et&nbsp;al. (1982) and
-        the loophole-free tests of Hensen et&nbsp;al., <em>Nature</em> <strong>526</strong> (2015) 682.</p>
-      <p><strong>Check the crossing.</strong> Confirm $|S|\le 2$ yourself from the bracket argument (one
-        of $B(b)\pm B(b')$ is always zero), then substitute $E(a,b)=-\cos\theta_{ab}$ with the four
-        angles above to recover $-2\sqrt2$. The whole theorem lives in the gap between "$\pm 2$ for every
-        $\lambda$" and "$2\sqrt2$ for the singlet."</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="07-entanglement-schmidt.html"><span class="dir">← Previous</span> 07 · Entanglement &amp; the Schmidt decomposition</a>
-      <a class="next" href="09-teleportation-superdense.html"><span class="dir">Next essay →</span> 09 · Teleportation &amp; superdense coding</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 08 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 08</p><h1>Bell correlations and the CHSH inequality</h1>
+<p class="lede">Entanglement predicts correlations that no local hidden-variable model can reproduce. The CHSH inequality makes the assumptions and the disagreement numerical.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 1, 3, 4, and 7: Pauli measurements, joint probabilities, and Bell states. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">State the experiment before interpreting it</a></li>
+<li><a href="#section-2">Derive the classical bound</a></li>
+<li><a href="#section-3">Calculate a quantum violation</a></li>
+<li><a href="#section-4">Why the quantum value is bounded too</a></li>
+<li><a href="#section-5">Correlations do not provide a signalling channel</a></li>
+<li><a href="#section-6">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">State the experiment before interpreting it</h2>
+<p>A source sends one system to Alice and one to Bob. Alice chooses setting $x\in\{0,1\}$ and records $a\in\{+1,-1\}$. Bob independently chooses $y\in\{0,1\}$ and records $b\in\{+1,-1\}$. Repeating the preparation estimates four correlators $E_{xy}=\sum_{a,b}ab\,p(a,b|x,y)$.</p>
+<p>A local hidden-variable model assumes a shared variable $\lambda$ distributed according to $q(\lambda)$, independently of the chosen settings, and factorised responses conditional on it:</p>
+<p>$$p(a,b|x,y)=\int d\lambda\,q(\lambda)\,p(a|x,\lambda)p(b|y,\lambda).$$</p>
+<p>The factorisation expresses locality within this model. Alice's response does not depend on Bob's setting once $\lambda$ is specified, and conversely. The setting-independence assumption is separate: allowing the source variable to depend on the settings changes the class of models being tested.</p>
+<p>The four correlators come from four groups of trials, one per setting pair. We never measure both $A_0$ and $A_1$ on the same member of a pair. A hidden-variable model nevertheless assigns responses for either possible setting, using the same distribution of $\lambda$. That shared assignment lets us combine the four averages into one bound. If the source instead used a different distribution for each chosen setting pair, the next averaging step would not follow from this model.</p>
+<h2 id="section-2">Derive the classical bound</h2>
+<p>First take deterministic responses $A_0,A_1,B_0,B_1\in\{+1,-1\}$ for a fixed $\lambda$. (In this section $A_x$ and $B_y$ are the $\pm1$ numbers the model assigns; in the quantum calculation below the same letters denote the observables, whose measured values are again $\pm1$.) Define</p>
+<p>$$C=A_0B_0+A_0B_1+A_1B_0-A_1B_1=A_0(B_0+B_1)+A_1(B_0-B_1).$$</p>
+<p>If $B_0=B_1$, the second bracket vanishes and the first is $\pm2$. If $B_0=-B_1$, the first vanishes and the second is $\pm2$. In either case $C=\pm2$. In this model each correlator is the $q$-average of the product of responses, $E_{xy}=\int d\lambda\,q(\lambda)\,A_x(\lambda)B_y(\lambda)$, so the combination $S$ is the $q$-average of $C(\lambda)$ and $|S|\le\int d\lambda\,q(\lambda)\,|C(\lambda)|=2$. Averaging over $\lambda$ therefore gives the CHSH bound</p>
+<p>$$|S|\le2,\qquad S=E_{00}+E_{01}+E_{10}-E_{11}.$$</p>
+<p>Stochastic local responses do not raise the bound. Their local random seeds may be included in $\lambda$, making the enlarged model a mixture of deterministic assignments. An observed violation excludes this class of models under the stated assumptions; it is not a conclusion obtained merely from correlated outcomes.</p>
+<h2 id="section-3">Calculate a quantum violation</h2>
+<p>Use $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$. Direct action on the two terms gives</p>
+<p>$$\langle Z\otimes Z\rangle=1,\quad\langle X\otimes X\rangle=1,\quad\langle Z\otimes X\rangle=\langle X\otimes Z\rangle=0.$$</p>
+<p>For example, $Z\otimes X$ takes the state into $(|01\rangle-|10\rangle)/\sqrt2$, orthogonal to the original. Choose Alice's observables $A_0=Z,A_1=X$, and Bob's $B_0=(Z+X)/\sqrt2,B_1=(Z-X)/\sqrt2$. The latter are valid binary observables: each is Hermitian and squares to $I$ because $XZ+ZX=0$.</p>
+<p>Expanding each tensor product and using the four means above gives $E_{00}=E_{01}=E_{10}=1/\sqrt2$ and $E_{11}=-1/\sqrt2$. Hence $S=2\sqrt2$, greater than two. Each correlator averages the product of two measured signs. Three of these averages are positive and the fourth negative; the minus sign in the CHSH combination makes all four contributions add.</p>
+<h2 id="section-4">Why the quantum value is bounded too</h2>
+<p>Recall the commutator $[A,B]=AB-BA$. It measures the difference between the two multiplication orders. Because Alice's and Bob's operators act on separate tensor factors, they commute with each other; the commutators below compare the two choices on the same side.</p>
+<p>For arbitrary Hermitian binary observables with square $I$, define the CHSH operator $\mathcal B=A_0\otimes(B_0+B_1)+A_1\otimes(B_0-B_1)$. Expanding its square yields</p>
+<p>$$\mathcal B^2=4I-[A_0,A_1]\otimes[B_0,B_1].$$</p>
+<p>Each observable has operator norm one, so each commutator has norm at most two. Therefore $\|\mathcal B^2\|\le8$, implying $|\langle\mathcal B\rangle|\le2\sqrt2$. Our settings attain this bound. If either pair of local observables commutes, the commutator term vanishes and this construction cannot exceed two.</p>
+<h2 id="section-5">Correlations do not provide a signalling channel</h2>
+<p>Alice's reduced state is $I/2$. If Bob performs any local measurement with operators $M_b$ and keeps its outcome private, Alice's new state is</p>
+<p>$$\rho'_A=\operatorname{Tr}_B\sum_b(I\otimes M_b)\rho_{AB}(I\otimes M_b^\dagger)=\operatorname{Tr}_B\rho_{AB}=\rho_A.$$</p>
+<p>The equality uses $\sum_bM_b^\dagger M_b=I$ and the cyclic trace over $B$. Alice's unconditioned outcome probabilities cannot depend on Bob's measurement choice. Conditional states can differ if Bob later reports his result; obtaining those selected statistics requires communication.</p>
+<p>One more correlator is worth recording for later chapters: for this Bell state $\langle Y\otimes Y\rangle=-1$. Identical measurements on the two halves agree for $X$ and for $Z$ and disagree for $Y$; the sign depends on the axis.</p>
+<h2 id="section-6">Problems</h2>
+<p><strong>1.</strong> For $\rho_v=v|\Phi^+\rangle\langle\Phi^+|+(1-v)I/4$, evaluate $S$ with the settings above. When is CHSH violated?</p>
+<details><summary>Worked answer</summary><p>Expectation values are linear in the state. For any of the settings,</p><p>$$E_{xy}(\rho_v)=vE_{xy}(\Phi^+)+(1-v)\operatorname{Tr}[(I/4)(A_x\otimes B_y)].$$</p><p>The second trace equals $\operatorname{Tr}(A_x)\operatorname{Tr}(B_y)/4=0$, because both factors are traceless. Each correlator is therefore multiplied by $v$, and $S(\rho_v)=2\sqrt2v$. Solving $2\sqrt2v>2$ gives $v>1/\sqrt2$. At equality the classical bound is just reached; below it this particular test does not certify entanglement.</p></details>
+<p><strong>2.</strong> Find $p(a,b|x,y)$ for our Bell-state settings from $E_{xy}$.</p>
+<details><summary>Worked answer</summary><p>The projector for Alice’s sign $a$ is $(I+aA_x)/2$, and Bob’s is $(I+bB_y)/2$. Expand their tensor product before taking its expectation:</p><p>$$p(a,b|x,y)=\frac14[1+a\langle A_x\otimes I\rangle+b\langle I\otimes B_y\rangle+abE_{xy}].$$</p><p>The two single-party means vanish because each reduced state is $I/2$ and the observables are traceless. Hence $p(a,b|x,y)=(1+abE_{xy})/4$. Summing over $b=+1,-1$ gives $[1+aE_{xy}+1-aE_{xy}]/4=1/2$. The marginal cannot reveal Bob’s setting even though the joint distribution depends on it.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §2.6 (EPR and Bell inequalities). Sakurai &amp; Napolitano, spin correlation measurements and Bell’s inequality (3rd edition, §3.10).</p></section><nav class="chapter-nav"><a href="07-entanglement-schmidt.html"><span class="dir">Previous</span>Entanglement and the Schmidt decomposition</a><a class="next" href="09-teleportation-superdense.html"><span class="dir">Next chapter</span>Teleportation and dense coding, step by step</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

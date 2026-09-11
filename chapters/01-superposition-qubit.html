@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>01 · Superposition &amp; the qubit — The Bridge</title>
-<meta name="description" content="From Landau &amp; Lifshitz's superposition principle to the qubit, the Bloch sphere, and the tensor product of Nielsen &amp; Chuang.">
+<title>Qubits, amplitudes, and relative phase — The Bridge</title>
+<meta name="description" content="A qubit is specified by complex amplitudes. To understand what those amplitudes mean, calculate the outcomes of two different measurements on the same state.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,153 +12,59 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">Part I · States — Essay 01</p>
-    <h1>Superposition &amp; the qubit</h1>
-    <p class="lede">The superposition principle is the first axiom a physics course states and the last
-      one it explains. Read once more, with a two-dimensional space in mind, it <em>is</em> the qubit.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §2 — the principle of superposition; states as vectors</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §1.2, §2.1–2.2 — the qubit, the Bloch sphere, the tensor product</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>Landau &amp; Lifshitz open the whole subject not with a wave equation but with a principle. If
-        a system can be found in a state described by $\psi_1$, and also in a state described by
-        $\psi_2$, then it can be found in any state</p>
-      <p>$$ \psi \;=\; c_1\,\psi_1 + c_2\,\psi_2, \qquad c_1, c_2 \in \mathbb{C}. $$</p>
-      <p>This is the <strong>principle of superposition</strong> (L&amp;L §2), and everything algebraic
-        in the theory follows from taking it literally: the states of a system are the vectors of a
-        complex linear space, and physical quantities are Hermitian operators on that space (L&amp;L
-        §3). Two features of this space matter for us. First, the overall scale and phase of $\psi$
-        carry no physical meaning — $\psi$ and $\lambda\psi$ for any nonzero $\lambda \in \mathbb{C}$
-        describe the same state — because measurable predictions come from ratios of the coefficients,
-        the $|c_i|^2$ of L&amp;L §2. Second, an <em>observable with two possible values</em> supplies a
-        pair of basis states, and superposition then fills in everything between them.</p>
-      <p>The simplest physical instance is the one L&amp;L reach in the chapter on spin: an electron's
-        spin projection along an axis takes exactly two values, $+\tfrac{1}{2}$ and $-\tfrac{1}{2}$
-        (in units of $\hbar$). Call the corresponding states $\psi_\uparrow$ and $\psi_\downarrow$.
-        Superposition says the general spin state is $c_1\psi_\uparrow + c_2\psi_\downarrow$, and the
-        space of such states is exactly two complex dimensions. Nothing in this paragraph mentions
-        computation. And yet it is already the entire stage.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>The step is to stop asking <em>what the two states are</em> and start asking <em>what they
-        can carry</em>. A classical bit is a system with two distinguishable configurations, labelled
-        $0$ and $1$. A spin-$\tfrac12$ has two distinguishable configurations too — but the
-        superposition principle insists that, unlike a bit, it also occupies every complex combination
-        of them. Rename the basis to match the intent:</p>
-      <p>$$ \psi_\uparrow \;\rightsquigarrow\; |0\rangle, \qquad \psi_\downarrow \;\rightsquigarrow\; |1\rangle. $$</p>
-      <p>The labels are now bit values, but the object is still a spin. This single relabelling is the
-        crossing: a two-level quantum system, viewed as a carrier of one bit's worth of
-        <em>distinguishable</em> alternatives together with all their superpositions, is a
-        <strong>qubit</strong>. Everything Nielsen &amp; Chuang say about it is forced by the two
-        features from Move&nbsp;1 — normalization-up-to-scale and the two-dimensionality — applied to
-        this relabelled basis.</p>
-      <p>Take the general state $|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$ with
-        $\alpha,\beta \in \mathbb{C}$. Because scale is unphysical we may fix the norm,</p>
-      <p>$$ |\alpha|^2 + |\beta|^2 = 1, $$</p>
-      <p>and because an overall phase is unphysical we may spend one of the remaining real parameters.
-        Write $\alpha = e^{i\gamma}\cos\tfrac{\theta}{2}$ and
-        $\beta = e^{i(\gamma+\varphi)}\sin\tfrac{\theta}{2}$ — always possible for normalized
-        coefficients — and discard the common phase $e^{i\gamma}$:</p>
-      <p>$$ |\psi\rangle \;=\; \cos\tfrac{\theta}{2}\,|0\rangle \;+\; e^{i\varphi}\sin\tfrac{\theta}{2}\,|1\rangle,
-             \qquad \theta \in [0,\pi],\ \varphi \in [0,2\pi). $$</p>
-      <p>Two real angles remain. That is the whole content of the step across: the abstract
-        two-dimensional superposition space of L&amp;L, once its unphysical scale and phase are
-        removed, is a <em>sphere</em>.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p>Nielsen &amp; Chuang give this sphere a name (§1.2). The angles $(\theta,\varphi)$ are the
-        polar and azimuthal coordinates of a point on the unit sphere in $\mathbb{R}^3$, the
-        <strong>Bloch sphere</strong>, and the qubit state corresponds to the unit vector</p>
-      <p>$$ \hat{n} = (\sin\theta\cos\varphi,\ \sin\theta\sin\varphi,\ \cos\theta). $$</p>
-      <p>The dictionary is exact and physical: the Cartesian components of $\hat n$ are the expectation
-        values of the three Pauli operators in the state $|\psi\rangle$,</p>
-      <p>$$ n_x = \langle\psi|\sigma_x|\psi\rangle,\quad
-             n_y = \langle\psi|\sigma_y|\psi\rangle,\quad
-             n_z = \langle\psi|\sigma_z|\psi\rangle, $$</p>
-      <p>so a qubit's location on the sphere is literally the average spin direction — the same Pauli
-        matrices L&amp;L write down for spin-$\tfrac12$. The poles are the basis states:
-        $\theta=0$ gives $|0\rangle$ (north), $\theta=\pi$ gives $|1\rangle$ (south). Antipodal points
-        are orthogonal states; every other point is a genuine superposition. A classical bit could sit
-        only at the two poles. The qubit has the entire surface.</p>
-
-      <h3>A worked point</h3>
-      <p>Set $\theta = \tfrac{\pi}{2}$, $\varphi = 0$. Then
-        $\cos\tfrac{\theta}{2} = \sin\tfrac{\theta}{2} = \tfrac{1}{\sqrt2}$ and</p>
-      <p>$$ |{+}\rangle \;=\; \tfrac{1}{\sqrt2}\big(|0\rangle + |1\rangle\big), $$</p>
-      <p>with $\hat n = (1,0,0)$: it points along $+x$, on the equator, exactly between the poles. It
-        is an equal superposition, and a $\sigma_z$ measurement gives $0$ or $1$ with probability
-        $|\tfrac{1}{\sqrt2}|^2 = \tfrac12$ each — the $|c_i|^2$ rule of Move&nbsp;1, now read as a
-        coin flip encoded in a spin.</p>
-
-      <h3>Two qubits, and why the space explodes</h3>
-      <p>The last piece N&amp;C fix in §2.2 is how systems combine. In the course, the state of two
-        independent subsystems is built from the products $\psi_i\chi_j$ of their basis states; the
-        joint space is their <strong>tensor product</strong>. For two qubits this is
-        $\mathbb{C}^2 \otimes \mathbb{C}^2 = \mathbb{C}^4$, with basis</p>
-      <p>$$ |0\rangle\!\otimes\!|0\rangle,\quad |0\rangle\!\otimes\!|1\rangle,\quad
-             |1\rangle\!\otimes\!|0\rangle,\quad |1\rangle\!\otimes\!|1\rangle
-             \;\equiv\; |00\rangle, |01\rangle, |10\rangle, |11\rangle, $$</p>
-      <p>and superposition now runs over all four amplitudes at once. Crucially the dimension
-        <em>multiplies</em>: $n$ qubits live in $\mathbb{C}^{2^n}$, a space needing $2^n$ complex
-        amplitudes to describe. This exponential is not new physics — it is the ordinary
-        composite-system rule, counted for $n$ two-level systems. (Here is the first place the course
-        canon strains: L&amp;L states the rule for general systems but never isolates the two-level
-        tensor product or dwells on this doubling; Sakurai's coupled spins are the closer mirror.) It is also the
-        reason a quantum computer is worth building, and a thread the book picks up in Part III: the
-        states that are <em>not</em> products $|a\rangle\otimes|b\rangle$ are the entangled ones, and
-        they are the subject of Essay&nbsp;07.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side.</strong> Landau &amp; Lifshitz, <em>Quantum Mechanics</em> (Vol. 3):
-        §2 for the superposition principle, §3–4 for operators, and Ch VIII (Spin) for the two-level
-        prototype and the Pauli matrices. L&amp;L gives the rule for combining systems in general but
-        never isolates the two-level tensor product or its exponential state-count; for that the closer
-        mirror is Sakurai, <em>Modern Quantum Mechanics</em> — the two-state-system and
-        addition-of-angular-momentum chapters, where spin-½ pairs are built explicitly.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang, §1.2 for the qubit and the Bloch sphere,
-        §2.1–2.2 for the state-space and tensor-product postulates. The Bloch-sphere parametrization
-        appears at the start of §1.2; the tensor-product multiplication of dimensions is stated in
-        §2.2.8.</p>
-      <p><strong>Check the crossing.</strong> Confirm for yourself that
-        $\langle\psi|\sigma_z|\psi\rangle = \cos\theta$ for
-        $|\psi\rangle = \cos\tfrac\theta2|0\rangle + e^{i\varphi}\sin\tfrac\theta2|1\rangle$, using
-        $\sigma_z = \mathrm{diag}(1,-1)$. That one line is the entire bridge between "average spin
-        along $z$" and "height on the Bloch sphere."</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="../index.html"><span class="dir">←</span> Contents</a>
-      <a class="next" href="02-observables-measurement.html"><span class="dir">Next essay →</span> 02 · Measurement &amp; the subspace</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 01 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 01</p><h1>Qubits, amplitudes, and relative phase</h1>
+<p class="lede">A qubit is specified by complex amplitudes. To understand what those amplitudes mean, calculate the outcomes of two different measurements on the same state.</p><p class="prerequisites"><strong>Before you start:</strong> Complex numbers, vectors, inner products, and matrix multiplication. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">What a state vector predicts</a></li>
+<li><a href="#section-2">Two states with the same computational-basis statistics</a></li>
+<li><a href="#section-3">Deriving the Bloch coordinates</a></li>
+<li><a href="#section-4">Adding a second qubit</a></li>
+<li><a href="#section-5">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">What a state vector predicts</h2>
+<p>Choose two orthonormal states and write them as column vectors. For a spin-½ particle, these could be the eigenstates of the spin component along a chosen axis; the labels themselves do not specify the hardware.</p>
+<p>$$|0\rangle=\begin{pmatrix}1\\0\end{pmatrix},\quad |1\rangle=\begin{pmatrix}0\\1\end{pmatrix},\quad |\psi\rangle=\alpha|0\rangle+\beta|1\rangle=\begin{pmatrix}\alpha\\\beta\end{pmatrix}.$$</p>
+<p>The bra $\langle\psi|=(\alpha^*,\beta^*)$ is the conjugate transpose. Normalisation means $\langle\psi|\psi\rangle=|\alpha|^2+|\beta|^2=1$. In a measurement in the computational basis, the Born rule gives $p(0)=|\alpha|^2$ and $p(1)=|\beta|^2$. An amplitude may be negative or complex; a probability is real and nonnegative. Add amplitudes before squaring when alternatives interfere.</p>
+<p>For $|\psi\rangle=(\sqrt3|0\rangle+i|1\rangle)/2$, the two probabilities are $3/4$ and $1/4$. One run produces one outcome. To estimate these probabilities experimentally, prepare the state repeatedly and count outcomes. The state vector describes that distribution; it does not promise a fractional result in a single run.</p>
+<h2 id="section-2">Two states with the same computational-basis statistics</h2>
+<p>Define $|+\rangle=(|0\rangle+|1\rangle)/\sqrt2$ and $|-\rangle=(|0\rangle-|1\rangle)/\sqrt2$. Both give $p(0)=p(1)=1/2$. Nevertheless they are orthogonal: $\langle+|-\rangle=(1-1)/2=0$. A measurement in the $\{|+\rangle,|-\rangle\}$ basis distinguishes them perfectly.</p>
+<p>For a general state, the amplitude for the $+$ outcome is $\langle+|\psi\rangle=(\alpha+\beta)/\sqrt2$, so</p>
+<p>$$p(+)=\frac{|\alpha+\beta|^2}{2}=\frac12+\operatorname{Re}(\alpha^*\beta),\qquad p(-)=\frac12-\operatorname{Re}(\alpha^*\beta).$$</p>
+<p>The interference term follows from multiplying the amplitude by its conjugate. In detail, $(\alpha+\beta)^*(\alpha+\beta)=|\alpha|^2+|\beta|^2+\alpha^*\beta+\beta^*\alpha$. The first two terms sum to one, while the last two sum to $2\operatorname{Re}(\alpha^*\beta)$. These terms appear because the apparatus combines both components into the same $+$ outcome. If a preparation instead chooses one basis state or the other classically, we average the two resulting probabilities; there is no sum of amplitudes and hence no cross term.</p>
+<p>The cross term contains the relative phase. It is missing from a classical mixture in which half the preparations are $|0\rangle$ and half are $|1\rangle$. That mixture gives equal probabilities in the $+$/$-$ measurement too; the pure state $|+\rangle$ gives $+$ every time. Chapter 3 expresses this distinction with density matrices.</p>
+<p>A common phase has a different status. Replacing $|\psi\rangle$ by $e^{i\gamma}|\psi\rangle$ multiplies every measurement amplitude by $e^{i\gamma}$ and leaves its absolute square unchanged. Multiplying just one component changes interference and is generally observable.</p>
+<h2 id="section-3">Deriving the Bloch coordinates</h2>
+<p>Two complex amplitudes contain four real parameters. Normalisation removes one, and the unobservable common phase removes another. We can therefore parametrise a pure state by two angles:</p>
+<p>$$|\psi\rangle=\cos\frac\theta2|0\rangle+e^{i\varphi}\sin\frac\theta2|1\rangle,\quad 0\le\theta\le\pi,\quad 0\le\varphi&lt;2\pi.$$</p>
+<p>At a pole, $\varphi$ is redundant. To give these angles a measurable meaning, introduce the Pauli matrices:</p>
+<p>$$X=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad Y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\quad Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}.$$</p>
+<p>The notation $\langle X\rangle$ means the <strong>expectation value</strong> of an $X$ measurement: its average over many identically prepared systems. For a normalised pure state we write $\langle X\rangle=\langle\psi|X|\psi\rangle$. The brackets around an operator do not denote a new state. They abbreviate a real number predicted for the chosen preparation.</p>
+<p>To see why this matrix expression is an average, use the eigenstates $|+\rangle,|-\rangle$ of $X$, with eigenvalues $+1,-1$. Since $X=|+\rangle\langle+|-|-\rangle\langle-|$,</p>
+<p>$$\begin{aligned}\langle\psi|X|\psi\rangle
+&=|\langle+|\psi\rangle|^2-|\langle-|\psi\rangle|^2\\
+&=(+1)p(+)+(-1)p(-).
+\end{aligned}$$</p>
+<p>This is exactly the probability-weighted mean of the two possible readings. The same definition applies to $Y$ and $Z$. One measurement produces an eigenvalue, whereas the expectation value may lie anywhere between $-1$ and $+1$.</p>
+<p>Direct matrix multiplication gives $\langle X\rangle=2\operatorname{Re}(\alpha^*\beta)$, $\langle Y\rangle=2\operatorname{Im}(\alpha^*\beta)$, and $\langle Z\rangle=|\alpha|^2-|\beta|^2$. Substituting the angles gives the unit vector</p>
+<p>$$\mathbf r=(\sin\theta\cos\varphi,\sin\theta\sin\varphi,\cos\theta).$$</p>
+<p>These are expectation values, estimated on separate ensembles. They are not three simultaneously definite spin components. Since each Pauli measurement returns an eigenvalue $+1$ or $-1$, its mean is $p(+1)-p(-1)$. Thus a measurement along $z$ has $p(+1)=(1+r_z)/2$. The outcome label $0$ corresponds to eigenvalue $+1$ of $Z$; it is not an eigenvalue zero.</p>
+<h2 id="section-4">Adding a second qubit</h2>
+<p>Use the ordered basis $|00\rangle,|01\rangle,|10\rangle,|11\rangle$, with the first symbol referring to the first subsystem. Distributing a tensor product gives</p>
+<p>$$(\alpha|0\rangle+\beta|1\rangle)\otimes(\gamma|0\rangle+\delta|1\rangle)=\alpha\gamma|00\rangle+\alpha\delta|01\rangle+\beta\gamma|10\rangle+\beta\delta|11\rangle.$$</p>
+<p>For example, $|+\rangle\otimes|1\rangle=(|01\rangle+|11\rangle)/\sqrt2$. Its column vector is $(0,1,0,1)^T/\sqrt2$. A general two-qubit state need not factor this way; we will test factorisation in Chapter 7. For $n$ qubits there are $2^n$ basis strings, but measurement still returns one string per preparation. The number of amplitudes alone does not establish a computational advantage.</p>
+<h2 id="section-5">Problems</h2>
+<p><strong>1.</strong> For $(\sqrt3|0\rangle+i|1\rangle)/2$, compute all three Pauli means and the probability of the $+1$ outcome of $Y$.</p>
+<details><summary>Worked answer</summary><p>Identify $\alpha=\sqrt3/2$ and $\beta=i/2$. Compute the shared product first: $\alpha^*\beta=i\sqrt3/4$. Its real part is zero and its imaginary part is $\sqrt3/4$. Therefore</p><p>$$\begin{aligned}\langle X\rangle&=2\operatorname{Re}(\alpha^*\beta)=0,\\\langle Y\rangle&=2\operatorname{Im}(\alpha^*\beta)=\sqrt3/2,\\\langle Z\rangle&=|\alpha|^2-|\beta|^2=3/4-1/4=1/2.\end{aligned}$$</p><p>For the $Y$ measurement, write $p_++p_-=1$ and $p_+-p_-=\langle Y\rangle$. Adding gives $2p_+=1+\sqrt3/2$, hence $p_+=(2+\sqrt3)/4$. As a check, the Bloch vector has squared length $0+3/4+1/4=1$, as expected for a pure state.</p></details>
+<p><strong>2.</strong> Consider $|\psi_\phi\rangle=(|0\rangle+e^{i\phi}|1\rangle)/\sqrt2$. Which computational-basis statistics change with $\phi$? What is $p(+)$?</p>
+<details><summary>Worked answer</summary><p>In the computational basis, the amplitudes are $1/\sqrt2$ and $e^{i\phi}/\sqrt2$. Their squared magnitudes are both $1/2$, since $|e^{i\phi}|=1$. In the other basis, first take the overlap and then square:</p><p>$$\begin{aligned}\langle+|\psi_\phi\rangle&=(1+e^{i\phi})/2,\\p(+)&=\frac{(1+e^{-i\phi})(1+e^{i\phi})}{4}\\&=\frac{2+2\cos\phi}{4}=\cos^2(\phi/2).\end{aligned}$$</p><p>At $\phi=0$, this gives one; at $\phi=\pi$, zero. The first measurement loses the phase dependence, while the second combines the two amplitudes and reveals it.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §1.2 (qubits), §2.1.3–2.1.7 (Pauli matrices, inner products, tensor products), and §2.2.7 (phase).</p></section><nav class="chapter-nav"><a href="../index.html"><span class="dir">Previous</span>Contents</a><a class="next" href="02-observables-measurement.html"><span class="dir">Next chapter</span>Measurement: probabilities and state changes</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

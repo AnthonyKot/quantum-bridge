@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>09 · Teleportation &amp; superdense coding — The Bridge</title>
-<meta name="description" content="Measurement in a physics course is a change of basis. Change to the Bell basis and it becomes quantum teleportation and superdense coding, as in Nielsen &amp; Chuang.">
+<title>Teleportation and dense coding, step by step — The Bridge</title>
+<meta name="description" content="A Bell pair supports two different communication protocols. Tracking every register shows where the message resides and why the classical and quantum transmissions are necessary.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,165 +12,60 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">Part III · Entanglement — Essay 09</p>
-    <h1>Teleportation &amp; superdense coding</h1>
-    <p class="lede">A course teaches that measuring an observable is choosing a basis and reading off a
-      component. Choose the Bell basis instead of the obvious one, and the same act moves a state you
-      are forbidden to read.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">measurement as a change of basis; states you cannot read or copy</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §1.3.7, §2.3 — quantum teleportation &amp; superdense coding</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>Two ideas from the measurement chapters of Landau &amp; Lifshitz set this up. The first: to
-        measure an observable $\hat A$ is to expand the state in $\hat A$'s eigenbasis and collapse it
-        onto one eigenvector, with the Born probabilities $|c_i|^2$ (L&amp;L §7). A measurement is,
-        mechanically, a <em>choice of basis</em> followed by a projection. Nothing says the basis must
-        be the "natural" one; any complete set of commuting observables defines a legitimate one.</p>
-      <p>The second idea is the flip side of the same coin, and it is what makes the problem hard. A
-        single measurement returns one eigenvalue, not the amplitudes. You cannot read $\alpha$ and
-        $\beta$ out of one copy of $\alpha|0\rangle + \beta|1\rangle$; and by the no-cloning theorem of
-        <a href="06-linearity-no-cloning.html">Essay&nbsp;06</a> you cannot make more copies to
-        improve your estimate. An unknown qubit is, in a strong sense, unreadable and uncopyable. So
-        here is the puzzle a course leaves implicit: how could you ever <em>transmit</em> such a state
-        to a distant colleague, if you may neither read it nor duplicate it?</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>The step is to pick the right basis to measure in. For two qubits, the natural basis is
-        $\{|00\rangle,|01\rangle,|10\rangle,|11\rangle\}$. But there is another complete orthonormal
-        basis of the same four-dimensional space — the <strong>Bell basis</strong>, the shared
-        eigenbasis of the joint observables $\sigma_z\!\otimes\!\sigma_z$ and
-        $\sigma_x\!\otimes\!\sigma_x$:</p>
-      <p>$$ |\beta_{00}\rangle = \tfrac{|00\rangle+|11\rangle}{\sqrt2},\quad
-             |\beta_{01}\rangle = \tfrac{|01\rangle+|10\rangle}{\sqrt2},\quad
-             |\beta_{10}\rangle = \tfrac{|00\rangle-|11\rangle}{\sqrt2},\quad
-             |\beta_{11}\rangle = \tfrac{|01\rangle-|10\rangle}{\sqrt2}. $$</p>
-      <p>Measuring two qubits in the Bell basis is, by Move&nbsp;1, a perfectly ordinary quantum
-        measurement — just a change of basis. The entire teleportation protocol is what happens when
-        the two qubits you measure this way are <em>the unknown state and half of a shared entangled
-        pair</em>. The algebra does the rest; there is no new postulate.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p><strong>Quantum teleportation</strong> (Bennett et al. 1993; N&amp;C §1.3.7). Alice holds an
-        unknown qubit $|\psi\rangle = \alpha|0\rangle + \beta|1\rangle$ (call it qubit&nbsp;1). In
-        advance, Alice and Bob each took one half of a shared Bell pair $|\beta_{00}\rangle$ —
-        Alice&nbsp;keeps qubit&nbsp;2, Bob carries qubit&nbsp;3 away. The full three-qubit state is</p>
-      <p>$$ |\psi\rangle_1 \otimes |\beta_{00}\rangle_{23}
-             = \tfrac{1}{\sqrt2}\big(\alpha|0\rangle + \beta|1\rangle\big)\big(|00\rangle + |11\rangle\big). $$</p>
-      <p>Now re-express qubits&nbsp;1 and&nbsp;2 in the Bell basis. This is pure algebra — a change of
-        variables, not a physical step — and it rearranges the same vector into</p>
-      <p>$$ |\psi\rangle_1 |\beta_{00}\rangle_{23} = \tfrac12\Big[\,
-             |\beta_{00}\rangle_{12}\big(\alpha|0\rangle + \beta|1\rangle\big)_3
-           + |\beta_{01}\rangle_{12}\big(\alpha|1\rangle + \beta|0\rangle\big)_3 $$</p>
-      <p>$$ \qquad\qquad
-           + |\beta_{10}\rangle_{12}\big(\alpha|0\rangle - \beta|1\rangle\big)_3
-           + |\beta_{11}\rangle_{12}\big(\alpha|1\rangle - \beta|0\rangle\big)_3 \,\Big]. $$</p>
-      <p>Read Bob's qubit in each term: it is $|\psi\rangle$, or $X|\psi\rangle$, or $Z|\psi\rangle$, or
-        $XZ|\psi\rangle$ — the unknown state, acted on by a Pauli that depends only on <em>which Bell
-        state Alice's two qubits are in</em>. So Alice measures qubits&nbsp;1 and&nbsp;2 in the Bell
-        basis (Move&nbsp;2), obtaining two classical bits $a,b$ that name the outcome $|\beta_{ab}\rangle$.
-        The instant she does, Bob's qubit collapses to the matching entry. She phones him the two bits;
-        Bob applies the correction $Z^{a}X^{b}$:</p>
-      <p>$$ Z^{a}X^{b}\big(X^{b}Z^{a}|\psi\rangle\big) = |\psi\rangle. $$</p>
-      <p>Bob now holds the exact state Alice started with. Three things are worth pausing on, and each
-        is a course idea in disguise:</p>
-      <ul>
-        <li><strong>The original is gone.</strong> Alice's measurement collapsed qubits&nbsp;1 and&nbsp;2;
-          $|\psi\rangle$ no longer exists on her side. The state was <em>moved</em>, not copied —
-          precisely as no-cloning (Essay&nbsp;06) demands.</li>
-        <li><strong>Two classical bits are mandatory.</strong> Without $a,b$, Bob's qubit is an equal
-          mixture of the four possibilities and carries no information. This is why teleportation sends
-          nothing faster than light: it waits on an ordinary phone call.</li>
-        <li><strong>Alice never learned $\alpha,\beta$.</strong> Her outcome $(a,b)$ is uniformly
-          random and independent of the state — she transmits a qubit she could not read, exactly the
-          puzzle from Move&nbsp;1.</li>
-      </ul>
-
-      <h3>The dual: superdense coding</h3>
-      <p>Run the same resources backwards and you get <strong>superdense coding</strong> (N&amp;C §2.3).
-        Again Alice and Bob pre-share $|\beta_{00}\rangle$. Now Alice wants to send two
-        <em>classical</em> bits $a,b$ by physically transmitting a single qubit. She applies a Pauli to
-        her half of the pair — this is the reverse of the correction above — mapping the shared state to
-        one of the four Bell states:</p>
-      <p>$$ Z^{a}X^{b}\otimes I \ : \quad |\beta_{00}\rangle \ \longmapsto\ |\beta_{ab}\rangle. $$</p>
-      <p>She sends her single qubit to Bob, who now holds both halves and measures them in the Bell
-        basis, reading off $(a,b)$ with certainty. One transmitted qubit has carried two classical
-        bits. The symmetry is the point:</p>
-      <blockquote>Teleportation spends one entangled pair and two classical bits to move one qubit.
-        Superdense coding spends one entangled pair and one qubit to move two classical bits. They are
-        the same equation solved for different unknowns.</blockquote>
-      <p>Both protocols are built from a single move made in <a href="../about.html">the course</a>'s
-        own vocabulary — measure in a well-chosen basis — applied to a shared entangled pair. The Bell
-        basis is the whole invention; Nielsen &amp; Chuang supply the accounting.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side.</strong> Landau &amp; Lifshitz, <em>Quantum Mechanics</em> (Vol. 3): §7
-        for measurement as projection onto an eigenbasis, and Ch VIII (Spin, §54–60) for spin-½; the
-        two-spin singlet and triplet states arise in the exchange-interaction material (§62).
-        <em>A caution on this crossing:</em> L&amp;L's natural basis for two spins is the
-        <strong>singlet/triplet</strong> basis — the common eigenbasis of total spin
-        $\hat{\mathbf S}^2$ and $\hat S_z$ — and it is <em>not</em> the Bell basis. They share only two
-        of four vectors (the singlet $|\beta_{11}\rangle$ and one triplet $|\beta_{01}\rangle$); the two
-        triplets $|00\rangle,|11\rangle$ are product states, not the entangled combinations
-        $(|00\rangle\pm|11\rangle)/\sqrt2$. The Bell basis proper is the common eigenbasis of
-        $\sigma_z\!\otimes\!\sigma_z$ and $\sigma_x\!\otimes\!\sigma_x$ (verify: their joint eigenvalues
-        $(\pm,\pm)$ label the four Bell states uniquely). Treat that as this book's own construction —
-        closely related to L&amp;L's, deliberately not identical.</p>
-      <p>For the physics the protocol actually rests on — that entangled halves carry correlations no
-        local description reproduces — the course canon's closest reach is Sakurai,
-        <em>Modern Quantum Mechanics</em>, which treats the EPR pair and Bell's inequality directly.
-        L&amp;L does not: it gives the singlet as a fact of two-electron symmetry, never as a resource.
-        That gap is the honest boundary of this crossing, and the reason the essay's step across —
-        measure in the Bell basis — is the book's, not the textbook's.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang, §1.3.7 for teleportation and §2.3 for
-        superdense coding. The primary source for teleportation is Bennett, Brassard, Crépeau, Jozsa,
-        Peres &amp; Wootters, <em>Phys. Rev. Lett.</em> <strong>70</strong> (1993) 1895; for superdense
-        coding, Bennett &amp; Wiesner, <em>Phys. Rev. Lett.</em> <strong>69</strong> (1992) 2881.</p>
-      <p><strong>Check the crossing.</strong> Derive the four-term identity yourself: substitute
-        $|0\rangle_1|0\rangle_2 = \tfrac{1}{\sqrt2}(|\beta_{00}\rangle + |\beta_{10}\rangle)$ and the
-        analogous expansions into $|\psi\rangle_1|\beta_{00}\rangle_{23}$, then collect terms by Alice's
-        Bell state. Every Pauli correction $Z^aX^b$ appears exactly where the collapse leaves Bob.</p>
-      <p><em>One trap worth naming.</em> The overall sign of the singlet $|\beta_{11}\rangle$ is
-        convention-dependent. With $|\beta_{11}\rangle=(|01\rangle-|10\rangle)/\sqrt2$ as defined above,
-        the fourth term is $\alpha|1\rangle-\beta|0\rangle = XZ|\psi\rangle$ exactly; adopt the opposite
-        sign for $|\beta_{11}\rangle$ and you get its negative, $\beta|0\rangle-\alpha|1\rangle =
-        ZX|\psi\rangle$. The two differ only by an unobservable global phase (recall $XZ=-ZX$), and the
-        correction $Z^aX^b$ recovers $|\psi\rangle$ either way. So if your sign disagrees with the
-        display above, check your definition of $|\beta_{11}\rangle$ before you doubt your algebra.</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="08-epr-bell.html"><span class="dir">← Previous</span> 08 · EPR &amp; Bell's theorem</a>
-      <a class="next" href="10-interference-deutsch.html"><span class="dir">Next essay →</span> 10 · Interference &amp; the Deutsch–Jozsa algorithm</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 09 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 09</p><h1>Teleportation and dense coding, step by step</h1>
+<p class="lede">A Bell pair supports two different communication protocols. Tracking every register shows where the message resides and why the classical and quantum transmissions are necessary.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 3–4 and 6–7: reduced states, CNOT, Bell pairs, and no-cloning. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Fix the Bell-state convention</a></li>
+<li><a href="#section-2">Teleportation: three registers and one unknown input</a></li>
+<li><a href="#section-3">What Bob has before the message arrives</a></li>
+<li><a href="#section-4">Dense coding: encode a classical label in a Bell state</a></li>
+<li><a href="#section-5">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">Fix the Bell-state convention</h2>
+<p>Use the four orthonormal states</p>
+<p>$$|\beta_{ab}\rangle=(I\otimes X^bZ^a)|\Phi^+\rangle,\qquad a,b\in\{0,1\}.$$</p>
+<p>Thus $\beta_{00}=(|00\rangle+|11\rangle)/\sqrt2$, $\beta_{01}=(|01\rangle+|10\rangle)/\sqrt2$, $\beta_{10}=(|00\rangle-|11\rangle)/\sqrt2$, and $\beta_{11}=(|01\rangle-|10\rangle)/\sqrt2$. The order in $X^bZ^a$ means $Z^a$ acts first.</p>
+<p>The preparation circuit $\operatorname{CNOT}(H\otimes I)$ maps $|ab\rangle$ to $|\beta_{ab}\rangle$. Its inverse, CNOT followed by $H$ on the first qubit, maps each Bell state to its two-bit label. A Bell measurement can therefore be implemented by that inverse circuit followed by ordinary computational-basis measurements.</p>
+<h2 id="section-2">Teleportation: three registers and one unknown input</h2>
+<p>Alice holds an unknown input $Q$ in $|\psi\rangle=\alpha|0\rangle+\beta|1\rangle$ and one half $A$ of a shared Bell pair. Bob holds the other half $B$. In register order $Q,A,B$, the initial state is</p>
+<p>$$|\psi\rangle_Q|\Phi^+\rangle_{AB}=\frac1{\sqrt2}\left(\alpha|000\rangle+\alpha|011\rangle+\beta|100\rangle+\beta|111\rangle\right).$$</p>
+<p>Alice applies CNOT from $Q$ to $A$. The four terms become $\alpha|000\rangle+\alpha|011\rangle+\beta|110\rangle+\beta|101\rangle$, with the same factor $1/\sqrt2$. To apply $H$ to $Q$, replace the leading $|0\rangle$ in each term by $(|0\rangle+|1\rangle)/\sqrt2$, and each leading $|1\rangle$ by $(|0\rangle-|1\rangle)/\sqrt2$. The existing factor $1/\sqrt2$ combines with this new one to give $1/2$. Before collecting any terms, the result is</p>
+<p>$$\begin{aligned}\frac12\big(&\alpha|000\rangle+\alpha|100\rangle
++\alpha|011\rangle+\alpha|111\rangle\\
+&+\beta|010\rangle-\beta|110\rangle
++\beta|001\rangle-\beta|101\rangle\big).
+\end{aligned}$$</p>
+<p>Now group terms by the first two bits, since those are the registers Alice measures. Prefix $00$ occurs in $\alpha|000\rangle+\beta|001\rangle$, leaving Bob's vector $\alpha|0\rangle+\beta|1\rangle$. Prefix $01$ occurs in $\beta|010\rangle+\alpha|011\rangle$, leaving $\beta|0\rangle+\alpha|1\rangle=X|\psi\rangle$. The other two prefixes work the same way:</p>
+<p>$$\begin{aligned}
+10:&\quad \alpha|0\rangle-\beta|1\rangle=Z|\psi\rangle,\\
+11:&\quad -\beta|0\rangle+\alpha|1\rangle=XZ|\psi\rangle.
+\end{aligned}$$</p>
+<p>This is a regrouping of the same eight terms, with no measurement yet performed. It puts the joint state in a form where each possible result on Alice's side has an explicit conditional vector on Bob's side:</p>
+<p>$$\frac12\Big[|00\rangle|\psi\rangle+|01\rangle X|\psi\rangle+|10\rangle Z|\psi\rangle+|11\rangle XZ|\psi\rangle\Big].$$</p>
+<p>Each bracketed Bob vector has norm one, so every two-bit outcome occurs with probability $1/4$, independently of $\alpha,\beta$. If Alice obtains $(a,b)$, Bob holds $X^bZ^a|\psi\rangle$. Alice sends the two classical bits; Bob applies the inverse $Z^aX^b$, meaning $X^b$ first and then $Z^a$.</p>
+<div class="table-scroll"><table><caption>Teleportation outcomes and recovery</caption><thead><tr><th>Alice’s bits</th><th>Bob before correction</th><th>Correction</th></tr></thead><tbody><tr><td>00</td><td>$|\psi\rangle$</td><td>$I$</td></tr><tr><td>01</td><td>$X|\psi\rangle$</td><td>$X$</td></tr><tr><td>10</td><td>$Z|\psi\rangle$</td><td>$Z$</td></tr><tr><td>11</td><td>$XZ|\psi\rangle$</td><td>$ZX$</td></tr></tbody></table></div>
+<h2 id="section-3">What Bob has before the message arrives</h2>
+<p>Without Alice's bits, Bob must average over the four outcomes. For any input density matrix,</p>
+<p>$$\rho_B=\frac14\sum_{a,b}X^bZ^a\rho Z^aX^b=\frac I2.$$</p>
+<p>To check it, expand $\rho=(I+r_xX+r_yY+r_zZ)/2$: conjugation by the four Paulis cancels each Bloch component. Bob's local state contains no dependence on the unknown input until the classical record permits correction. Teleportation therefore cannot signal faster than the classical channel.</p>
+<p>After Alice's measurement, her input register has a definite computational-basis value; it no longer carries $|\psi\rangle$. The shared Bell pair is consumed. The amplitude pair $\alpha,\beta$ survives in Bob’s corrected register, while Alice’s measured registers contain only the two random outcome bits. There is no second remaining register in state $|\psi\rangle$, which is why this transfer is compatible with the no-cloning theorem. Moreover, the protocol preserves entanglement with an external reference: expand a joint input as $\sum_jc_j|j\rangle_R|\psi_j\rangle_Q$ and apply the same identity term by term. Every corrected branch transfers that joint state from $RQ$ to $RB$.</p>
+<h2 id="section-4">Dense coding: encode a classical label in a Bell state</h2>
+<p>Now Alice and Bob share $|\Phi^+\rangle$, and Alice wants to transmit two classical bits $(a,b)$. She applies $X^bZ^a$ to her qubit and sends that qubit to Bob. Moving a matrix across this Bell state transposes it: $(M\otimes I)|\Phi^+\rangle=(I\otimes M^T)|\Phi^+\rangle$. To see this, write $|\Phi^+\rangle=\frac1{\sqrt2}\sum_j|j\rangle|j\rangle$; then $\sum_j M|j\rangle|j\rangle=\sum_{i,j}M_{ij}|i\rangle|j\rangle=\sum_i|i\rangle\sum_j (M^T)_{ji}|j\rangle=\sum_i|i\rangle\,M^T|i\rangle$. For these Paulis the transpose changes at most a global sign, so the joint state is $|\beta_{ab}\rangle$ up to phase.</p>
+<p>Bob now possesses both qubits and uses the Bell-decoding circuit to read $a,b$ with certainty. This transmits two classical bits using one transmitted qubit <em>and one previously shared Bell pair</em>. Both resources belong in the statement.</p>
+<p>Each transmitted-qubit state on its own is $I/2$, for all four messages. An observer holding only that qubit learns zero bits about the chosen label, not one. The information is in joint correlations with Bob's retained qubit. Chapter 15 will calculate this using the Holevo quantity.</p>
+<h2 id="section-5">Problems</h2>
+<p><strong>1.</strong> Teleport $|\psi\rangle=(|0\rangle+i|1\rangle)/\sqrt2$ in the branch $(a,b)=(1,1)$. Verify the correction.</p>
+<details><summary>Worked answer</summary><p>First apply $Z$ and then $X$, in the order specified by $XZ$:</p><p>$$\frac{|0\rangle+i|1\rangle}{\sqrt2}\xrightarrow{Z}\frac{|0\rangle-i|1\rangle}{\sqrt2}\xrightarrow{X}\frac{|1\rangle-i|0\rangle}{\sqrt2}.$$</p><p>Bob’s inverse $ZX$ means applying $X$ first. That gives $(|0\rangle-i|1\rangle)/\sqrt2$; applying $Z$ then gives $(|0\rangle+i|1\rangle)/\sqrt2$, the input. The algebraic check is $ZX\,XZ=Z(X^2)Z=Z^2=I$. The two noncommuting factors must be reversed when taking the inverse.</p></details>
+<p><strong>2.</strong> Alice sends only the bit $b$, so Bob corrects $X^b$ but does not know $a$. What channel remains?</p>
+<details><summary>Worked answer</summary><p>After Bob corrects $X^b$, his state is $Z^a\rho Z^a$. The unreported bit $a$ is still equally likely to be zero or one, so he must average these two possibilities. Write the input in matrix form and multiply:</p><p>$$Z\rho Z=\begin{pmatrix}\rho_{00}&-\rho_{01}\\-\rho_{10}&\rho_{11}\end{pmatrix},\qquad\frac{\rho+Z\rho Z}{2}=\begin{pmatrix}\rho_{00}&0\\0&\rho_{11}\end{pmatrix}.$$</p><p>The diagonal entries survive, while the off-diagonal terms cancel. Input $|+\rangle$ therefore becomes $I/2$, whereas $|0\rangle$ remains $|0\rangle$. The missing bit matters for restoring arbitrary coherence, even though it does not matter for a computational-basis input.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §1.3.6–1.3.7 (Bell states and teleportation) and §2.3 (dense coding).</p></section><nav class="chapter-nav"><a href="08-epr-bell.html"><span class="dir">Previous</span>Bell correlations and the CHSH inequality</a><a class="next" href="10-interference-deutsch.html"><span class="dir">Next chapter</span>Phase kickback and the Deutsch–Jozsa algorithm</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

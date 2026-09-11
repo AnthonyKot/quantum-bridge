@@ -1,5 +1,5 @@
 /* The Bridge — theme toggle + KaTeX auto-render bootstrap.
-   Vanilla JS, no dependencies beyond KaTeX (loaded from CDN in each page). */
+   Vanilla JS, no dependencies beyond KaTeX (served from static/katex in each page). */
 
 (function () {
   var KEY = "bridge-theme";
@@ -80,4 +80,14 @@
   }
 
   window.addEventListener("load", tryRenderMath);
+  // Include solutions in printed copies without changing the reader's saved view.
+  var closedAnswers = [];
+  window.addEventListener("beforeprint", function () {
+    closedAnswers = Array.from(document.querySelectorAll("details:not([open])"));
+    closedAnswers.forEach(function (answer) { answer.open = true; });
+  });
+  window.addEventListener("afterprint", function () {
+    closedAnswers.forEach(function (answer) { answer.open = false; });
+    closedAnswers = [];
+  });
 })();

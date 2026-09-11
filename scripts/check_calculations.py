@@ -1,0 +1,299 @@
+#!/usr/bin/env python3
+"""Independent finite-dimensional checks of the book's worked calculations.
+Standard library only. These are examples and regression checks, not theorem proofs.
+"""
+import cmath
+import math
+import unittest
+
+
+def adj(a):
+    return [list(map(complex.conjugate, map(complex, col))) for col in zip(*a)]
+
+
+def mm(a, b):
+    return [[sum(x*y for x, y in zip(row, col)) for col in zip(*b)] for row in a]
+
+
+def scale(c, a):
+    return [[c*x for x in row] for row in a]
+
+
+def add(*matrices):
+    return [[sum(m[i][j] for m in matrices) for j in range(len(matrices[0][0]))]
+            for i in range(len(matrices[0]))]
+
+
+def tensor(a, b):
+    return [[x*y for x in row_a for y in row_b] for row_a in a for row_b in b]
+
+
+def ket(*entries):
+    return [[complex(x)] for x in entries]
+
+
+def projector(v):
+    return mm(v, adj(v))
+
+
+def trace(a):
+    return sum(a[i][i] for i in range(len(a)))
+
+
+def channel(rho, operators):
+    return add(*(mm(mm(k, rho), adj(k)) for k in operators))
+
+
+def qft(n, inverse=False):
+    sign = -1 if inverse else 1
+    return [[cmath.exp(sign*2j*math.pi*j*k/n)/math.sqrt(n) for k in range(n)] for j in range(n)]
+
+
+def entropy(probabilities):
+    return -sum(p*math.log2(p) for p in probabilities if p > 1e-14)
+
+
+I = [[1, 0], [0, 1]]
+X = [[0, 1], [1, 0]]
+Y = [[0, -1j], [1j, 0]]
+Z = [[1, 0], [0, -1]]
+H = scale(1/math.sqrt(2), [[1, 1], [1, -1]])
+CNOT = [[1,0,0,0], [0,1,0,0], [0,0,0,1], [0,0,1,0]]
+zero = ket(1, 0)
+plus = ket(1/math.sqrt(2), 1/math.sqrt(2))
+minus = ket(1/math.sqrt(2), -1/math.sqrt(2))
+bell = ket(1/math.sqrt(2), 0, 0, 1/math.sqrt(2))
+
+
+class Calculations(unittest.TestCase):
+    def same(self, actual, expected):
+        self.assertEqual((len(actual), len(actual[0])), (len(expected), len(expected[0])))
+        for ar, er in zip(actual, expected):
+            for a, e in zip(ar, er):
+                self.assertLess(abs(a-e), 1e-10)
+
+    def test_01_bloch_and_measurement(self):
+        v = ket(math.sqrt(3)/2, .5j)
+        means = [mm(mm(adj(v), p), v)[0][0] for p in (X,Y,Z)]
+        self.same([means], [[0,math.sqrt(3)/2,.5]])
+        self.assertAlmostEqual(abs(mm(adj(plus), v)[0][0])**2, .5)
+
+    def test_02_unambiguous_discrimination(self):
+        c = 2-math.sqrt(2)
+        ep = scale(c, projector(ket(0,1)))
+        e0 = scale(c, projector(minus))
+        eq = add(I, scale(-1,ep), scale(-1,e0))
+        self.assertAlmostEqual((eq[0][0]*eq[1][1]-eq[0][1]*eq[1][0]).real, 0)
+        self.assertGreater(trace(eq).real, 0)
+        self.assertAlmostEqual(mm(mm(adj(zero),ep),zero)[0][0].real,0)
+        self.assertAlmostEqual(mm(mm(adj(plus),e0),plus)[0][0].real,0)
+        for v in (zero, plus):
+            self.assertAlmostEqual(mm(mm(adj(v),eq),v)[0][0].real,1/math.sqrt(2))
+
+    def test_03_partial_trace_and_correlations(self):
+        rho = projector(bell)
+        reduced = [[sum(rho[2*i+j][2*k+j] for j in range(2)) for k in range(2)] for i in range(2)]
+        self.same(reduced, scale(.5,I))
+        self.assertAlmostEqual(trace(mm(rho,tensor(Y,Y))).real,-1)
+        classical = [[rho[i][j] if i==j else 0 for j in range(4)] for i in range(4)]
+        self.assertAlmostEqual(trace(mm(classical,tensor(X,X))).real,0)
+
+    def test_04_gate_order_and_bell_preparation(self):
+        self.same(mm(mm(H,Z),H),X)
+        circuit = mm(CNOT,tensor(H,I))
+        self.same(mm(circuit,ket(1,0,0,0)),bell)
+        self.same(mm(CNOT,tensor(plus,plus)),tensor(plus,plus))
+
+    def test_05_rotation_and_detuning(self):
+        theta = math.pi/3
+        ry = [[math.cos(theta/2),-math.sin(theta/2)],[math.sin(theta/2),math.cos(theta/2)]]
+        rz = [[cmath.exp(-1j*math.pi/4),0],[0,cmath.exp(1j*math.pi/4)]]
+        v = mm(mm(rz,ry),zero)
+        self.same(projector(v),projector(ket(math.sqrt(3)/2,.5j)))
+        # Detuned constant pulse at its first population maximum: Omega=Delta=1.
+        u = scale(-1j/math.sqrt(2),add(X,Z))
+        self.assertAlmostEqual(abs(mm(u,zero)[1][0])**2,.5)
+
+    def test_06_copying_orthogonal_alphabet(self):
+        circuit = mm(mm(tensor(H,H),CNOT),tensor(H,I))
+        for v in (plus, minus):
+            self.same(mm(circuit,tensor(v,zero)),tensor(v,v))
+        self.assertNotEqual(projector(bell),projector(tensor(plus,plus)))
+
+    def test_07_schmidt_spectrum(self):
+        c = scale(1/math.sqrt(3),[[1,1],[1,0]])
+        rho = mm(c,adj(c))
+        self.assertAlmostEqual(trace(mm(rho,rho)).real,7/9)
+        for lam in ((3+math.sqrt(5))/6,(3-math.sqrt(5))/6):
+            self.assertAlmostEqual((rho[0][0]-lam)*(rho[1][1]-lam)-rho[0][1]*rho[1][0],0)
+
+    def test_08_chsh(self):
+        b0,b1 = scale(1/math.sqrt(2),add(Z,X)),scale(1/math.sqrt(2),add(Z,scale(-1,X)))
+        observables = [tensor(Z,b0),tensor(Z,b1),tensor(X,b0),tensor(X,b1)]
+        values = [mm(mm(adj(bell),a),bell)[0][0].real for a in observables]
+        self.assertAlmostEqual(values[0]+values[1]+values[2]-values[3],2*math.sqrt(2))
+
+    def test_09_all_teleportation_branches(self):
+        # Full three-register circuit; compare every branch on several complex inputs.
+        for v in (zero,plus,ket(math.sqrt(.3),1j*math.sqrt(.7))):
+            output = mm(tensor(tensor(H,I),I),mm(tensor(CNOT,I),tensor(v,bell)))
+            for a in range(2):
+                for b in range(2):
+                    branch = output[2*(2*a+b):2*(2*a+b)+2]
+                    self.assertAlmostEqual(mm(adj(branch),branch)[0][0].real,.25)
+                    recovery=mm(Z if a else I,X if b else I)
+                    self.same(mm(recovery,scale(2,branch)),v)
+            rho=projector(v)
+            self.same(scale(.25,add(*(mm(mm(p,rho),adj(p)) for p in (I,X,Z,mm(X,Z))))),scale(.5,I))
+
+    def test_10_all_two_bit_deutsch_jozsa_promises(self):
+        h2=tensor(H,H)
+        for mask in range(16):
+            values=[(mask>>x)&1 for x in range(4)]
+            if sum(values) not in (0,2,4):
+                continue
+            state=ket(*[(-1)**f/2 for f in values])
+            p0=abs(mm(h2,state)[0][0])**2
+            self.assertAlmostEqual(p0,1 if sum(values) in (0,4) else 0)
+        self.same(mm(h2,ket(.5,-.5,-.5,.5)),ket(0,0,0,1))
+
+    def test_11_period_sampling_and_phase_estimation(self):
+        state=ket(*[.5 if x in (1,5,9,13) else 0 for x in range(16)])
+        probabilities=[abs(x[0])**2 for x in mm(qft(16),state)]
+        self.same([probabilities],[[.25 if k%4==0 else 0 for k in range(16)]])
+        phase=ket(*[cmath.exp(2j*math.pi*j*3/8)/math.sqrt(8) for j in range(8)])
+        self.same(mm(qft(8,True),phase),ket(*[1 if k==3 else 0 for k in range(8)]))
+
+    def test_12_grover_against_closed_form(self):
+        for n in (4,8,16):
+            s=ket(*[1/math.sqrt(n)]*n)
+            eye=[[int(i==j) for j in range(n)] for i in range(n)]
+            d=add(scale(2,projector(s)),scale(-1,eye))
+            oracle=[row[:] for row in eye];oracle[2][2]=-1
+            g=mm(d,oracle);state=s
+            for k in range(5):
+                self.assertAlmostEqual(abs(state[2][0])**2,math.sin((2*k+1)*math.asin(1/math.sqrt(n)))**2)
+                if n==8 and k in (1,2,3):
+                    self.assertAlmostEqual(abs(state[2][0])**2,{1:25/32,2:121/128,3:169/512}[k])
+                state=mm(g,state)
+
+    def test_13_damping(self):
+        operators=[[[1,0],[0,.5]],[[0,math.sqrt(.75)],[0,0]]]
+        self.same(add(*(mm(adj(k),k) for k in operators)),I)
+        rho=channel(projector(plus),operators)
+        self.same(rho,[[7/8,1/4],[1/4,1/8]])
+        self.assertAlmostEqual(trace(mm(rho,rho)).real,29/32)
+
+    def test_14_syndrome_and_coherent_recovery(self):
+        encoded=ket(math.sqrt(.3),0,0,0,0,0,0,1j*math.sqrt(.7))
+        checks=[tensor(tensor(Z,Z),I),tensor(tensor(I,Z),Z)]
+        errors=[tensor(tensor(I,I),I),tensor(tensor(X,I),I),tensor(tensor(I,X),I),tensor(tensor(I,I),X)]
+        syndromes=[(1,1),(-1,1),(-1,-1),(1,-1)]
+        for err,syndrome in zip(errors,syndromes):
+            state=mm(err,encoded)
+            for check,sign in zip(checks,syndrome):
+                self.same(mm(check,state),scale(sign,state))
+            self.same(mm(err,state),encoded)
+        # Every single-site Pauli must satisfy the nine-qubit recovery criterion.
+        gp={0:1/math.sqrt(2),7:1/math.sqrt(2)}
+        gm={0:1/math.sqrt(2),7:-1/math.sqrt(2)}
+        def blocks(g):
+            return {(a<<6)|(b<<3)|c:x*y*z for a,x in g.items() for b,y in g.items() for c,z in g.items()}
+        code=[blocks(gp),blocks(gm)]
+        def error(state,site,pauli):
+            bit=1<<site
+            out={}
+            for x,amp in state.items():
+                phase=1 if not (x&bit) else -1
+                if pauli=='I': y,f=x,1
+                elif pauli=='X': y,f=x^bit,1
+                elif pauli=='Z': y,f=x,phase
+                else: y,f=x^bit,1j*phase
+                out[y]=amp*f
+            return out
+        operations=[(0,'I')]+[(q,p) for q in range(9) for p in 'XYZ']
+        states=[[error(v,q,p) for v in code] for q,p in operations]
+        def inner(a,b): return sum(complex(v).conjugate()*b.get(k,0) for k,v in a.items())
+        for a in states:
+            for b in states:
+                self.assertLess(abs(inner(a[0],b[1])),1e-10)
+                self.assertLess(abs(inner(a[0],b[0])-inner(a[1],b[1])),1e-10)
+
+    def test_15_information_accounting(self):
+        chi=entropy([(1+1/math.sqrt(2))/2,(1-1/math.sqrt(2))/2])
+        measured=entropy([.75,.25])-.5
+        self.assertAlmostEqual(chi,.6008760366928562)
+        self.assertAlmostEqual(measured,.31127812445913283)
+        self.assertLess(measured,chi)
+        self.assertEqual(entropy([.5,.5])-entropy([.5,.5]),0)
+        self.assertEqual(entropy([.25]*4),2)
+
+
+    def test_16_two_register_projection(self):
+        # Build a function-evaluation state, project the output, and renormalise.
+        n, r = 16, 4
+        joint = {(x, x % r): 1/math.sqrt(n) for x in range(n)}
+        selected = {x: amp for (x,y),amp in joint.items() if y == 1}
+        probability = sum(abs(amp)**2 for amp in selected.values())
+        self.assertAlmostEqual(probability, 1/4)
+        conditional = ket(*[selected.get(x,0)/math.sqrt(probability) for x in range(n)])
+        self.same(conditional, ket(*[.5 if x in (1,5,9,13) else 0 for x in range(n)]))
+        for k, amp in enumerate(mm(qft(n), conditional)):
+            self.assertAlmostEqual(abs(amp[0])**2, .25 if k%4==0 else 0)
+
+    def test_17_modular_order_and_convergents(self):
+        from fractions import Fraction
+        modulus, a, dimension, r = 21, 2, 32, 6
+        # Actual multiplication permutation, not just the claimed phase formula.
+        u = [[0]*dimension for _ in range(dimension)]
+        for y in range(dimension):
+            destination = a*y%modulus if y<modulus else y
+            u[destination][y] = 1
+        self.same(mm(adj(u),u), [[int(i==j) for j in range(dimension)] for i in range(dimension)])
+        eigenstates=[]
+        for s in range(r):
+            v=[0j]*dimension
+            for j in range(r):
+                v[pow(a,j,modulus)]=cmath.exp(-2j*math.pi*s*j/r)/math.sqrt(r)
+            v=ket(*v);eigenstates.append(v)
+            self.same(mm(u,v),scale(cmath.exp(2j*math.pi*s/r),v))
+        self.same(scale(1/math.sqrt(r),add(*eigenstates)),ket(*[int(y==1) for y in range(dimension)]))
+        def convergents(n,d):
+            terms=[]
+            while d:
+                q,remainder=divmod(n,d);terms.append(q);n,d=d,remainder
+            p0,p1,q0,q1=0,1,1,0
+            out=[]
+            for term in terms:
+                p0,p1=p1,term*p1+p0;q0,q1=q1,term*q1+q0
+                out.append(Fraction(p1,q1))
+            return terms,out
+        for numerator,denominator in [(85,256),(341,1024)]:
+            terms,cs=convergents(numerator,denominator)
+            self.assertIn(Fraction(1,3),cs)
+            self.assertEqual(Fraction(numerator,denominator).denominator,denominator)
+            self.assertLess(abs(Fraction(numerator,denominator)-Fraction(1,3)),Fraction(1,2*r*r))
+        terms,cs=convergents(171,1024)
+        self.assertEqual(terms,[0,5,1,84,2]);self.assertIn(Fraction(1,6),cs)
+        self.assertEqual(pow(2,3,21),8);self.assertEqual(pow(2,6,21),1)
+        self.assertTrue(all(pow(2,q,21)!=1 for q in (1,2,3)))
+
+    def test_18_kraus_extraction_and_mutual_information(self):
+        gamma=.75;c=math.sqrt(1-gamma);s=math.sqrt(gamma)
+        u=[[1,0,0,0],[0,c,s,0],[0,-s,c,0],[0,0,0,1]]
+        self.same(mm(adj(u),u),tensor(I,I))
+        ks=[[[u[2*i+j][2*k] for k in range(2)] for i in range(2)] for j in range(2)]
+        self.same(ks[0],[[1,0],[0,c]]);self.same(ks[1],[[0,s],[0,0]])
+        v=tensor(plus,zero);joint=projector(mm(u,v))
+        reduced=[[sum(joint[2*i+j][2*k+j] for j in range(2)) for k in range(2)] for i in range(2)]
+        self.same(reduced,channel(projector(plus),ks))
+        # Compute information directly from joint probabilities, independently of H(Y)-H(Y|X).
+        joint=[[3/8,1/8],[1/8,3/8]]
+        px=[sum(row) for row in joint];py=[sum(col) for col in zip(*joint)]
+        mutual=sum(joint[x][y]*math.log2(joint[x][y]/(px[x]*py[y])) for x in range(2) for y in range(2))
+        self.assertAlmostEqual(mutual,1-entropy([.25,.75]))
+        self.assertAlmostEqual(mutual,.18872187554086717)
+
+
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

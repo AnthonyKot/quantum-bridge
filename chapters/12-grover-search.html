@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>12 · Grover search &amp; the two-level system you build — The Bridge</title>
-<meta name="description" content="Grover's iteration is a Rabi oscillation in a plane you define: rotate to the target and stop at the pi-pulse, or overshoot past it. Quadratic, query-model, and provably optimal.">
+<title>Grover search as two reflections — The Bridge</title>
+<meta name="description" content="Grover search increases the probability of a marked answer by repeatedly reflecting amplitudes. A two-dimensional calculation gives both the speedup and the stopping rule.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,130 +12,62 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">Part IV · Interference &amp; algorithms — Essay 12</p>
-    <h1>Search, and the two-level system you build</h1>
-    <p class="lede">Grover's algorithm is a Rabi oscillation. Each step rotates you a fixed angle toward
-      the answer; you stop at the π-pulse, and if you keep driving you sail straight past it. The only
-      novelty is that here you built the two-level system instead of finding it.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §42, §113 — a resonantly driven two-level system; the population oscillates, and you stop at the π-pulse</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C Ch 6 — Grover search: a rotation to the target, provably optimal at $\sqrt N$</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>Drive a two-level system on resonance and the course knows the answer cold. Two levels
-        $|a\rangle,|b\rangle$ with a resonant coupling of strength set by the Rabi frequency $\Omega$: the
-        state rotates steadily in the two-dimensional space they span, and the population sloshes from one
-        level to the other as</p>
-      <p>$$ P_b(t) = \sin^2\!\big(\tfrac{\Omega t}{2}\big). $$</p>
-      <p>At $\Omega t = \pi$ — the <strong>π-pulse</strong> — every bit of population has crossed from
-        $|a\rangle$ to $|b\rangle$; keep the drive on and it flows straight back, reaching $|a\rangle$
-        again at $\Omega t = 2\pi$. This is magnetic resonance, and L&amp;L compute it directly (spin in a
-        variable magnetic field, §113; the resonance of a periodic perturbation, §42). The whole craft of
-        the experiment is stopping the drive at the π-pulse. Overshoot it and you leave the level you
-        were trying to reach — a fact that will, in a moment, describe a search algorithm exactly. It also
-        makes good on <a href="05-spin-single-qubit.html">Essay&nbsp;05</a>'s line that every gate is a
-        precession timed: here the timing is the entire point.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>The step is that you <em>build</em> the two-level system rather than being handed it. Grover's
-        problem: among $N$ items, one target $|w\rangle$ is marked by an oracle that flips its phase,
-        $O|x\rangle = (-1)^{[x=w]}|x\rangle$ — the phase kickback of
-        <a href="10-interference-deutsch.html">Essay&nbsp;10</a>. Begin in the uniform superposition
-        $|s\rangle = \tfrac{1}{\sqrt N}\sum_x |x\rangle$, and take as your two "levels" the target
-        $|w\rangle$ and the uniform superposition $|s'\rangle$ of everything <em>else</em>. That plane is
-        not a gift of nature — it is a basis you defined around the answer you are looking for. The Grover
-        iterate</p>
-      <p>$$ G = \underbrace{(2|s\rangle\langle s| - I)}_{\text{diffusion}}\;\underbrace{O}_{\text{oracle}} $$</p>
-      <p>is a rotation in that plane, by a fixed angle $\theta = 2\arcsin\tfrac{1}{\sqrt N} \approx
-        \tfrac{2}{\sqrt N}$, from $|s'\rangle$ toward $|w\rangle$. The oracle and diffusion operator are a
-        resonant drive you <em>engineered</em> to rotate between two levels you <em>chose</em>. The series
-        has met the evolution-becomes-operation inversion at the level of gates (05), phases (10), and
-        eigenvalues (11); here it reaches the system itself — you do not solve a given two-level dynamics,
-        you fabricate one whose π-pulse lands on the answer.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p>Nielsen &amp; Chuang lay this out geometrically in Chapter 6 (§6.1, especially §6.1.3). The start
-        state $|s\rangle$ sits at a small angle $\beta = \arcsin\tfrac{1}{\sqrt N}$ above $|s'\rangle$;
-        each Grover step turns the state by $2\beta$ toward $|w\rangle$; after $R$ steps its angle from
-        $|s'\rangle$ is $(2R+1)\beta$, and the probability of measuring the target is
-        $\sin^2\!\big((2R+1)\beta\big)$. Reaching $|w\rangle$ (angle $\tfrac{\pi}{2}$) takes</p>
-      <p>$$ R \approx \frac{\pi}{4}\sqrt N $$</p>
-      <p>steps (§6.1.4). Read against Move 1, this is a π-pulse: $|s'\rangle$ and $|w\rangle$ are the two
-        levels, and Grover drives the effective system from one to the other in $(\pi/4)\sqrt N$ resonant
-        kicks. And the warning from Move 1 is literal — run <em>past</em> $R$ and the angle overshoots
-        $\tfrac{\pi}{2}$, the state rotates beyond the target, and $\sin^2\!\big((2R+1)\beta\big)$ falls
-        back toward zero. Overshooting Grover is overshooting a π-pulse; you must stop at the right count.</p>
-
-      <h3>What the speedup is, and what it isn't</h3>
-      <p>The gain is quadratic — $\sqrt N$ against the classical $N$ — not exponential, and it is a
-        query-model statement about calls to the oracle. "Quantum computers search databases faster" is
-        the misleading gloss. If the $N$ items are stored <em>data</em> you must load into the machine,
-        loading them already costs $N$ and the $\sqrt N$ advantage is gone; proposals for quantum RAM that
-        would load them in superposition do not escape this, because building and filling that memory is
-        itself an $N$-sized job. Grover pays off when the search space is defined by a <em>function you
-        can compute</em> — an oracle cheap to evaluate — rather than a table you must read row by row.</p>
-      <p>Against that, a rarer kind of statement: Grover is <strong>provably
-        optimal</strong>. No quantum algorithm whatsoever can find the marked item in fewer than order
-        $\sqrt N$ oracle queries for an unstructured search (N&amp;C §6.6). This is the one place in the
-        series where the boundary itself is known — not merely that we have a good algorithm, but that no
-        better one can exist. The quadratic speedup is not a waypoint toward something faster; it is the
-        wall.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side.</strong> Landau &amp; Lifshitz §113 for a spin in a variable magnetic field —
-        magnetic resonance, the population oscillating between two levels — and §42 for the resonance of a
-        periodic perturbation. The π-pulse is the whole of Move 1, and it is verified Volume 3 material.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang Chapter 6, §6.1 (the oracle, the procedure, and
-        the geometric rotation of §6.1.3 with its performance count in §6.1.4), and §6.6 for the optimality
-        of the algorithm.</p>
-      <p><strong>Scope, three fences.</strong> No amplitude amplification in the general case, no proof of
-        the optimality bound, and no more than the one sentence above on quantum RAM.</p>
-      <p><strong>How it connects — and where it hands off.</strong> Phase kickback is
-        <a href="10-interference-deutsch.html">Essay&nbsp;10</a>'s; the timed π-pulse is
-        <a href="05-spin-single-qubit.html">Essay&nbsp;05</a>'s. But the rotation is exact only while the
-        evolution stays unitary and closed. Let the qubits so much as touch an environment and the angle
-        blurs, the drive detunes, and the state never lands cleanly on $|w\rangle$ — which is precisely
-        where Part V opens: the channels of <a href="13-open-systems-channels.html">Essay&nbsp;13</a> that
-        describe that blurring, and the codes of <a href="14-error-correction.html">Essay&nbsp;14</a> that
-        hold a computation like this one together long enough to reach the target.</p>
-      <p><strong>Check the crossing.</strong> Confirm that $G$ rotates the state by
-        $2\arcsin\tfrac{1}{\sqrt N}$ in the $|w\rangle$–$|s'\rangle$ plane; that $R\approx\tfrac{\pi}{4}\sqrt N$
-        steps bring the success probability to nearly one; and that a further few steps send it back down —
-        the same $\sin^2$ you would get by leaving a resonant drive running past its π-pulse.</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="11-qft-translations.html"><span class="dir">← Previous</span> 11 · Bloch waves &amp; the quantum Fourier transform</a>
-      <a class="next" href="13-open-systems-channels.html"><span class="dir">Next essay →</span> 13 · Open systems &amp; quantum channels</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 12 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 12</p><h1>Grover search as two reflections</h1>
+<p class="lede">Grover search increases the probability of a marked answer by repeatedly reflecting amplitudes. A two-dimensional calculation gives both the speedup and the stopping rule.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 4 and 10: oracle circuits, phase flips, and uniform superpositions. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Specify the search problem</a></li>
+<li><a href="#section-2">The diffusion operator reflects amplitudes about their mean</a></li>
+<li><a href="#section-3">One iteration with four candidates</a></li>
+<li><a href="#section-4">Reduce the general problem to a plane</a></li>
+<li><a href="#section-5">Choose when to stop</a></li>
+<li><a href="#section-6">What the square-root speedup counts</a></li>
+<li><a href="#section-7">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">Specify the search problem</h2>
+<p>Let $N=2^n\ge2$ candidate strings contain exactly one marked item $w$. The oracle recognises it coherently: $O_w|x\rangle=(-1)^{[x=w]}|x\rangle$. Here $[x=w]$ is one if the equality holds and zero otherwise. It can be obtained from a reversible Boolean checker using the $|-\rangle$ target of Chapter 10.</p>
+<p>Prepare $|s\rangle=N^{-1/2}\sum_x|x\rangle$ with $H^{\otimes n}$. A direct measurement finds $w$ with probability $1/N$. One oracle call flips its amplitude's sign but leaves every probability unchanged. The next operation must convert that phase difference into a probability difference.</p>
+<h2 id="section-2">The diffusion operator reflects amplitudes about their mean</h2>
+<p>Define $D=2|s\rangle\langle s|-I$. It fixes the component along $|s\rangle$ and negates every orthogonal component, so $D^2=I$. If $|\psi\rangle=\sum_xa_x|x\rangle$ and $\bar a=N^{-1}\sum_xa_x$, then</p>
+<p>$$D|\psi\rangle=\sum_x(2\bar a-a_x)|x\rangle.$$</p>
+<p>This formula works for complex amplitudes too; $\bar a$ is an amplitude mean, not a probability mean. The circuit identity $D=H^{\otimes n}(2|0^n\rangle\langle0^n|-I)H^{\otimes n}$ shows that diffusion does not require knowledge of $w$. The marked-item information enters only through the oracle.</p>
+<h2 id="section-3">One iteration with four candidates</h2>
+<p>Take $N=4,w=2$. The initial amplitudes are $(1/2,1/2,1/2,1/2)$. The oracle gives $(1/2,1/2,-1/2,1/2)$, whose mean is $1/4$. Diffusion maps each amplitude to $1/2-a_x$: the three unmarked amplitudes become zero and the marked one becomes one. A single iteration $G=DO_w$ therefore finds the answer with certainty.</p>
+<p>The example makes the sequence explicit: a sign change first, then cancellation on unmarked states and reinforcement on the marked state. Measuring between these two operations would prevent that interference.</p>
+<h2 id="section-4">Reduce the general problem to a plane</h2>
+<p>Let $|r\rangle=(N-1)^{-1/2}\sum_{x\ne w}|x\rangle$, orthogonal to $|w\rangle$. The initial state is</p>
+<p>$$|s\rangle=\sin\theta|w\rangle+\cos\theta|r\rangle,\qquad \sin\theta=\frac1{\sqrt N}.$$</p>
+<p>We can calculate diffusion in this basis directly from its definition. The projector is the column for $|s\rangle$ multiplied by its row:</p>
+<p>$$|s\rangle\langle s|=\begin{pmatrix}\sin^2\theta&\sin\theta\cos\theta\\\sin\theta\cos\theta&\cos^2\theta\end{pmatrix}.$$</p>
+<p>Multiplying by two and subtracting the identity gives diagonal entries $2\sin^2\theta-1=-\cos2\theta$ and $2\cos^2\theta-1=\cos2\theta$. Its off-diagonal entries are $2\sin\theta\cos\theta=\sin2\theta$. In particular, diffusion mixes marked and unmarked amplitudes; it is not diagonal in this basis.</p>
+<p>The oracle is diagonal here because it negates $|w\rangle$ and leaves every unmarked basis state, hence $|r\rangle$, unchanged. To form $G=DO_w$, multiply $D$ by this diagonal matrix on the right: negate the first column of $D$ and retain the second. This explains each sign in the rotation matrix below.</p>
+<p>Both oracle and diffusion preserve this plane. In the ordered basis $(|w\rangle,|r\rangle)$, write $|s\rangle$ as the real column $(\sin\theta,\cos\theta)^T$. The two individual matrices are</p>
+<p>$$O_w=\begin{pmatrix}-1&0\\0&1\end{pmatrix},\qquad D=\begin{pmatrix}-\cos2\theta&\sin2\theta\\\sin2\theta&\cos2\theta\end{pmatrix}.$$</p>
+<p>Multiplying the two reflections in circuit order gives</p>
+<p>$$G=\begin{pmatrix}\cos2\theta&\sin2\theta\\-\sin2\theta&\cos2\theta\end{pmatrix}.$$</p>
+<p>Multiplying $G$ by $(\sin\alpha,\cos\alpha)^T$ gives $(\sin(\alpha+2\theta),\cos(\alpha+2\theta))^T$. Thus after $k$ iterations,</p>
+<p>$$G^k|s\rangle=\sin((2k+1)\theta)|w\rangle+\cos((2k+1)\theta)|r\rangle,\quad p_k=\sin^2((2k+1)\theta).$$</p>
+<p>Writing the plane in terms of $|w\rangle$ is for analysis; the circuit never needs to prepare that unknown basis vector directly.</p>
+<h2 id="section-5">Choose when to stop</h2>
+<p>The first probability maximum occurs near $(2k+1)\theta=\pi/2$. Choose a nonnegative integer nearest to $\pi/(4\theta)-1/2$. For large $N$, $\theta\approx1/\sqrt N$, giving $k\approx(\pi/4)\sqrt N$. Rounding introduces at most an angular error $\theta$, so for this single-target setting the resulting success probability is at least $\cos^2\theta=1-1/N$.</p>
+<p>For $N=8$, the initial success chance is $1/8$. One iteration raises it to $25/32\approx0.781$; two raise it to $121/128\approx0.945$; three reduce it to $169/512\approx0.330$. Continuing indefinitely is not harmless. The state rotates past the target and its overlap falls again.</p>
+<p>If $1\le M&lt;N$ targets are marked, replace $|w\rangle$ by the uniform superposition of targets and use $\sin\theta=\sqrt{M/N}$. The same rotation formula follows, but the stopping count depends on $M$. An unknown target count requires an additional strategy; the single-target prescription cannot simply be assumed.</p>
+<h2 id="section-6">What the square-root speedup counts</h2>
+<p>We use asymptotic notation to compare resource growth as $N$ increases. A query count $Q(N)=O(g(N))$ has an upper bound $C g(N)$ for sufficiently large $N$, for a constant $C$ independent of $N$. Writing $Q(N)=\Theta(g(N))$ means there are also a positive lower constant $c$ and bounds $c g(N)\le Q(N)\le C g(N)$. Thus a $\Theta(\sqrt N)$ claim combines an algorithm using at most a constant times $\sqrt N$ queries with a theorem excluding asymptotically smaller counts under the same problem assumptions.</p>
+<p>For unstructured search with a unique target and bounded error, the oracle-query complexity is $\Theta(\sqrt N)$ quantumly versus $\Theta(N)$ classically. The lower bound is a theorem, not proved by the two-reflection calculation. This is a quadratic improvement, not an exponential one.</p>
+<p>Total runtime includes the reversible checker, diffusion, preparation, and final verification of the candidate. If data must first be loaded into a memory, account for that cost and whether it is reused across searches. If the candidates are defined implicitly and the predicate is inexpensive, the oracle model can better reflect the task. Neither the existence of a checker nor the query bound alone establishes a practical advantage.</p>
+<h2 id="section-7">Problems</h2>
+<p><strong>1.</strong> Reproduce $p_1=25/32$ for $N=8$ using mean reflection.</p>
+<details><summary>Worked answer</summary><p>Write each initial amplitude as $a=1/\sqrt8$. After the oracle there are seven $+a$ amplitudes and one $-a$, so the sum is $6a$ and the mean is $6a/8=3a/4$.</p><p>$$a'_w=2(3a/4)-(-a)=5a/2,\qquad a'_{x\ne w}=2(3a/4)-a=a/2.$$</p><p>Squaring the marked amplitude gives $p_1=25a^2/4=25/32$. The seven others contribute $7a^2/4=7/32$, checking total probability one. The probability gain comes from the amplitude update; squaring before averaging would give the wrong result.</p></details>
+<p><strong>2.</strong> For $N=4$ with one target, what happens after a second iteration?</p>
+<details><summary>Worked answer</summary><p>For four candidates, $\sin\theta=1/2$, so $\theta=\pi/6$. After the first iteration the marked amplitude is $\sin(3\theta)=1$, and all others are zero. After the second,</p><p>$$p_2=\sin^2((2\cdot2+1)\theta)=\sin^2(5\pi/6)=1/4.$$</p><p>One can also check directly: starting from $|w\rangle$, the next oracle gives marked amplitude $-1$ and unmarked amplitudes zero. Their mean is $-1/4$. Diffusion makes the marked amplitude $1/2$ and each unmarked amplitude $-1/2$, so all four probabilities are $1/4$. The algorithm has already passed its first optimum.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §6.1 (search and geometry) and §6.6 (optimality). The original construction is <a href="https://arxiv.org/abs/quant-ph/9605043">Grover, A fast quantum mechanical algorithm for database search</a>.</p></section><nav class="chapter-nav"><a href="11-qft-translations.html"><span class="dir">Previous</span>Fourier sampling, phase estimation, and periods</a><a class="next" href="13-open-systems-channels.html"><span class="dir">Next chapter</span>Quantum channels: discarded environments and noise</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

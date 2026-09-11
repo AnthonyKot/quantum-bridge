@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>13 · Open systems &amp; quantum channels — The Bridge</title>
-<meta name="description" content="Spontaneous emission is the amplitude-damping channel; the course's T1 is its damping parameter. Kraus operators pay the debt essay 02 left: a POVM is a quantum operation with the outcome state thrown away.">
+<title>Quantum channels: discarded environments and noise — The Bridge</title>
+<meta name="description" content="When a system interacts with an environment, its reduced evolution need not be unitary. The channel formalism calculates what remains accessible.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,142 +12,67 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">Part V · Open systems &amp; information — Essay 13</p>
-    <h1>Open systems, and everything that can happen to a state</h1>
-    <p class="lede">The course computes one decay — an excited atom emitting into a field it writes down.
-      Nielsen &amp; Chuang call that the amplitude-damping channel and ask a question the course never
-      poses: what is the <em>most general</em> thing that can happen to a state? On the way it settles a
-      debt essay 02 left in print.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §40–43 — time-dependent perturbation, the golden rule, an atom decaying into a field it models</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C Ch 8 — quantum operations, Kraus operators, the amplitude-damping channel</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>Put an excited atom in the electromagnetic field and the course knows what to do. The coupling to
-        the field is a time-dependent perturbation; Fermi's golden rule gives the rate of transitions into
-        the continuum of field modes (L&amp;L's time-dependent perturbation theory, §40–43, with the
-        transition rate into a continuum in §43); and the excited-state population drains away
-        exponentially,</p>
-      <p>$$ \rho_{11}(t) = \rho_{11}(0)\,e^{-t/T_1}, $$</p>
-      <p>with $T_1$ the lifetime. Two things about how the calculation is set up matter for what follows.
-        The environment is written down <em>explicitly</em> — the field is in the Hamiltonian, atom and
-        field evolve together by a perfectly ordinary unitary, and you obtain the atom's fate by keeping
-        track of that whole closed system. And the calculation answers one question: what does
-        <em>this</em> process do? The course computes a particular decay, for a particular coupling. It
-        never asks what the entire menu of possible fates might be.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>Two moves turn that decay into the object N&amp;C study. The first is to <em>abstract the
-        environment</em>. Rather than write the field's Hamiltonian, treat the environment as an
-        inaccessible ancilla in a fixed state, couple system and ancilla by some joint unitary $U$, and —
-        as in Essays <a href="02-observables-measurement.html">02</a> and
-        <a href="03-density-matrix.html">03</a> — trace the ancilla out. What the system undergoes is then
-        no longer a unitary but a <strong>quantum operation</strong>, and it always takes the
-        operator-sum form</p>
-      <p>$$ \mathcal{E}(\rho) = \sum_k A_k\,\rho\,A_k^\dagger, \qquad \sum_k A_k^\dagger A_k = I, $$</p>
-      <p>whose $A_k$ are the <strong>Kraus operators</strong>. The second move is to ask the question the
-        course skips. Not “what does this environment do,” but “what is the most general transformation a
-        quantum state can suffer?” The answer is the completely-positive, trace-preserving (CPTP) maps,
-        and every one of them has a Kraus form — equivalently (the Stinespring picture), every one is a
-        unitary on the system plus an ancilla, followed by discarding the ancilla. We take that as a fact
-        and show the construction rather than prove it, exactly as Essay 02 did with Naimark: the two are
-        the same statement, once for measurements and once for dynamics. This question has no course-side
-        counterpart at all. The course always keeps the environment in view and computes cases; it never
-        maps the space those cases live in.</p>
-      <p>And here the debt from Essay 02 comes due. There, a general measurement had operators $\{A_m\}$:
-        outcome $m$ arrived with probability $\langle\psi|A_m^\dagger A_m|\psi\rangle$, leaving the state
-        proportional to $A_m|\psi\rangle$, and the POVM element was</p>
-      <p>$$ E_m = A_m^\dagger A_m. $$</p>
-      <p>A channel is <em>the very same operators</em> with the outcome forgotten — summed over instead of
-        selected among. Measurement keeps the label $m$ and the state it left behind; the channel throws
-        both away and averages. So a POVM is a quantum operation with the post-measurement state discarded,
-        and $E_m = A_m^\dagger A_m$ is the exact bridge between them: one set of operators, read as a
-        measurement if you record which one fired, as noise if you do not.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p>Nielsen &amp; Chuang develop this as Chapter 8, and the decay of Move 1 is their headline example,
-        <strong>amplitude damping</strong> (§8.3.5). It is a channel on a single qubit with just two Kraus
-        operators,</p>
-      <p>$$ A_0 = \begin{pmatrix} 1 & 0 \\ 0 & \sqrt{1-\gamma} \end{pmatrix}, \qquad
-             A_1 = \begin{pmatrix} 0 & \sqrt{\gamma} \\ 0 & 0 \end{pmatrix}, \qquad
-             \gamma = 1 - e^{-t/T_1}, $$</p>
-      <p>and they resolve the identity: $A_0^\dagger A_0 = \mathrm{diag}(1,\,1-\gamma)$ and
-        $A_1^\dagger A_1 = \mathrm{diag}(0,\,\gamma)$ sum to $I$. Read what each does. $A_1 =
-        \sqrt{\gamma}\,|0\rangle\langle 1|$ is the branch where the atom emits its quantum and drops from
-        $|1\rangle$ to $|0\rangle$; $A_0$ leaves the ground state alone and shrinks the excited amplitude
-        by $\sqrt{1-\gamma}$ — the no-emission branch, which still reshapes the state. Apply the channel to
-        the excited population and</p>
-      <p>$$ \rho_{11} \;\longmapsto\; (1-\gamma)\,\rho_{11} \;=\; e^{-t/T_1}\,\rho_{11}, $$</p>
-      <p>the exponential decay of Move 1 exactly, with the course's lifetime $T_1$ now sitting inside the
-        damping parameter $\gamma$. The physics is identical; what changed is that the field is gone from
-        the description, abstracted into an ancilla nobody reads.</p>
-      <p>That abstraction is the point of the enlargement. Amplitude damping is one point in the space of
-        all channels, and the course computes that point — as spontaneous emission — without ever drawing
-        the space. Nielsen &amp; Chuang draw the space: every CPTP map, indexed by its Kraus operators.
-        It is the same widening that Essay 04 performs for dynamics — from one Hamiltonian's evolution to
-        the whole reachable unitary group — and that Essay 15 performs for readout, from one measurement's
-        yield to all the information a state can surrender. The course solves the instances; quantum
-        information characterizes the space they inhabit.</p>
-      <p>The debt-repayment doubles as a physical picture. Put a photodetector on the field and you are
-        <em>measuring</em> which Kraus branch occurred — a click is outcome $A_1$, silence is $A_0$ — a
-        POVM with $E_0 = A_0^\dagger A_0$, $E_1 = A_1^\dagger A_1$, the measurement of Essay 02. Leave the
-        emitted photon unwatched and you must sum the branches: the same operators become the
-        amplitude-damping channel. Whether spontaneous emission is a measurement or noise is nothing but
-        whether someone is looking at the light.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side.</strong> Landau &amp; Lifshitz, time-dependent perturbation theory,
-        §40–43 — the golden rule appears as the transition rate into a continuum in §43, and exponential
-        decay with a lifetime $T_1$ is its consequence. The environment is modelled explicitly and one
-        process is computed; that is the whole difference from what follows.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang, Chapter 8: §8.2 quantum operations, §8.2.3 the
-        operator-sum (Kraus) representation, §8.2.4 the axiomatic characterization of CPTP maps, and §8.3.5
-        amplitude damping. <em>Scope, on purpose:</em> this is the single-step channel picture. Continuous-time
-        master equations of Lindblad type are a genuinely different subject and are left out; letting them
-        in would swallow the essay.</p>
-      <p><strong>How it connects.</strong> This pays the promissory note of <a href="02-observables-measurement.html">Essay&nbsp;02</a>
-        — $E_m = A_m^\dagger A_m$, the Kraus channel being a POVM with the post-measurement states kept — and it reuses the
-        trace-out of <a href="03-density-matrix.html">Essay&nbsp;03</a>, now producing dynamics rather than
-        a static mixed state. The von Neumann entropy and Holevo bound of Essay&nbsp;15 will ask how much a
-        channel like this one can still carry.</p>
-      <p><strong>Check the crossing.</strong> Confirm $A_0^\dagger A_0 + A_1^\dagger A_1 = I$ for amplitude
-        damping, then apply $\mathcal{E}$ to a general $\rho$ and read off $\rho_{11}\mapsto(1-\gamma)\rho_{11}$,
-        recovering $e^{-t/T_1}$. Finally check that $E_0=A_0^\dagger A_0$ and $E_1=A_1^\dagger A_1$ are a
-        valid POVM — the measurement you get by watching for the photon.</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="12-grover-search.html"><span class="dir">← Previous</span> 12 · Grover search</a>
-      <a class="next" href="14-error-correction.html"><span class="dir">Next essay →</span> 14 · Quantum error correction</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 13 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 13</p><h1>Quantum channels: discarded environments and noise</h1>
+<p class="lede">When a system interacts with an environment, its reduced evolution need not be unitary. The channel formalism calculates what remains accessible.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 2–3: measurement operators, density matrices, and partial trace. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Derive the operator-sum representation</a></li>
+<li><a href="#section-2">Why positivity must hold with an untouched partner</a></li>
+<li><a href="#section-3">Amplitude damping: populations and coherence</a></li>
+<li><a href="#section-4">Phase noise behaves differently</a></li>
+<li><a href="#section-5">A recorded outcome supplies more than a channel</a></li>
+<li><a href="#section-6">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">Derive the operator-sum representation</h2>
+<p>Assume the system starts in state $\rho$ and the environment in a fixed pure state $|0\rangle_E$, with no initial correlations. Let them interact through a joint unitary $U$. If the environment is inaccessible, the output state is</p>
+<p>$$\mathcal E(\rho)=\operatorname{Tr}_E[U(\rho\otimes|0\rangle\langle0|)U^\dagger].$$</p>
+<p>First take a pure system input $|\psi\rangle$. Whatever the joint unitary does, we can expand its output using the environment basis:</p>
+<p>$$U(|\psi\rangle|0\rangle_E)=\sum_j|v_j\rangle_S|j\rangle_E.$$</p>
+<p>The system vectors $v_j$ are not generally normalised or orthogonal. Taking the environment component with $I\otimes\langle j|$ selects $v_j$. Since both attaching the initial environment and applying $U$ are linear, $v_j$ depends linearly on $\psi$; this dependence defines a system operator $K_j$ with $v_j=K_j\psi$.</p>
+<p>Now form the joint density matrix and take the partial trace. The reason that only one sum survives is visible term by term:</p>
+<p>$$\begin{aligned}\rho'_{SE}&=\sum_{j,\ell}|v_j\rangle\langle v_\ell|\otimes|j\rangle\langle\ell|,\\
+\rho'_S&=\sum_{j,\ell}|v_j\rangle\langle v_\ell|\,\langle\ell|j\rangle
+=\sum_j|v_j\rangle\langle v_j|\\
+&=\sum_jK_j|\psi\rangle\langle\psi|K_j^\dagger.
+\end{aligned}$$</p>
+<p>Different environment labels are distinguishable alternatives for the discarded subsystem, so their cross terms disappear in local predictions. If the initial state is a mixture, apply this derivation to each pure member and average its density matrix. Linearity gives the same formula with $|\psi\rangle\langle\psi|$ replaced by $\rho$. No assumption that the system's output remains pure has been made.</p>
+<p>Insert an orthonormal environment basis $\{|j\rangle\}$ in the partial trace and define $K_j=(I\otimes\langle j|)U(I\otimes|0\rangle)$. Then</p>
+<p>$$\mathcal E(\rho)=\sum_jK_j\rho K_j^\dagger,\qquad\sum_jK_j^\dagger K_j=I.$$</p>
+<p>The last identity follows from $U^\dagger U=I$ and implies trace preservation: $\operatorname{Tr}\mathcal E(\rho)=\operatorname{Tr}[\rho\sum_jK_j^\dagger K_j]=1$. A fixed mixed environment can be included by purifying it into a larger space. Initial system-environment correlations require more care and are outside this construction's assumptions.</p>
+<h2 id="section-2">Why positivity must hold with an untouched partner</h2>
+<p>Each term $K_j\rho K_j^\dagger$ is positive when $\rho$ is positive. The same argument holds on a larger state with operators $I_R\otimes K_j$, so $I_R\otimes\mathcal E$ remains positive for every reference system $R$. This is complete positivity. A quantum channel is a completely positive, trace-preserving linear map.</p>
+<p>A <strong>partial transpose</strong> is a mathematical operation on a bipartite matrix: transpose only the indices belonging to the selected subsystem, in a specified product basis. On a basis operator the rule is</p>
+<p>$$(|i\rangle\langle k|\otimes|j\rangle\langle\ell|)^{T_B}
+=|i\rangle\langle k|\otimes|\ell\rangle\langle j|.$$</p>
+<p>For example, $|00\rangle\langle11|$ becomes $|01\rangle\langle10|$, while $|00\rangle\langle00|$ stays fixed. Unlike a partial trace, this does not discard a subsystem or reduce the matrix dimension. Applying the rule to the four terms of the Bell projector gives the matrix below. Its negative eigenvalue will show why this otherwise well-defined mathematical operation is not a valid local channel.</p>
+<p>Ordinary positivity is weaker. Matrix transposition $\rho\mapsto\rho^T$ preserves the eigenvalues of a single state, but transposing only the second half of a Bell projector gives</p>
+<p>$$\left(|\Phi^+\rangle\langle\Phi^+|\right)^{T_B}=\frac12\begin{pmatrix}1&0&0&0\\0&0&1&0\\0&1&0&0\\0&0&0&1\end{pmatrix}.$$</p>
+<p>The middle block has eigenvalues $+1/2,-1/2$. This cannot be an output density matrix. Transposition is positive but not completely positive, so it cannot act as a universal physical local channel on unknown inputs.</p>
+<h2 id="section-3">Amplitude damping: populations and coherence</h2>
+<p>Model a transition from excited $|1\rangle$ to ground $|0\rangle$ with probability $\gamma$, where $0\le\gamma\le1$. Choose</p>
+<p>$$K_0=\begin{pmatrix}1&0\\0&\sqrt{1-\gamma}\end{pmatrix},\qquad K_1=\begin{pmatrix}0&\sqrt\gamma\\0&0\end{pmatrix}.$$</p>
+<p>Completeness follows from $K_0^\dagger K_0=\operatorname{diag}(1,1-\gamma)$ and $K_1^\dagger K_1=\operatorname{diag}(0,\gamma)$. Multiplying out both branches gives</p>
+<p>$$\mathcal E\begin{pmatrix}\rho_{00}&\rho_{01}\\\rho_{10}&\rho_{11}\end{pmatrix}=\begin{pmatrix}\rho_{00}+\gamma\rho_{11}&\sqrt{1-\gamma}\rho_{01}\\\sqrt{1-\gamma}\rho_{10}&(1-\gamma)\rho_{11}\end{pmatrix}.$$</p>
+<p>Population flows to the ground state; coherence is attenuated by a square root. With $\gamma(t)=1-e^{-t/T_1}$, the excited population decays as $e^{-t/T_1}$ and off-diagonal entries as $e^{-t/(2T_1)}$. The corresponding $T_2=2T_1$ holds for this relaxation-only model; additional dephasing can shorten coherence time.</p>
+<p>For input $|+\rangle$ and $\gamma=3/4$, the output is $\left(\begin{smallmatrix}7/8&1/4\\1/4&1/8\end{smallmatrix}\right)$. Its Bloch vector is $(1/2,0,3/4)$ and its purity is $(1+1/4+9/16)/2=29/32$. At full damping, every input becomes $|0\rangle\langle0|$, a pure state. Noise can decrease system entropy; it need not make the system more mixed.</p>
+<h2 id="section-4">Phase noise behaves differently</h2>
+<p>A random phase flip has channel $\mathcal D_p(\rho)=(1-p)\rho+pZ\rho Z$. The diagonal entries stay fixed and the off-diagonal entries are multiplied by $1-2p$. At $p=1/2$, all computational-basis coherence disappears. At $p=1$, the operation is the known unitary $Z$, so it does not destroy purity. Increasing a parameter called “error probability” does not always increase mixedness monotonically.</p>
+<p>On the Bloch ball this channel maps $(r_x,r_y,r_z)$ to $((1-2p)r_x,(1-2p)r_y,r_z)$. Amplitude damping instead maps it to $(\sqrt{1-\gamma}r_x,\sqrt{1-\gamma}r_y,(1-\gamma)r_z+\gamma)$. The displacement toward the north pole explains why damping can purify.</p>
+<h2 id="section-5">A recorded outcome supplies more than a channel</h2>
+<p>If the environment basis is actually measured and outcome $j$ retained, its probability is $p_j=\operatorname{Tr}(K_j\rho K_j^\dagger)$ and its conditional state is $K_j\rho K_j^\dagger/p_j$. The effects are $E_j=K_j^\dagger K_j$. Forgetting the outcome gives the channel sum. If a recorded outcome $m$ groups hidden alternatives $j$, the conditional numerator is $\sum_jK_{mj}\rho K_{mj}^\dagger$.</p>
+<p>A Kraus representation is not unique: replacing the $K_j$ by unitary linear combinations leaves the channel unchanged. Consequently, a Kraus index does not automatically identify a unique physical event. It becomes an experimentally meaningful outcome only when a particular environment measurement is specified.</p>
+<h2 id="section-6">Problems</h2>
+<p><strong>1.</strong> Apply full dephasing to one half of $|\Phi^+\rangle$. Is the output entangled?</p>
+<details><summary>Worked answer</summary><p>Full dephasing on $B$ is the equal mixture of doing nothing and applying $Z$ to $B$. The second operation converts $|\Phi^+\rangle$ to $|\Phi^-\rangle=(|00\rangle-|11\rangle)/\sqrt2$. Therefore</p><p>$$\rho'=\tfrac12|\Phi^+\rangle\langle\Phi^+|+\tfrac12|\Phi^-\rangle\langle\Phi^-|.$$</p><p>Each projector has diagonal terms $|00\rangle\langle00|/2$ and $|11\rangle\langle11|/2$. Their cross terms have opposite signs and cancel in the mixture. The result is $(|00\rangle\langle00|+|11\rangle\langle11|)/2$, a mixture of two explicit product states, hence separable. Measurement in the computational basis still gives equal bits on the two sides.</p></details>
+<p><strong>2.</strong> In amplitude damping, find the probability of outcome $K_1$ and its conditional output.</p>
+<details><summary>Worked answer</summary><p>Multiply the input matrix by the jump operator on both sides:</p><p>$$\begin{aligned}K_1\rho&=\begin{pmatrix}\sqrt\gamma\rho_{10}&\sqrt\gamma\rho_{11}\\0&0\end{pmatrix},\\K_1\rho K_1^\dagger&=\begin{pmatrix}\gamma\rho_{11}&0\\0&0\end{pmatrix}.\end{aligned}$$</p><p>The trace gives $p_1=\gamma\rho_{11}$. If it is positive, dividing by it leaves $\left(\begin{smallmatrix}1&0\\0&0\end{smallmatrix}\right)=|0\rangle\langle0|$. If it is zero, this outcome cannot occur, so no conditional state is assigned by division.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §8.2.2–8.2.4 (environments, operator sums, complete positivity), §8.3.3 (phase flips), §8.3.5 (amplitude damping), and §8.5 (limitations of the formalism).</p></section><nav class="chapter-nav"><a href="12-grover-search.html"><span class="dir">Previous</span>Grover search as two reflections</a><a class="next" href="14-error-correction.html"><span class="dir">Next chapter</span>Error correction without reading the logical state</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

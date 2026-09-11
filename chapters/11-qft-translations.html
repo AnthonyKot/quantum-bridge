@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>11 · Bloch waves &amp; the quantum Fourier transform — The Bridge</title>
-<meta name="description" content="The Bloch wave a course computes to label a crystal state is the quantum Fourier transform of a position state. Period-finding runs the same diagonalization to read the eigenvalue as an answer — and the QFT is not a fast FFT.">
+<title>Fourier sampling, phase estimation, and periods — The Bridge</title>
+<meta name="description" content="The quantum Fourier transform changes amplitudes into Fourier amplitudes. Its output becomes useful when the sampling distribution reveals a phase or a period.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,137 +12,87 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 11</p><h1>Fourier sampling, phase estimation, and periods</h1>
+<p class="lede">The quantum Fourier transform changes amplitudes into Fourier amplitudes. Its output becomes useful when the sampling distribution reveals a phase or a period.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 4 and 10: controlled gates, phase kickback, and interference. Finite geometric sums. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">What a Fourier measurement can reveal</a></li>
+<li><a href="#section-2">From a function table to a periodic state</a></li>
+<li><a href="#section-3">Calculate the Fourier peaks</a></li>
+<li><a href="#section-4">Phase estimation when the phase is not exactly representable</a></li>
+<li><a href="#section-5">Which unitary contains the order?</a></li>
+<li><a href="#section-6">Recover a phase fraction using continued fractions</a></li>
+<li><a href="#section-7">Verify the denominator instead of trusting a sample</a></li>
+<li><a href="#section-8">Account for the operations used</a></li>
+<li><a href="#section-9">Problems</a></li>
+</ol></nav>
 
-<main>
-  <div class="wrap">
-    <p class="kicker">Part IV · Interference &amp; algorithms — Essay 11</p>
-    <h1>Bloch waves, and the eigenvalue that becomes an answer</h1>
-    <p class="lede">The Bloch wave a course writes down to label a state in a periodic lattice is, letter
-      for letter, the quantum Fourier transform of a position state. Period-finding runs the very same
-      diagonalization — and asks the eigenvalue to be the answer instead of a label.</p>
+<h2 id="section-1">What a Fourier measurement can reveal</h2>
+<p>Let $N=2^n$, and identify $n$-bit computational-basis strings with the integers $0,\ldots,N-1$. Our positive-sign Fourier transform is</p>
+<p>$$F_N|x\rangle=\frac1{\sqrt N}\sum_{k=0}^{N-1}e^{2\pi ixk/N}|k\rangle.$$</p>
+<p>To check unitarity, compare columns $x$ and $y$. Their overlap is $N^{-1}\sum_ke^{2\pi i(y-x)k/N}$. For $x=y$, all $N$ terms are one. Otherwise set $z=e^{2\pi i(y-x)/N}$: then $z\ne1$, $z^N=1$, and $\sum_{k=0}^{N-1}z^k=(1-z^N)/(1-z)=0$. The columns are orthonormal, so the matrix is unitary. Its inverse $F_N^\dagger$ has the opposite sign in the exponent.</p>
+<p>For an input $\sum_xc_x|x\rangle$, the output amplitude at $k$ is $N^{-1/2}\sum_xe^{2\pi ixk/N}c_x$. Measuring produces one integer drawn from the squared magnitudes of these amplitudes. To obtain a period from that integer, we must first prepare amplitudes whose Fourier probabilities depend on the period. The following two-register construction explains how.</p>
+<h2 id="section-2">From a function table to a periodic state</h2>
+<p>Use input register $A$ and output register $B$. For this first calculation, assume the period $r$ divides $N$ and $f(x)=f(x')$ exactly when $x,x'$ have the same remainder modulo $r$. These assumptions make the peaks exact; order-finding later will not require $r$ to divide $N$.</p>
+<p>Prepare $A$ uniformly and $B$ as zero, then evaluate $f$ reversibly:</p>
+<p>$$\frac1{\sqrt N}\sum_{x=0}^{N-1}|x\rangle_A|0\rangle_B
+\xrightarrow{U_f}\frac1{\sqrt N}\sum_{x=0}^{N-1}|x\rangle_A|f(x)\rangle_B.$$</p>
+<p>Now measure $B$. If its outcome is $f(x_0)$, the projector onto that value removes every term with a different function value. Before renormalisation the remaining joint vector is</p>
+<p>$$\frac1{\sqrt N}\sum_{j=0}^{L-1}|x_0+jr\rangle_A|f(x_0)\rangle_B,\qquad L=N/r.$$</p>
+<p>It contains $L$ orthogonal terms of squared amplitude $1/N$, so this outcome has probability $L/N=1/r$. Dividing by its square root gives the conditional input state</p>
+<p>$$|\psi_{x_0}\rangle_A=\frac1{\sqrt L}\sum_{j=0}^{L-1}|x_0+jr\rangle_A.$$</p>
+<p>The set of integers with a fixed remainder $x_0$ is a <strong>coset</strong> of the subgroup of multiples of $r$ in the integers modulo $N$. “Coset state” here simply means this uniform superposition over that set. Measuring the output reveals the remainder class but leaves the individual inputs within that class indistinguishable, so their amplitudes remain coherent.</p>
+<p>For $N=16,r=4$, outcome $f(1)$ leaves $(|1\rangle+|5\rangle+|9\rangle+|13\rangle)/2$. Its probability is $1/4$. The experiment does not select the particular input one; it selects all four inputs sharing the observed output.</p>
+<h2 id="section-3">Calculate the Fourier peaks</h2>
+<p>Apply $F_N$ to the conditional state. Its amplitude at $k$ is</p>
+<p>$$a_k=\frac{e^{2\pi ix_0k/N}}{\sqrt{NL}}\sum_{j=0}^{L-1}e^{2\pi ijrk/N}.$$</p>
+<p>Set $z=e^{2\pi irk/N}$. Since $L=N/r$, $z^L=e^{2\pi ik}=1$. If $z\ne1$, the geometric sum is zero. If $z=1$, every term is one and the sum is $L$. The latter condition requires $rk/N$ to be an integer, so the only possible outcomes are $k=mN/r$ for $m=0,\ldots,r-1$.</p>
+<p>Each surviving amplitude has magnitude $L/\sqrt{NL}=1/\sqrt r$, giving probability $1/r$. The offset $x_0$ contributes a phase of magnitude one and cannot change those probabilities. Consequently the measured peak distribution is also unchanged if we discard $B$ without reading it: we average over different offsets with identical Fourier probabilities.</p>
+<p>In the sixteen-dimensional example the outcomes are $0,4,8,12$, each with probability $1/4$. Dividing by $N$ gives $0,1/4,1/2,3/4$. The nonzero fractions have reduced denominators four, two, and four. Even with exact peaks, a single draw need not reveal the full period: zero supplies no denominator and $1/2$ reveals only a divisor.</p>
+<h2 id="section-4">Phase estimation when the phase is not exactly representable</h2>
+<p>Suppose a unitary has an eigenstate $|u\rangle$ with $U|u\rangle=e^{2\pi i\phi}|u\rangle$, where $0\le\phi&lt;1$. A control register in $N^{-1/2}\sum_j|j\rangle$ can apply $U^j$ coherently. To see the circuit construction, write $j=\sum_\ell j_\ell2^\ell$: controlled-$U^{2^\ell}$ on each bit multiplies to $U^j$ on that branch. The resulting state is</p>
+<p>$$\frac1{\sqrt N}\sum_{j=0}^{N-1}|j\rangle U^j|u\rangle
+=\frac1{\sqrt N}\sum_{j=0}^{N-1}e^{2\pi ij\phi}|j\rangle|u\rangle.$$</p>
+<p>Applying $F_N^\dagger$ to the control gives amplitude $a_k=N^{-1}\sum_je^{2\pi ij(\phi-k/N)}$. If $\phi=m/N$, this sum is one for $k=m$ and zero otherwise, by the same cancellation used above. For example, $N=8$ and $\phi=3/8$ give binary outcome $011$ with certainty.</p>
+<p>Otherwise, write $\delta=\phi-k/N$ and sum the series: $a_k=(1-e^{2\pi iN\delta})/[N(1-e^{2\pi i\delta})]$. The identity $|1-e^{it}|=2|\sin(t/2)|$ then yields</p>
+<p>$$p(k)=\frac{\sin^2(\pi N\delta)}{N^2\sin^2(\pi\delta)}.$$</p>
+<p>Values at removable zeroes are obtained by a limit. The probability concentrates near $k=N\phi$, but a measurement can land away from the nearest integer. We therefore obtain an estimate, not an exact general phase. Increasing $N$ improves the resolution; repeated attempts address unfavourable samples.</p>
+<h2 id="section-5">Which unitary contains the order?</h2>
+<p>Choose a known modulus $M\ge2$ and an integer $a$ coprime to it, meaning their only common positive divisor is one. The <strong>order</strong> $r$ is the smallest positive integer satisfying $a^r\equiv1\pmod M$. Define modular multiplication on basis labels $0\le y&lt;M$ by</p>
+<p>$$U_a|y\rangle=|ay\bmod M\rangle.$$</p>
+<p>Here $ay\bmod M$ is the remainder when $ay$ is divided by $M$. Coprimality means $a$ has an inverse modulo $M$, so this map permutes the basis and is unitary. In a qubit register whose dimension exceeds $M$, define it as identity on unused basis labels $y\ge M$. Multiplication of valid labels stays within the valid subspace, so the extended map is still a permutation.</p>
+<p>Starting at $|1\rangle$, repeated applications visit $|1\rangle,|a\bmod M\rangle,\ldots,|a^{r-1}\bmod M\rangle$ and then return. On this cycle, define</p>
+<p>$$|u_s\rangle=\frac1{\sqrt r}\sum_{j=0}^{r-1}e^{-2\pi isj/r}|a^j\bmod M\rangle,\qquad s=0,\ldots,r-1.$$</p>
+<p>Applying $U_a$ shifts the basis exponent $j$ to $j+1$. Relabel the new exponent as $\ell$; its coefficient becomes $e^{-2\pi is(\ell-1)/r}=e^{2\pi is/r}e^{-2\pi is\ell/r}$. Thus $U_a|u_s\rangle=e^{2\pi is/r}|u_s\rangle$. The eigenphases really are the fractions $s/r$.</p>
+<p>We do not need to know $r$ to prepare an eigenstate: use $|1\rangle=r^{-1/2}\sum_s|u_s\rangle$. To verify that identity, sum the Fourier coefficients over $s$: only $j=0$ survives. Phase estimation therefore samples the phase distributions for the different $s$ values with equal weights. The orthogonal target eigenstates prevent cross terms between those distributions when we measure the control alone.</p>
+<p>For $a=2,M=21$, the cycle is $1,2,4,8,16,11,1$, giving $r=6$. Phases such as $1/6$ and $1/3$ cannot be represented exactly with a power-of-two denominator. This is where rational approximation becomes necessary.</p>
+<h2 id="section-6">Recover a phase fraction using continued fractions</h2>
+<p>The measured rational number is $k/N$. Reducing it in lowest terms still gives a power-of-two denominator, so that operation alone cannot recover an odd factor of $r$. Instead, expand $k/N$ as a <strong>continued fraction</strong>, written $[a_0;a_1,a_2,\ldots]=a_0+1/(a_1+1/(a_2+\cdots))$. Truncating after successive entries gives rational approximations called <strong>convergents</strong>.</p>
+<p>For example, $256=3\cdot85+1$ and $85=85\cdot1$, so $85/256=[0;3,85]$. Its convergents include $0$, $1/3$, and $85/256$. The odd denominator three appears in an intermediate approximation; it is not the reduced denominator of the measured fraction.</p>
+<p>The relevant theorem is precise: if $p/q$ is in lowest terms and $|k/N-p/q|&lt;1/(2q^2)$, then <strong>$p/q$ occurs among the convergents of the continued-fraction expansion of $k/N$</strong>. The proof is a number-theoretic result; see the linked continued-fraction reference. Here the desired $p/q$ is $s/r$ after reducing <em>that unknown phase fraction</em>. An error smaller than $1/(2r^2)$ is sufficient because its reduced denominator $q$ is at most $r$.</p>
+<p>The approximation theorem and the register size are separate statements. On a nearest-integer phase-estimation outcome, $|k/N-s/r|\le1/(2N)$. Choosing $N\ge2r^2$ is a sufficient margin: that error is at most $1/(4r^2)$, strictly below the required bound. It is not a necessary condition of the continued-fraction theorem itself, nor does it guarantee every measured outcome is close enough. Since $r$ is unknown but $r&lt;M$, choosing a power of two $N\ge2M^2$ provides this margin in advance.</p>
+<h2 id="section-7">Verify the denominator instead of trusting a sample</h2>
+<p>Continue with $a=2,M=21$ and choose $N=1024$, which exceeds $2M^2$. A possible near-$1/3$ sample is $k=341$. Division gives $341/1024=[0;3,341]$, so one candidate phase fraction is $1/3$. Its approximation error is</p>
+<p>$$\left|\frac{341}{1024}-\frac13\right|=\frac1{3072}&lt;\frac1{2\cdot6^2}.$$</p>
+<p>The approximation is excellent, yet its denominator three is not the order: $2^3\bmod21=8\ne1$. This sample corresponds to $s=2,r=6$, whose fraction reduces to $1/3$. The information lost in that reduction cannot be restored from this sample alone.</p>
+<p>A second possible sample near $1/6$ is $171/1024=[0;5,1,84,2]$. Which convergent to test is fixed by the register-size margin: with $N\ge2M^2$ the fraction $s/r$ is guaranteed to be a convergent, and since $r&lt;M$ it is the convergent with the largest denominator below $M$. The convergents of $171/1024$ are $0,\ 1/5,\ 1/6,\ 85/509,\ 171/1024$; the last two have denominators above $M=21$, so the rule selects $[0;5,1]=1/6$ and candidate six, and $2^6\bmod21=1$. Checking its proper divisors one, two, and three excludes a smaller order in this example. In general a passing power test establishes a multiple of the order; further reduction or suitable candidate selection establishes the least one. Repetitions and classical verification are part of the algorithm.</p>
+<p>For factoring, an even order can yield factors through greatest common divisors of $a^{r/2}\pm1$ with $M$. Here $\gcd(7,21)=7$ and $\gcd(9,21)=3$. Some choices yield odd orders or unhelpful square roots and must be retried. The reference treats those cases and the success analysis.</p>
+<h2 id="section-8">Account for the operations used</h2>
+<p>The exact QFT circuit uses $n$ Hadamards, $n(n-1)/2$ controlled phase rotations, and qubit-order reversal: $O(n^2)$ elementary operations, meaning an upper bound proportional to $n^2$ for large $n$. This count assumes those specified rotations are available; synthesis into a fixed alphabet adds approximation overhead.</p>
+<p>Phase estimation also needs controlled powers. If $U$ is available only as a black box, constructing $U^{2^\ell}$ by repetition requires $2^\ell$ calls, for $N-1$ calls across the whole register. Modular multiplication has additional structure: $U_a^{2^\ell}$ is multiplication by the classically precomputed constant $a^{2^\ell}\bmod M$. Reversible arithmetic can implement each such multiplication efficiently in the number of bits of $M$. This arithmetic construction, rather than gate universality alone, supports the runtime advantage.</p>
+<h2 id="section-9">Problems</h2>
+<p><strong>1.</strong> Fourier-transform $(|0\rangle+|4\rangle)/\sqrt2$ for $N=8$. Show the amplitudes and verify their probabilities sum to one.</p>
+<details><summary>Worked answer</summary><p>Each of the two input terms contributes a Fourier amplitude $1/(\sqrt2\sqrt8)=1/4$. Keeping both contributions gives</p><p>$$a_k=\frac14\left(e^{2\pi i0k/8}+e^{2\pi i4k/8}\right)=\frac{1+(-1)^k}{4}.$$</p><p>For even $k$, the two contributions add to $1/2$; for odd $k$, they cancel. The probability list in integer order is $(1/4,0,1/4,0,1/4,0,1/4,0)$. There are four surviving outcomes, so the total is $4(1/4)=1$.</p></details>
+<p><strong>2.</strong> For modular multiplication by $2$ modulo $21$, phase estimation with $N=1024$ returns $k=341$. Compute the first nonzero convergent and test whether its denominator is the order. Explain what a sample $k=171$ adds.</p>
+<details><summary>Worked answer</summary><p>First use integer division: $1024=3\cdot341+1$, then $341=341\cdot1$. Thus $341/1024=[0;3,341]$, whose first nonzero convergent is $1/3$. Reducing $341/1024$ directly would leave denominator $1024$, not three.</p><p>Test the candidate with $2^3=8\not\equiv1\pmod{21}$, so three fails. The actual phase can be $2/6=1/3$, which explains how a close phase estimate can lose a factor of the order.</p><p>For the other sample, the divisions begin $1024=5\cdot171+169$ and $171=1\cdot169+2$. The convergent $[0;5,1]=1/(5+1)=1/6$ gives candidate six. Now $2^6=64\equiv1\pmod{21}$, while powers at the proper divisors $1,2,3$ give $2,4,8$. Hence six is the least positive order. The second sample supplied a numerator coprime to that order.</p></details>
 
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §15 (momentum generates translations) + Bloch's theorem — Bloch waves diagonalize translations on $\mathbb{Z}_N$</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §5.1, §5.2, §5.4.1 — the QFT, phase estimation, period-finding</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>Momentum, in the course, is the generator of spatial translation (L&amp;L §15): the operator
-        that shifts a state by $a$ is $\hat T_a = e^{-ia\hat p/\hbar}$, and its eigenstates are the plane
-        waves $e^{ikx}$. To diagonalize translations is to pass to the momentum — the Fourier — basis.
-        Now make the translations discrete. In a periodic lattice of $N$ sites with periodic boundary
-        conditions, the translations form the finite cyclic group $\mathbb{Z}_N$, and <strong>Bloch's
-        theorem</strong> gives the simultaneous eigenstates of every lattice shift:</p>
-      <p>$$ |k\rangle = \frac{1}{\sqrt N}\sum_{x=0}^{N-1} e^{2\pi i k x / N}\,|x\rangle, \qquad k = 0,1,\dots,N-1, $$</p>
-      <p>labelled by the crystal momentum $k$; the shift $\hat S:|x\rangle\mapsto|x+1\rangle$ acts on
-        $|k\rangle$ by the pure phase $e^{-2\pi i k/N}$. The course computes these Bloch waves to name the
-        stationary states of an electron in a crystal. And here is the whole essay in one observation:
-        that sum is <em>identically</em> the discrete Fourier transform of the position state $|x\rangle$.
-        The reader has already written the quantum Fourier transform. It was called a Bloch wave.</p>
-      <p><em>Where this sits.</em> Momentum as the generator of translations is Volume 3 (§15), verified.
-        Bloch's theorem for a periodic lattice is standard course material but lives in the solid-state /
-        statistical side of the curriculum, outside the Volume 3 this book checks against — so it is cited
-        by topic only, unverified, on the same footing as the thermodynamics of Essay 15.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>The mathematics is settled; what moves is the purpose of the eigenvalue. The physicist
-        diagonalizes translations in order to <em>label</em>: crystal momentum $k$ is a quantum number, a
-        tag hung on a stationary state, and the eigenvalue is bookkeeping. Period-finding diagonalizes the
-        same translations because the eigenvalue is the <em>output</em>. Given a function $f$ with an
-        unknown period $r$, its periodicity makes the relevant state invariant under translation by $r$;
-        so in the Bloch basis the amplitude concentrates on the momenta $k$ that a period $r$ forces —
-        near multiples of $N/r$ — and a single measurement in that basis returns the period, read out of
-        the phase. Same change of basis, exactly; the eigenvalue has simply moved from label to answer.</p>
-      <p>The machinery is untouched and only the intent turns over. The general form of the trick is
-        <strong>phase estimation</strong> — extract the eigenphase of a unitary — and period-finding is
-        phase estimation aimed at a shift.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p>Nielsen &amp; Chuang make the Bloch transform a gate. The <strong>quantum Fourier transform</strong>
-        (§5.1) is the unitary</p>
-      <p>$$ |x\rangle \;\longmapsto\; \frac{1}{\sqrt N}\sum_{k=0}^{N-1} e^{2\pi i x k/N}\,|k\rangle, $$</p>
-      <p>the change of basis of Move 1, and its circuit uses only $O(n^2)$ elementary gates on
-        $n=\log_2 N$ qubits. <strong>Phase estimation</strong> (§5.2) builds on it: to learn the phase
-        $\varphi$ of an eigenstate $U|u\rangle = e^{2\pi i\varphi}|u\rangle$, apply the controlled powers
-        $U^{2^j}$ into a register and run the inverse QFT, which spells $\varphi$ out in binary.
-        <strong>Period-finding</strong> (§5.4.1) is that procedure pointed at the shift, and it returns
-        $r$. (Those controlled powers $U^{2^j}$ are exactly the arbitrary unitaries
-        <a href="04-unitary-gates.html">Essay&nbsp;04</a> guarantees can be built from a finite gate set —
-        universality is what makes the phase-estimation circuit legal.)</p>
-
-      <h3>The QFT is not a fast FFT</h3>
-      <p>This is the point almost every short account blurs.
-        The QFT's $O(n^2)$ gates do stand against the fast Fourier transform's $O(N\log N)$ operations —
-        exponentially fewer, since $N = 2^n$. But this is <em>not</em> "we compute Fourier transforms
-        faster," because <strong>you cannot read the transformed amplitudes</strong>. The QFT leaves the
-        Fourier coefficients as the amplitudes of a quantum state, and a measurement returns a single
-        <em>sample</em> $k$ drawn from the transformed distribution $|\tilde f(k)|^2$ — one draw, not the
-        array. There is no way to extract the whole spectrum; the classical FFT hands you every
-        coefficient, and the QFT never will. What the QFT actually does is rotate into a basis where
-        <em>one</em> measurement is likely to hand you the <em>one number</em> you were after. That is
-        useless for signal processing and decisive for period-finding, where the answer is a single
-        integer hiding in the spectrum. The speedup is real; it is the speedup of a perfectly aimed
-        sample, not of a faster transform.</p>
-
-      <h3>Where this essay stops</h3>
-      <p>Period-finding is the end of the crossing. Turning it into Shor's factoring algorithm — reducing
-        factoring to order-finding, and pulling the exact order out of an approximate phase with continued
-        fractions — is number theory, and it has no course side at all. It is not a bridge back to the
-        physics course; it is an import from another discipline, and this book's method is to trace
-        results back to the course, not to narrate mathematics the course never touches. So the completion
-        is pointed to — Nielsen &amp; Chuang §5.3, order-finding and factoring — and left there. Naming the
-        boundary is the same discipline as naming where the physics canon falls short, run the other way:
-        here the canon reaches all the way to the transform, and the number theory is simply not its
-        territory to claim.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side.</strong> Landau &amp; Lifshitz §15 for momentum as the generator of
-        translations, with plane waves as the eigenstates — verified, Volume 3. For the discrete case,
-        Bloch's theorem in a periodic lattice, where the eigenstates are the Bloch waves that <em>are</em>
-        the discrete Fourier transform; that is standard solid-state material outside Volume 3, so it is
-        cited by topic only and flagged unverified.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang §5.1 for the quantum Fourier transform, §5.2
-        for phase estimation, and §5.4.1 for period-finding. The number-theoretic completion of Shor's
-        algorithm is §5.3, deliberately outside this essay's scope.</p>
-      <p><strong>Scope, three fences.</strong> No success-probability analysis, no continued fractions,
-        and no reduction of factoring to order-finding. The essay ends at the transform and the period.</p>
-      <p><strong>How it connects.</strong> The eigenvalue-becomes-output inversion is the same shape as the
-        precession-becomes-gate of <a href="05-spin-single-qubit.html">Essay&nbsp;05</a>, and the
-        controlled powers phase estimation needs are what <a href="04-unitary-gates.html">Essay&nbsp;04</a>'s
-        universality lets you build.</p>
-      <p><strong>Check the crossing.</strong> Confirm that $|k\rangle = N^{-1/2}\sum_x e^{2\pi i kx/N}|x\rangle$
-        is at once the Bloch eigenstate of the shift $\hat S$ (with eigenvalue $e^{-2\pi i k/N}$) and the
-        quantum Fourier transform of $|x\rangle$. Then confirm the cost claim honestly: $O(n^2)$ gates,
-        but a single sample from $|\tilde f(k)|^2$ on measurement — not the spectrum.</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="10-interference-deutsch.html"><span class="dir">← Previous</span> 10 · Interference &amp; the Deutsch–Jozsa algorithm</a>
-      <a class="next" href="12-grover-search.html"><span class="dir">Next essay →</span> 12 · Grover search</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 11 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §5.1–5.4.1 (QFT, phase estimation, order-finding, factoring, and periodic functions). For the approximation theorem, see <a href="https://crypto.stanford.edu/pbc/notes/contfrac/converge.html">Ben Lynn’s notes on continued-fraction convergence</a>. For the full algorithm and runtime argument, see <a href="https://arxiv.org/abs/quant-ph/9508027">Shor, Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer</a>.</p></section><nav class="chapter-nav"><a href="10-interference-deutsch.html"><span class="dir">Previous</span>Phase kickback and the Deutsch–Jozsa algorithm</a><a class="next" href="12-grover-search.html"><span class="dir">Next chapter</span>Grover search as two reflections</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

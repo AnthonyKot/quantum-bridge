@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>10 · Interference &amp; the Deutsch–Jozsa algorithm — The Bridge</title>
-<meta name="description" content="Hadamard–oracle–Hadamard–measure is a Mach–Zehnder interferometer in gate notation. Deutsch's algorithm works by phase kickback and interference — not by trying all answers at once, which is free and useless.">
+<title>Phase kickback and the Deutsch–Jozsa algorithm — The Bridge</title>
+<meta name="description" content="A function value can change a phase without leaving a readable value in the data register. A final change of basis converts a particular pattern of phases into an answer.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,132 +12,61 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">Part IV · Interference &amp; algorithms — Essay 10</p>
-    <h1>Interference, and the myth of trying everything at once</h1>
-    <p class="lede">Hadamard, oracle, Hadamard, measure is a Mach–Zehnder interferometer drawn in gate
-      notation. Deutsch's algorithm is a two-path interference experiment — and understanding it means
-      dismantling the most popular story about how quantum computers work.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">Sakurai §2.7, §3.2.3 — two-path interferometry; a phase in one arm shifts the fringes</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §1.4.3–1.4.4 — Deutsch and Deutsch–Jozsa: phase kickback and interference</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>The interferometer is a computation the reader has already run. A particle meets a beamsplitter
-        and takes both arms in superposition; a relative phase $\varphi$ builds up between the arms; a
-        second beamsplitter recombines them; and which detector clicks depends on $\varphi$ through a
-        $\cos^2(\varphi/2)$ fringe. Sakurai works exactly this out — the gravity-induced neutron
-        interferometer of §2.7, the $2\pi$-rotation interferometry of §3.2.3 — a phase in one arm sliding
-        the interference pattern across the detectors.</p>
-      <p>Now redraw it in gate notation. The two arms are the two states of a qubit; a balanced
-        beamsplitter is the <strong>Hadamard</strong> $H$, which sends $|0\rangle$ to
-        $(|0\rangle+|1\rangle)/\sqrt2$; a relative phase between the arms is a phase gate; the recombining
-        beamsplitter is a second $H$; and the detectors are a computational measurement. The device is
-        <strong>Hadamard&nbsp;→&nbsp;phase&nbsp;→&nbsp;Hadamard&nbsp;→&nbsp;measure</strong>. That circuit
-        is a Mach–Zehnder interferometer with no change of physics — only of notation. The reader who has
-        computed a two-path fringe pattern has computed the skeleton of a quantum algorithm.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>The one new idea is that the phase shifter can be a <em>function</em>. Take a data register
-        $|x\rangle$ and an ancilla prepared in $|{-}\rangle = (|0\rangle-|1\rangle)/\sqrt2$, and let the
-        oracle compute $f$ in the reversible way the course would demand,
-        $U_f:|x\rangle|y\rangle \mapsto |x\rangle|y\oplus f(x)\rangle$. On the $|{-}\rangle$ ancilla it
-        does something cleaner than it looks:</p>
-      <p>$$ U_f\,|x\rangle|{-}\rangle \;=\; |x\rangle\,\frac{|f(x)\rangle - |1\oplus f(x)\rangle}{\sqrt2} \;=\; (-1)^{f(x)}\,|x\rangle|{-}\rangle. $$</p>
-      <p>The ancilla is returned untouched and the function's value reappears as a <strong>phase</strong>
-        $(-1)^{f(x)}$ on the $|x\rangle$ branch. This is <strong>phase kickback</strong>: the oracle that
-        looked like “evaluate $f$ into a register” is really a programmable phase shifter, writing $f$
-        into the arms of the interferometer. And it is the inversion this series keeps meeting. In the
-        course a phase is given and you predict how the fringes fall; here you <em>write the answer into
-        a phase</em> so that the fringes will fall where it can be read.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p><strong>Deutsch's algorithm</strong> (N&amp;C §1.4.3) is the one-qubit interferometer with an
-        oracle in the middle. Start the data qubit in $|0\rangle$ and the ancilla in $|1\rangle$; apply
-        $H$ to each (the ancilla becomes $|{-}\rangle$); apply $U_f$, which by kickback leaves the data
-        qubit in $\tfrac{1}{\sqrt2}\big((-1)^{f(0)}|0\rangle + (-1)^{f(1)}|1\rangle\big)$; apply $H$ again
-        and measure. The second Hadamard interferes the two branches, and the outcome is</p>
-      <p>$$ \text{measure } 0 \iff f(0)=f(1)\ (\text{constant}), \qquad \text{measure } 1 \iff f(0)\ne f(1)\ (\text{balanced}). $$</p>
-      <p>One query settles a question that classically needs both values of $f$. The
-        <strong>Deutsch–Jozsa</strong> algorithm (§1.4.4) scales it to $n$ bits: $H^{\otimes n}$, oracle,
-        $H^{\otimes n}$, measure decides whether an $f$ promised to be constant or balanced is which, in
-        a <em>single</em> query, where a deterministic classical algorithm can need $2^{n-1}+1$.</p>
-
-      <h3>What is actually doing the work — and what is not</h3>
-      <p>Here is the essay's real job, because the popular account is wrong. After the first Hadamard
-        layer the data register is $\tfrac{1}{\sqrt{2^n}}\sum_x |x\rangle$, and the oracle then stamps
-        every one of the $2^n$ values of $f$ into the state at once. This is the image everyone carries:
-        the machine “tries all answers in parallel.” It is true, and by itself it is <strong>worthless</strong>.
-        Measure the post-oracle state $\tfrac{1}{\sqrt{2^n}}\sum_x (-1)^{f(x)}|x\rangle$ and you get one
-        uniformly random $x$ — a single sample, telling you $f$ at one input, exactly what one classical
-        query would give. The exponentially many evaluations are inaccessible; you may read only one draw
-        from them. Quantum parallelism, on its own, buys nothing.</p>
-      <p>The power is entirely in the <em>second</em> Hadamard layer, which makes the $2^n$ branches
-        interfere. The amplitude landing on the all-zeros outcome is $\tfrac{1}{2^n}\sum_x (-1)^{f(x)}$:
-        for a constant $f$ every term has the same sign and they add to $\pm 1$, so $0^n$ is certain;
-        for a balanced $f$ the $+$ and $-$ terms are equal in number and <strong>cancel exactly</strong>,
-        so $0^n$ is impossible. The algorithm works by the destructive interference of the wrong-answer
-        branches, not by parallel evaluation. Every quantum speedup is an exercise in arranging phases so
-        that the answers you do not want annihilate — the parallelism is free, and the interference is
-        the whole art.</p>
-
-      <h3>An honest measure of the separation</h3>
-      <p>The exponential gap — one query against $2^{n-1}+1$ — is a statement about <em>deterministic</em>
-        classical algorithms. A randomized one settles the question in a handful of queries with
-        overwhelming confidence: sample a few inputs at random; two different values prove “balanced” on
-        the spot, and $k$ agreeing values leave “constant” wrong with probability at most $2^{-(k-1)}$. So
-        the separation is real and it is a query-model statement about determinism — not, by itself,
-        evidence of a practical speedup.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side.</strong> Sakurai &amp; Napolitano, two-path interferometry: the
-        gravity-induced neutron interferometer (§2.7) and the $2\pi$-rotation interferometry (§3.2.3),
-        where a relative phase between the arms shifts the fringes — the physics the gate circuit redraws.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang §1.4.3 (Deutsch) and §1.4.4 (Deutsch–Jozsa),
-        with §1.4.2 on quantum parallelism — the “evaluate $f$ everywhere” step that Move 3 shows is inert
-        without the closing interference.</p>
-      <p><strong>Scope, three fences.</strong> No Simon's algorithm, no query-complexity formalism, and no
-        complexity classes. The essay stays with one interferometer and one promise problem.</p>
-      <p><strong>How it connects.</strong> The mechanism generalizes: <a href="12-grover-search.html">Grover's search
-        (Essay&nbsp;12)</a> is this same interference of phase-marked branches, only applied repeatedly to
-        drive amplitude onto the answer rather than in a single shot.</p>
-      <p><strong>Check the crossing.</strong> Verify $U_f|x\rangle|{-}\rangle = (-1)^{f(x)}|x\rangle|{-}\rangle$;
-        trace $H\,$–$\,U_f\,$–$\,H$ on Deutsch's data qubit and confirm it reads $0$ exactly when $f$ is
-        constant; then measure the post-oracle superposition on its own and watch it yield one useless
-        sample — proof that the final Hadamard, not the parallelism, is where the algorithm lives.</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="09-teleportation-superdense.html"><span class="dir">← Previous</span> 09 · Teleportation &amp; superdense coding</a>
-      <a class="next" href="11-qft-translations.html"><span class="dir">Next essay →</span> 11 · Bloch waves &amp; the quantum Fourier transform</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 10 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 10</p><h1>Phase kickback and the Deutsch–Jozsa algorithm</h1>
+<p class="lede">A function value can change a phase without leaving a readable value in the data register. A final change of basis converts a particular pattern of phases into an answer.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 1 and 4: relative phase, Hadamard gates, and reversible function evaluation. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Turn a bit flip into a phase</a></li>
+<li><a href="#section-2">Deutsch's one-bit problem</a></li>
+<li><a href="#section-3">What happens without the final Hadamard?</a></li>
+<li><a href="#section-4">Extend the calculation to $n$ input bits</a></li>
+<li><a href="#section-5">A complete two-bit example</a></li>
+<li><a href="#section-6">Count the right resource</a></li>
+<li><a href="#section-7">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">Turn a bit flip into a phase</h2>
+<p>For a Boolean function $f$, use the reversible oracle $U_f|x,y\rangle=|x,y\oplus f(x)\rangle$. Prepare the target in $|-\rangle=(|0\rangle-|1\rangle)/\sqrt2$. Since $X|-\rangle=-|-\rangle$,</p>
+<p>$$U_f|x\rangle|-\rangle=|x\rangle X^{f(x)}|-\rangle=(-1)^{f(x)}|x\rangle|-\rangle.$$</p>
+<p>The target is unchanged and factors out, while the data branch acquires a sign. On a single basis input this sign is global and unobservable. On a superposition of different inputs, different signs become relative phases and can affect interference. This is phase kickback.</p>
+<h2 id="section-2">Deutsch's one-bit problem</h2>
+<p>For $f:\{0,1\}\to\{0,1\}$, decide whether $f(0)=f(1)$ or $f(0)\ne f(1)$. Prepare the data qubit in $|+\rangle$ and the target in $|-\rangle$. After one oracle call, suppressing the unchanged target, the data state is</p>
+<p>$$\frac{(-1)^{f(0)}|0\rangle+(-1)^{f(1)}|1\rangle}{\sqrt2}.$$</p>
+<p>Applying $H$ gives</p>
+<p>$$\frac{(-1)^{f(0)}+(-1)^{f(1)}}2|0\rangle+\frac{(-1)^{f(0)}-(-1)^{f(1)}}2|1\rangle.$$</p>
+<p>Equal function values make the $|1\rangle$ amplitude zero and the other amplitude $\pm1$. Different values make the $|0\rangle$ amplitude zero. Measuring the data qubit therefore returns $f(0)\oplus f(1)$ with certainty. We learn a relation between the values, not the two values separately.</p>
+<p>For $f(0)=1,f(1)=0$, the post-oracle state is $-| -\rangle$, and the final state is $-|1\rangle$. The common minus sign has no effect on the answer. This example is a useful check that a negative amplitude is not a negative probability.</p>
+<h2 id="section-3">What happens without the final Hadamard?</h2>
+<p>Measuring the phase-encoded data state directly in the computational basis returns $0$ or $1$ with probability $1/2$, for every function. It does not reveal $f(x)$ at the sampled input: the value is stored in a phase that this measurement ignores. This differs from the state $\sum_x|x\rangle|f(x)\rangle/\sqrt N$ (here and below $N=2^n$ counts the $n$-bit inputs), where measuring both registers does return one input-output pair.</p>
+<p>The final gate matters because it adds the two amplitudes for one outcome and subtracts them for the other. The problem is designed so that those sums depend only on the property being sought. We can identify which output cancels by adding its contributions, which is the calculation that will generalise to more input bits.</p>
+<h2 id="section-4">Extend the calculation to $n$ input bits</h2>
+<p>Let $N=2^n$. Promise that $f:\{0,1\}^n\to\{0,1\}$ is either constant or balanced, meaning exactly $N/2$ inputs give one. Prepare $|0^n\rangle$, apply $H^{\otimes n}$, call the oracle with a $|-\rangle$ target, and apply $H^{\otimes n}$ again.</p>
+<p>The notation $H^{\otimes n}$ means one Hadamard on each of the $n$ qubits, with no interaction between them in this layer. Start with a single bit $b$. The two rules for $H$ combine into one expression:</p>
+<p>$$H|b\rangle=\frac{|0\rangle+(-1)^b|1\rangle}{\sqrt2}
+=\frac1{\sqrt2}\sum_{z=0}^1(-1)^{bz}|z\rangle.$$</p>
+<p>For two input bits, distributing the tensor product produces</p>
+<p>$$H^{\otimes2}|x_1x_2\rangle
+=\frac12\sum_{z_1,z_2=0}^1(-1)^{x_1z_1}(-1)^{x_2z_2}|z_1z_2\rangle.$$</p>
+<p>The factor $1/2$ comes from two factors of $1/\sqrt2$, and the signs multiply by adding their exponents. With $n$ qubits there are $2^n$ output strings, each with magnitude $2^{-n/2}$. Its sign is determined by the parity of $\sum_jx_jz_j$. This derives the many-qubit identity used below, rather than introducing a separate transform rule.</p>
+<p>For bit strings, write $x\cdot z=\sum_jx_jz_j\pmod2$. The identity $H^{\otimes n}|x\rangle=N^{-1/2}\sum_z(-1)^{x\cdot z}|z\rangle$ gives the final amplitude</p>
+<p>$$a_z=\frac1N\sum_x(-1)^{f(x)+x\cdot z}.$$</p>
+<p>At $z=0^n$, this is the average of $(-1)^{f(x)}$. A constant function gives $a_0=\pm1$ and hence outcome $0^n$ certainly. A balanced function gives $a_0=0$ and hence a nonzero string certainly. If the promise is violated, the binary decision is not guaranteed: if a fraction $q$ of outputs are one, then $p(0^n)=(1-2q)^2$.</p>
+<h2 id="section-5">A complete two-bit example</h2>
+<p>Take $f(x_1x_2)=x_1\oplus x_2$. In basis order $00,01,10,11$, the oracle produces amplitudes $(1,-1,-1,1)/2$. This factors as $|-\rangle\otimes|-\rangle$. The last Hadamards give $|11\rangle$. Thus the balanced verdict is certain, and here even the particular nonzero output is fixed. Other balanced functions can have different output distributions.</p>
+<h2 id="section-6">Count the right resource</h2>
+<p>A deterministic classical algorithm needs $N/2+1$ queries in the worst case: after $N/2$ identical values, both promises remain possible. The quantum circuit uses one oracle call. But a randomised classical algorithm can sample $k$ inputs independently and declare balanced if it sees both values. On a balanced function the probability all values agree is $2(1/2)^k=2^{1-k}$; on a constant function it is always correct.</p>
+<p>The exponential contrast is therefore with exact deterministic query complexity, not with bounded-error classical computation. Total execution cost also includes preparing registers, implementing the oracle, and applying gates. The oracle model isolates one resource; it does not settle practical runtime.</p>
+<h2 id="section-7">Problems</h2>
+<p><strong>1.</strong> Replace the target $|-\rangle$ by $|+\rangle$. What answer distribution results?</p>
+<details><summary>Worked answer</summary><p>On the replacement target, $X|+\rangle=(|1\rangle+|0\rangle)/\sqrt2=|+\rangle$. Therefore either oracle action, $X^0$ or $X^1$, gives the same target vector with the same phase:</p><p>$$U_f\left(\frac1{\sqrt N}\sum_x|x\rangle|+\rangle\right)=\frac1{\sqrt N}\sum_x|x\rangle|+\rangle.$$</p><p>The input data state is still $H^{\otimes n}|0^n\rangle$. The final Hadamard layer gives $(H^2)^{\otimes n}|0^n\rangle=|0^n\rangle$. Its outcome is zero for every function, so it cannot distinguish the two promises.</p></details>
+<p><strong>2.</strong> Let $f(x)=s\cdot x\oplus c$ for fixed string $s$ and bit $c$. Evaluate $a_z$.</p>
+<details><summary>Worked answer</summary><p>Substitute $f(x)=s\cdot x\oplus c$ into the amplitude formula and use parity arithmetic to combine the exponents:</p><p>$$a_z=\frac{(-1)^c}{N}\sum_x(-1)^{(s\oplus z)\cdot x}.$$</p><p>If $z=s$, the exponent is zero for every $x$, giving $a_s=(-1)^c$. Otherwise choose an index $j$ where $s_j\ne z_j$ and pair each string $x$ with $x\oplus e_j$, where $e_j$ has only bit $j$ equal to one. Their exponents differ by one, so their contributions sum to zero. Every string belongs to exactly one such pair, making $a_z=0$ for all $z\ne s$. The output is consequently $(-1)^c|s\rangle$, with an irrelevant common sign.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §1.4.1–1.4.4 (reversible computation, quantum parallelism, Deutsch, and Deutsch–Jozsa).</p></section><nav class="chapter-nav"><a href="09-teleportation-superdense.html"><span class="dir">Previous</span>Teleportation and dense coding, step by step</a><a class="next" href="11-qft-translations.html"><span class="dir">Next chapter</span>Fourier sampling, phase estimation, and periods</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

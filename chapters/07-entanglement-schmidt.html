@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>07 · Entanglement &amp; the Schmidt decomposition — The Bridge</title>
-<meta name="description" content="The two-particle wavefunction that won't factorize is a nuisance in a physics course and the defining resource in Nielsen &amp; Chuang. The Schmidt decomposition is essay 03 read backwards.">
+<title>Entanglement and the Schmidt decomposition — The Bridge</title>
+<meta name="description" content="For a pure joint state, entanglement is a failure of factorisation. A matrix decomposition turns that definition into a calculation.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,146 +12,60 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 07</p><h1>Entanglement and the Schmidt decomposition</h1>
+<p class="lede">For a pure joint state, entanglement is a failure of factorisation. A matrix decomposition turns that definition into a calculation.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 1 and 3: tensor products, density matrices, eigenvalues, and partial trace. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">A direct test for two qubits</a></li>
+<li><a href="#section-2">Derive the Schmidt form</a></li>
+<li><a href="#section-3">A state whose Schmidt basis is not obvious</a></li>
+<li><a href="#section-4">What local unitaries can change</a></li>
+<li><a href="#section-5">Mixed-state entanglement needs a different definition</a></li>
+<li><a href="#section-6">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">A direct test for two qubits</h2>
+<p>Write a normalised state as $|\Psi\rangle=a|00\rangle+b|01\rangle+c|10\rangle+d|11\rangle$, and arrange its coefficients in a matrix $C=\left(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\right)$. For a product state with local vectors $u$ and $v$, the coefficients satisfy $C_{ij}=u_iv_j$. This is an outer product $uv^T$ and has rank one.</p>
+<p>Conversely, a nonzero rank-one matrix factors in that way; the factors can be normalised while preserving the normalised joint state. Thus for a pure two-qubit state,</p>
+<p>$$\text{product state}\quad\Longleftrightarrow\quad ad-bc=0.$$</p>
+<p>For $|\Phi^+\rangle$, $C=I/\sqrt2$ and $\det C=1/2$, so no factorisation exists. For $|+\rangle|1\rangle$, $C=\left(\begin{smallmatrix}0&1/\sqrt2\\0&1/\sqrt2\end{smallmatrix}\right)$ and the determinant vanishes. This determinant test is specific to pure two-qubit states; it is not a criterion for arbitrary mixed states.</p>
+<h2 id="section-2">Derive the Schmidt form</h2>
+<p>For arbitrary finite subsystem dimensions, collect the amplitudes into a rectangular matrix $C$. A <strong>singular value decomposition</strong> (SVD) is a factorisation $C=UDV^\dagger$: $U$ and $V$ are unitary changes of basis, and the rectangular diagonal matrix $D$ has nonnegative entries $s_k$, called singular values. We can construct the nonzero entries using an ordinary eigenvalue problem, so no prior SVD technique is required here.</p>
+<p>Here is the construction behind that factorisation. Diagonalise the Hermitian positive semidefinite matrix $C^\dagger C$. Let its orthonormal eigenvectors be $v_k$, with eigenvalues $s_k^2\ge0$. For every $s_k>0$, define $u_k=Cv_k/s_k$. The resulting vectors are orthonormal because</p>
+<p>$$u_\ell^\dagger u_k=\frac{v_\ell^\dagger C^\dagger Cv_k}{s_\ell s_k}
+=\frac{s_k^2}{s_\ell s_k}\,v_\ell^\dagger v_k=\delta_{\ell k}.$$</p>
+<p>The symbol $\delta_{\ell k}$ equals one if the two indices agree and zero otherwise. Vectors with eigenvalue zero lie in the kernel of $C$, meaning $C$ sends them to zero, and contribute nothing. Inserting the complete eigenbasis gives $C=\sum_{s_k>0}s_ku_kv_k^\dagger$. Completing the $u_k$ to a full orthonormal basis yields $U$, while the $v_k$ are the columns of $V$. This proves the factorisation needed for the state expansion.</p>
+<p>Its physical purpose is to choose local bases in which the joint coefficients pair matching indices only. In the original basis every $A$ label could accompany every $B$ label; the diagonal form reorganises the same state into a sum of orthogonal pairs. A single surviving pair is a product state. Several surviving pairs cannot be absorbed into one pair of local state vectors.</p>
+<p>Substituting into $|\Psi\rangle=\sum_{ij}C_{ij}|i\rangle_A|j\rangle_B$ gives</p>
+<p>$$|\Psi\rangle=\sum_k s_k|u_k\rangle_A|v_k^*\rangle_B,\qquad \sum_k s_k^2=1.$$</p>
 
-<main>
-  <div class="wrap">
-    <p class="kicker">Part III · Entanglement — Essay 07</p>
-    <h1>Entanglement, and the wavefunction that won't factorize</h1>
-    <p class="lede">Bell (08) and teleportation (09), the two essays that follow, both rest on this one
-      concept; here is the concept itself. A course meets it as a computational nuisance. Nielsen
-      &amp; Chuang meet the same fact as the resource that defines the field.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L — a two-particle $\psi(x_1,x_2)$ that will not separate, met as an obstacle</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.5 — entanglement as a resource, and the Schmidt decomposition</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>The workhorse technique for any multi-particle problem in the course is separation of variables.
-        Faced with a two-particle Schrödinger equation, you guess that the wavefunction factorizes,</p>
-      <p>$$ \psi(x_1, x_2) = \varphi(x_1)\,\chi(x_2), $$</p>
-      <p>substitute, and hope the equation splits into two one-particle problems you can already solve.
-        It works precisely when the two particles do not interact — when the Hamiltonian carries no term
-        coupling $x_1$ to $x_2$. The instant an interaction $V(x_1,x_2)$ appears, the trick fails: the
-        equation refuses to separate, and the true solution is a genuinely two-variable function that
-        cannot be written as any product $\varphi(x_1)\chi(x_2)$. The helium atom is the standard
-        casualty; the course reaches for perturbation theory and self-consistent fields precisely because
-        the exact state will not factor.</p>
-      <p>So the course does meet entanglement — a non-factorizing joint state is exactly what
-        entanglement is — but it meets it wearing the wrong clothes. A state that will not separate is,
-        to a problem-solver, the <em>hard case</em>: the reason the easy method broke, an obstacle to be
-        approximated away. The whole of this essay is the observation that this obstacle is the prize.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>Take the identical fact and change only the attitude. A pure state of two subsystems is either a
-        product,</p>
-      <p>$$ |\Psi\rangle_{AB} = |\psi\rangle_A \otimes |\phi\rangle_B, $$</p>
-      <p>or it is not; when it is not, N&amp;C call it <strong>entangled</strong>, and rather than
-        deploring the fact they build a discipline on it. The non-separability that cost the course its
-        favourite method is the thing that lets an entangled pair carry correlations no product state can
-        — the fuel of the Bell violation in <a href="08-epr-bell.html">Essay&nbsp;08</a> and of
-        teleportation in <a href="09-teleportation-superdense.html">Essay&nbsp;09</a>. Nothing about the
-        mathematics changed between the course and the computer; the sign flipped on how it is valued. An
-        obstacle became an asset.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p>To make “how entangled” a number, N&amp;C prove the <strong>Schmidt decomposition</strong>
-        (§2.5): every pure bipartite state can be written</p>
-      <p>$$ |\Psi\rangle_{AB} = \sum_i \lambda_i\,|i\rangle_A\,|i\rangle_B, \qquad
-             \lambda_i \ge 0,\quad \sum_i \lambda_i^2 = 1, $$</p>
-      <p>with orthonormal <em>Schmidt bases</em> $\{|i\rangle_A\}$, $\{|i\rangle_B\}$ chosen to match the
-        state. The recipe is pure linear algebra: collect the amplitudes into a coefficient matrix
-        $C = (c_{jk})$ from $|\Psi\rangle = \sum_{jk} c_{jk}|j\rangle_A|k\rangle_B$, and the Schmidt
-        coefficients $\lambda_i$ are simply the <strong>singular values of $C$</strong>. The number of
-        non-zero $\lambda_i$ — the <strong>Schmidt rank</strong> — is the rank of $C$, and it is the
-        whole diagnostic: <em>rank 1 means the state is a product means it is not entangled.</em></p>
-
-      <h3>This is Essay 03 read backwards</h3>
-      <p>The callback is exact and quantitative. In <a href="03-density-matrix.html">Essay&nbsp;03</a> we
-        traced out $B$ to get the reduced state $\rho_A$. In Schmidt form that trace is immediate:</p>
-      <p>$$ \rho_A = \operatorname{Tr}_B|\Psi\rangle\langle\Psi| = \sum_i \lambda_i^2\,|i\rangle_A\langle i|_A, $$</p>
-      <p>so the eigenvalues of the reduced density matrix are precisely the <em>squared Schmidt
-        coefficients</em> $\lambda_i^2$ (and $\rho_B$ has the very same spectrum). The two essays measure
-        one thing from two sides: the mixedness of the part (03) and the entanglement of the whole (07)
-        are the same list of numbers $\lambda_i^2$. Take the Bell state
-        $|\beta_{00}\rangle = \tfrac{1}{\sqrt2}(|00\rangle+|11\rangle)$: its coefficient matrix is
-        $C = \tfrac{1}{\sqrt2}I$, singular values $\lambda_0=\lambda_1=\tfrac{1}{\sqrt2}$, Schmidt rank 2
-        — entangled — and $\rho_A = \sum_i \lambda_i^2 |i\rangle\langle i| = \tfrac{I}{2}$, the maximally
-        mixed state of Essay 03, eigenvalues $\tfrac12,\tfrac12$. A product like $|0\rangle|{+}\rangle$
-        has rank 1 and a pure $\rho_A$. What was “the part of a Bell state is blank” in 03 is “the Bell
-        state has Schmidt rank 2” here — one fact, entered from either door.</p>
-
-      <h3>A caution: the entanglement that isn't a resource</h3>
-      <p>Here is where a reader can go wrong. Identical particles
-        must carry a symmetric or antisymmetric joint state; two fermions, in first-quantized notation,
-        are forced into</p>
-      <p>$$ |\Psi\rangle = \tfrac{1}{\sqrt2}\big(|a\rangle_1|b\rangle_2 - |b\rangle_1|a\rangle_2\big), $$</p>
-      <p>which has Schmidt rank 2 and so, by the letter of the definition, “looks maximally entangled.”
-        It is not entanglement in the sense this essay cares about. The subscripts $1$ and $2$ are not
-        physical addresses — identical particles have no individuality, and there is no “particle 1” you
-        can package up and hand to Bob while keeping particle 2 for Alice. The apparent correlation is an
-        artefact of writing indistinguishable particles as though they were labelled. Resource
-        entanglement requires <em>separately addressable</em> parties — Alice's qubit and Bob's qubit,
-        systems you can act on locally and far apart — and antisymmetrization supplies no such split.</p>
-      <p>The clean way to hold the two ideas apart: <strong>symmetrization is a constraint on which
-        states are legal; entanglement is a property of a state you already have.</strong> The
-        exchange-antisymmetry of L&amp;L's identical-particles chapter tells you which multi-particle
-        wavefunctions may exist at all; entanglement, as a resource, is about what two agents can do with
-        a state distributed between them. Conflating the two is a common confusion, and Chapter IX is
-        exactly where the course invites it — a distinction that neither a physics text nor a computing
-        text usually draws.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side.</strong> Separation of variables is the technique throughout — see the
-        central-field problem (L&amp;L §32 onward) for the separable case that works — and the
-        non-factorizing two-particle state is met wherever an interaction spoils it (the two-electron
-        atom). For the <em>caution</em>, Landau &amp; Lifshitz Chapter IX on the identity of particles
-        (§61 indistinguishability, §62 exchange interaction, §63 symmetry with respect to interchange):
-        read the antisymmetric state there as a legality constraint, <em>not</em> as distributable
-        entanglement.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang §2.5, the Schmidt decomposition and
-        purifications, and §2.2.8 on composite systems for the product-versus-entangled distinction;
-        Bell states are introduced in §1.3.6.</p>
-      <p><strong>How it connects.</strong> This essay is the concept beneath the two entanglement essays
-        that follow — the resource that <a href="08-epr-bell.html">Bell (08)</a> will show is real and
-        that <a href="09-teleportation-superdense.html">teleportation (09)</a> will spend. And it is the twin
-        of <a href="03-density-matrix.html">the density matrix (03)</a>: the squared Schmidt coefficients
-        are the reduced-state eigenvalues, so the von Neumann entropy $S(\rho_A)$ of Essay 15 will turn
-        the Schmidt spectrum into a single number of <em>ebits</em>.</p>
-      <p><strong>Check the crossing.</strong> Form the coefficient matrix $C=\tfrac{1}{\sqrt2}I$ for
-        $|\beta_{00}\rangle$, take its singular values to get $\lambda_0=\lambda_1=\tfrac{1}{\sqrt2}$
-        (Schmidt rank 2), then confirm $\rho_A = CC^\dagger = \tfrac{I}{2}$ so that the reduced-state
-        eigenvalues equal $\lambda_i^2$. Repeat for a product state and watch $C$ drop to rank 1 and
-        $\rho_A$ become pure — the crossing between 03 and 07 in two lines.</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="06-linearity-no-cloning.html"><span class="dir">← Previous</span> 06 · Linearity &amp; the no-cloning theorem</a>
-      <a class="next" href="08-epr-bell.html"><span class="dir">Next essay →</span> 08 · EPR &amp; Bell's theorem</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 07 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+<p>Here $|u_k\rangle=\sum_iU_{ik}|i\rangle$ and $|v_k^*\rangle=\sum_jV_{jk}^*|j\rangle$. The complex conjugation follows from the dagger in the SVD. Renaming the second orthonormal family as $|w_k\rangle$ gives the usual Schmidt form $\sum_ks_k|u_k\rangle|w_k\rangle$. Each family is orthonormal. The number of nonzero coefficients is the Schmidt rank.</p>
+<p>Tracing one subsystem now takes one line:</p>
+<p>$$\rho_A=\sum_ks_k^2|u_k\rangle\langle u_k|,\qquad \rho_B=\sum_ks_k^2|w_k\rangle\langle w_k|.$$</p>
+<p>Cross terms vanish by orthogonality. The reduced states have the same nonzero eigenvalues, even if their dimensions differ. Schmidt rank one gives pure reduced states and a product joint state. Higher rank gives mixed reduced states and entanglement. Degenerate coefficients allow different Schmidt bases, but the coefficient list is fixed.</p>
+<h2 id="section-3">A state whose Schmidt basis is not obvious</h2>
+<p>Consider $|\Psi\rangle=(|00\rangle+|01\rangle+|10\rangle)/\sqrt3$. Its coefficient matrix and first reduced state are</p>
+<p>$$C=\frac1{\sqrt3}\begin{pmatrix}1&1\\1&0\end{pmatrix},\qquad\rho_A=CC^\dagger=\frac13\begin{pmatrix}2&1\\1&1\end{pmatrix}.$$</p><p>The identity $\rho_A=CC^\dagger$ is the partial trace written in coefficients: $(\rho_A)_{ii'}=\sum_j C_{ij}C^*_{i'j}$, because tracing over $B$ pairs the second index of $C$ with the second index of $C^*$. Likewise $\rho_B=(C^\dagger C)^T$ has the same nonzero eigenvalues, which is why the construction above could start from $C^\dagger C$.</p>
+<p>The reduced matrix has trace one and determinant $1/9$. Its characteristic equation $\lambda^2-\lambda+1/9=0$ gives</p>
+<p>$$\lambda_\pm=\frac{3\pm\sqrt5}{6},\qquad s_\pm=\sqrt{\lambda_\pm}.$$</p>
+<p>Both coefficients are nonzero, so the state is entangled. Its purity is $\lambda_+^2+\lambda_-^2=1-2/9=7/9$. It is less entangled than a Bell pair according to the pure-state entropy measure introduced in Chapter 15: the Bell pair's reduced spectrum $(1/2,1/2)$ is more uniform than $(\lambda_+,\lambda_-)\approx(0.87,0.13)$. We did not need to find the local eigenvectors to establish entanglement or compute purity.</p>
+<h2 id="section-4">What local unitaries can change</h2>
+<p>Under $A\otimes B$, the coefficient matrix becomes $C'=ACB^T$. Since $A$ and $B$ are unitary, the singular values remain unchanged. Local unitaries can rotate the Schmidt bases but cannot change the Schmidt coefficients. In particular, no independent rotations on the two halves can turn a product state into a Bell pair.</p>
+<p>For pure bipartite states the coefficients also specify entanglement entropy, $-\sum_ks_k^2\log_2s_k^2$. This is zero for a product and one for a two-qubit Bell state. We postpone its information-theoretic interpretation until entropy has been defined.</p>
+<h2 id="section-5">Mixed-state entanglement needs a different definition</h2>
+<p>A mixed state is separable if it admits a convex combination of product states, $\rho_{AB}=\sum_jp_j\rho_A^{(j)}\otimes\rho_B^{(j)}$. Otherwise it is entangled. The classically correlated mixture of $|00\rangle$ and $|11\rangle$ is separable by inspection, although both reduced states are mixed. A spectral decomposition of a mixed matrix is not a Schmidt decomposition of a pure vector, and the pure-state tests above cannot be transferred to it.</p>
+<p>The subsystem split also belongs in the problem statement. Entanglement here refers to independently addressable tensor factors $A$ and $B$. Antisymmetrising a state of identical particles does not by itself establish that labelled particles supply two independently controllable qubits.</p>
+<h2 id="section-6">Problems</h2>
+<p><strong>1.</strong> Find the Schmidt coefficients of $(|00\rangle+|01\rangle+|10\rangle-|11\rangle)/2$.</p>
+<details><summary>Worked answer</summary><p>Arrange the amplitudes as $C=\frac12\left(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}\right)$. Compute the reduced matrix explicitly:</p><p>$$CC^\dagger=\frac14\begin{pmatrix}1+1&1-1\\1-1&1+1\end{pmatrix}=I/2.$$</p><p>Both reduced eigenvalues are $1/2$, so both singular values, which are the Schmidt coefficients, are $1/\sqrt2$. One Schmidt expression is $(|0\rangle|+\rangle+|1\rangle|-\rangle)/\sqrt2$. Applying $H$ to the second factor sends it to $(|00\rangle+|11\rangle)/\sqrt2$, confirming equivalence to a Bell state under a local unitary.</p></details>
+<p><strong>2.</strong> Show that $\sqrt p|00\rangle+e^{i\phi}\sqrt{1-p}|11\rangle$ has reduced purity $p^2+(1-p)^2$. Can $\phi$ change its entanglement?</p>
+<details><summary>Worked answer</summary><p>The diagonal terms of the joint projector have weights $p$ and $1-p$. Its cross term is $e^{-i\phi}\sqrt{p(1-p)}|00\rangle\langle11|$ and its conjugate; both vanish under either partial trace. Thus</p><p>$$\rho_A=\operatorname{diag}(p,1-p),\qquad\operatorname{Tr}\rho_A^2=p^2+(1-p)^2.$$</p><p>To see directly why the phase does not affect entanglement, apply $V=\operatorname{diag}(1,e^{-i\phi})$ to the first qubit. The $|00\rangle$ term is unchanged, while the phase on $|11\rangle$ becomes $e^{i\phi}e^{-i\phi}=1$. A local basis change removes it without changing either Schmidt coefficient.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §2.1.10 (singular values), §2.5 (Schmidt decomposition), and §12.5 (entanglement).</p></section><nav class="chapter-nav"><a href="06-linearity-no-cloning.html"><span class="dir">Previous</span>Why an unknown state cannot be copied</a><a class="next" href="08-epr-bell.html"><span class="dir">Next chapter</span>Bell correlations and the CHSH inequality</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

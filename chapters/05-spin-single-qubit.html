@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>05 · Spin &amp; single-qubit gates — The Bridge</title>
-<meta name="description" content="A spin precessing in a magnetic field and a single-qubit gate are the same unitary. The Pauli matrices are the spin; the bit-flip gate is a timed half-turn. This essay builds the rotations essay 04 assumed.">
+<title>Rotations and physical control of a qubit — The Bridge</title>
+<meta name="description" content="A gate matrix is the result of evolution under a Hamiltonian. Deriving that evolution fixes the rotation angle, its sign, and the pulse duration.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,127 +12,65 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">Part II · Dynamics — Essay 05</p>
-    <h1>Spin, and the gates that are rotations of it</h1>
-    <p class="lede">A spin precessing in a magnetic field and a single-qubit gate are the same unitary,
-      read with different intent. The Pauli matrices the course uses for spin are the elementary gates;
-      the bit-flip gate is a spin turned half a turn. This essay builds the rotations that Essay 04 took
-      for granted.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L Ch VIII (§54–55, §111–113) — spin-½, the Pauli operators, precession in a field</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.1.3, §4.2 — the Pauli gates, Bloch-sphere rotations, the Pauli group</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>The course's spin-½ comes with a triple of operators — the spin components
-        $\hat{\mathbf S} = \tfrac{\hbar}{2}\boldsymbol\sigma$, where
-        $\boldsymbol\sigma = (\sigma_x,\sigma_y,\sigma_z)$ are the Pauli matrices (L&amp;L Ch VIII,
-        §54–55). Put that spin in a magnetic field $\mathbf B = B\,\hat{\mathbf n}$ and the coupling of
-        its magnetic moment gives a Hamiltonian proportional to $\hat{\mathbf n}\cdot\boldsymbol\sigma$,</p>
-      <p>$$ \hat H = \tfrac{\hbar\omega}{2}\,\hat{\mathbf n}\cdot\boldsymbol\sigma, $$</p>
-      <p>and the course computes what happens next: the spin <strong>precesses</strong> about
-        $\hat{\mathbf n}$ at the Larmor frequency $\omega$ (L&amp;L §111–113, spin in a magnetic field).
-        Its time evolution is the unitary</p>
-      <p>$$ U(t) = e^{-i\hat H t/\hbar} = \exp\!\Big(\!-i\,\tfrac{\theta}{2}\,\hat{\mathbf n}\cdot\boldsymbol\sigma\Big), \qquad \theta = \omega t. $$</p>
-      <p>That is the whole of the physics: a two-level magnetic moment turns steadily about the field
-        direction, and after a time $t$ it has rotated through $\theta = \omega t$. The course treats
-        this as something that <em>happens to</em> the spin under a field it is subjected to.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>The step is to stop suffering the precession and start commanding it. The same unitary
-        $\exp(-i\tfrac{\theta}{2}\,\hat{\mathbf n}\cdot\boldsymbol\sigma)$ that the course reads as “the
-        field turned the spin by $\theta$ about $\hat{\mathbf n}$” is, to a quantum computer, a
-        <strong>single-qubit gate</strong>: a rotation $R_{\hat n}(\theta)$ you apply deliberately by
-        pulsing a field for exactly the right duration. Only the agency changed — evolution you observe
-        becomes an operation you choose. And the course's spin observables become the elementary gates
-        directly: the Pauli matrices are the <strong>bit-flip</strong> $X=\sigma_x$, the
-        <strong>phase-flip</strong> $Z=\sigma_z$, and their product $Y=\sigma_y$.</p>
-      <p>A note on what this essay is <em>not</em> doing, to keep it clear of its neighbour.
-        <a href="04-unitary-gates.html">Essay&nbsp;04</a> asked which rotations suffice — how a finite set
-        of them densely generates every unitary. That question is settled there and not reopened here.
-        This essay only says <em>what the rotations are</em>: it builds the single-qubit gates that
-        Essay 04 consumed as given. The two are the two halves of one subject, deliberately kept apart —
-        04 the sufficiency, 05 the construction.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p>Nielsen &amp; Chuang package the precession as the <strong>rotation operators</strong> (§2.1.3,
-        §4.2). Expanding the exponential,</p>
-      <p>$$ R_{\hat n}(\theta) = \exp\!\Big(\!-i\tfrac{\theta}{2}\,\hat{\mathbf n}\cdot\boldsymbol\sigma\Big)
-             = \cos\tfrac{\theta}{2}\,I \;-\; i\sin\tfrac{\theta}{2}\,(\hat{\mathbf n}\cdot\boldsymbol\sigma), $$</p>
-      <p>and the content of §4.2 is that <em>every</em> single-qubit unitary is one of these up to a global
-        phase, $U = e^{i\alpha}R_{\hat n}(\theta)$ — a rigid rotation of the Bloch sphere of Essay 01.
-        The named gates are particular rotations: $X$, $Y$, $Z$ are half-turns about the three axes;
-        $S$ and $T$ are $\tfrac{\pi}{2}$ and $\tfrac{\pi}{4}$ rotations about $\hat z$; and the Hadamard
-        $H = \tfrac{1}{\sqrt2}(X+Z)$ is the half-turn about the diagonal axis $(\hat x + \hat z)/\sqrt2$
-        that interchanges the $x$ and $z$ directions ($HXH = Z$, $HZH = X$).</p>
-
-      <h3>A worked example: the bit-flip gate is a half-turn</h3>
-      <p>Take a $\pi$-pulse about $\hat x$ — the field left on just long enough that $\theta = \pi$. Then</p>
-      <p>$$ R_{\hat x}(\pi) = \cos\tfrac{\pi}{2}\,I - i\sin\tfrac{\pi}{2}\,\sigma_x = -i\,\sigma_x = -i\,X. $$</p>
-      <p>Up to the global phase $-i$, that is exactly the $X$ gate. The bit flip $|0\rangle \leftrightarrow
-        |1\rangle$ is not a separate piece of machinery bolted onto the qubit; it is the course's spin,
-        precessed half a turn about $\hat x$ and stopped. Every gate in the set is a precession, timed —
-        the crossing could not be more literal.</p>
-
-      <h3>The Pauli group</h3>
-      <p>The three gates $X,Y,Z$ square to the identity and anticommute in pairs, with
-        $\sigma_x\sigma_y = i\sigma_z$ and its cyclic partners. Under multiplication they generate, with
-        the phases $\{\pm 1, \pm i\}$, a finite group of sixteen elements — the <strong>Pauli group</strong>
-        on one qubit. It is worth naming because it is the alphabet of a later essay: the check operators
-        of quantum error correction (<a href="14-error-correction.html">Essay&nbsp;14</a>) are products of
-        Paulis, and the commuting sets among them are precisely the complete set of commuting observables
-        that defines a code space. The gates built here from spin are the letters that spell the codes
-        there.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side.</strong> Landau &amp; Lifshitz Chapter VIII, §54–55, for spin-½ and the
-        Pauli operators, and §111–113 for a spin in a magnetic field — the precession whose unitary is
-        the gate. The magnetic moment is what makes the field a control knob.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang §2.1.3 for the Pauli matrices and §4.2 for
-        single-qubit operations — the rotation operators $R_{\hat n}(\theta)$ and the statement that they
-        (up to phase) exhaust the single-qubit unitaries.</p>
-      <p><strong>How it connects.</strong> This builds what <a href="04-unitary-gates.html">Essay&nbsp;04</a>
-        assumed: the single-qubit rotations whose finite subsets 04 showed to be universal. The division
-        of labour is deliberate — 04 asks which rotations suffice, 05 says what they are — so the two do
-        not re-derive each other. Forward, the Pauli group here is the vocabulary of the stabilizer codes
-        in <a href="14-error-correction.html">Essay&nbsp;14</a>.</p>
-      <p><strong>Check the crossing.</strong> Verify that $R_{\hat n}(\theta) = \cos\tfrac{\theta}{2}I -
-        i\sin\tfrac{\theta}{2}(\hat{\mathbf n}\cdot\boldsymbol\sigma)$ is a Bloch-sphere rotation by
-        $\theta$ about $\hat{\mathbf n}$; that $R_{\hat x}(\pi) = -iX$, so a half-turn is the bit flip;
-        and that $X,Y,Z$ anticommute and close into the sixteen-element Pauli group.</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="04-unitary-gates.html"><span class="dir">← Previous</span> 04 · Universality &amp; the one word that changes</a>
-      <a class="next" href="06-linearity-no-cloning.html"><span class="dir">Next essay →</span> 06 · Linearity &amp; the no-cloning theorem</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 05 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 05</p><h1>Rotations and physical control of a qubit</h1>
+<p class="lede">A gate matrix is the result of evolution under a Hamiltonian. Deriving that evolution fixes the rotation angle, its sign, and the pulse duration.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 1 and 4: Pauli matrices, global phase, and gates. The Schrödinger equation. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Exponentiating a two-level Hamiltonian</a></li>
+<li><a href="#section-2">A pulse that flips the populations</a></li>
+<li><a href="#section-3">Phase rotations and pulse axes</a></li>
+<li><a href="#section-4">Construct an arbitrary pure state</a></li>
+<li><a href="#section-5">Detuning changes both the speed and the reachable population</a></li>
+<li><a href="#section-6">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">Exponentiating a two-level Hamiltonian</h2>
+<p>Let the Hamiltonian be $\mathcal H=(\hbar\Omega/2)\,\mathbf n\cdot\boldsymbol\sigma$, where $\mathbf n$ is a real unit vector, $\boldsymbol\sigma=(X,Y,Z)$, and $\Omega$ has units of inverse time. The Schrödinger equation $i\hbar\,\partial_t|\psi(t)\rangle=\mathcal H|\psi(t)\rangle$ says that the Hamiltonian $\mathcal H$ generates time evolution. For a constant Hamiltonian its solution is $|\psi(t)\rangle=U(t)|\psi(0)\rangle$ with $U(t)=\exp(-i\mathcal Ht/\hbar)$; differentiating the exponential term by term confirms it. We use $\mathcal H$ to avoid confusing the Hamiltonian with the Hadamard gate $H$.</p>
+<p>Write $A=\mathbf n\cdot\boldsymbol\sigma=n_xX+n_yY+n_zZ$; the dot means this explicit sum, and $n_x^2+n_y^2+n_z^2=1$. The Pauli matrices satisfy $X^2=Y^2=Z^2=I$. Distinct Pauli matrices <strong>anticommute</strong>: for example, $XY=-YX$, so their anticommutator $\{X,Y\}=XY+YX$ is zero. Expanding the square now gives</p>
+<p>$$\begin{aligned}A^2={}&(n_x^2+n_y^2+n_z^2)I\\
+&+n_xn_y(XY+YX)+n_xn_z(XZ+ZX)+n_yn_z(YZ+ZY)=I.
+\end{aligned}$$</p>
+<p>This identity makes the exponential manageable. Since $A^2=I$, we have $A^{2m}=I$ and $A^{2m+1}=A$ for every nonnegative integer $m$. Split the exponential's power series into its even and odd terms:</p>
+<p>$$\begin{aligned}e^{-i\theta A/2}
+&=I\sum_{m=0}^\infty\frac{(-1)^m(\theta/2)^{2m}}{(2m)!}
+-iA\sum_{m=0}^\infty\frac{(-1)^m(\theta/2)^{2m+1}}{(2m+1)!}\\
+&=I\cos(\theta/2)-iA\sin(\theta/2).
+\end{aligned}$$</p>
+<p>The two scalar sums are the cosine and sine series. The half-angle comes from the factor $1/2$ in the spin Hamiltonian; it is not an extra convention inserted at the end. Substituting $\theta=\Omega t$ gives the rotation matrix:</p>
+<p>$$R_{\mathbf n}(\theta)=e^{-i\theta\mathbf n\cdot\boldsymbol\sigma/2}=\cos\frac\theta2 I-i\sin\frac\theta2\,\mathbf n\cdot\boldsymbol\sigma,\qquad\theta=\Omega t.$$</p>
+<p>A term $aI$ in the Hamiltonian contributes only the common phase $e^{-iat/\hbar}$ for this isolated qubit. It does not change its Bloch vector.</p>
+<h2 id="section-2">A pulse that flips the populations</h2>
+<p>For an $x$ rotation,</p>
+<p>$$R_x(\theta)=\begin{pmatrix}\cos(\theta/2)&-i\sin(\theta/2)\\-i\sin(\theta/2)&\cos(\theta/2)\end{pmatrix}.$$</p>
+<p>A bare qubit has Hamiltonian $\mathcal H_0=-(\hbar\omega_0/2)Z$, so $|0\rangle$ is its lower-energy eigenstate, the <strong>ground state</strong>, and $\hbar\omega_0$ the level splitting; the driving Hamiltonian above is what remains once that term is removed by a change of frame, described in the last section. The <strong>populations</strong> of a state are its probabilities $p(0)$ and $p(1)$ in the computational basis. Acting on the ground state $|0\rangle$ gives</p>
+<p>$$R_x(\theta)|0\rangle=\cos\frac\theta2|0\rangle-i\sin\frac\theta2|1\rangle.$$</p>
+<p>Consequently $p(1)=\sin^2(\Omega t/2)$. A $\pi$ pulse, meaning a drive of duration $t=\pi/\Omega$ so that the rotation angle $\theta=\Omega t$ equals $\pi$, transfers all population from $|0\rangle$ to $|1\rangle$. The complete gate is $R_x(\pi)=-iX$, so it performs the same isolated-qubit operation as $X$ up to a common phase. A half-duration pulse gives $(|0\rangle-i|1\rangle)/\sqrt2$, which points along $-y$, not $+x$.</p>
+<p>At $\theta=2\pi$ the matrix is $-I$, and at $4\pi$ it is $I$. The Bloch vector has already returned after $2\pi$ because it is insensitive to a common minus sign. A controlled rotation can make that sign relative between branches, as Chapter 4 illustrated.</p>
+<h2 id="section-3">Phase rotations and pulse axes</h2>
+<p>A $z$ rotation is diagonal:</p>
+<p>$$R_z(\theta)=\begin{pmatrix}e^{-i\theta/2}&0\\0&e^{i\theta/2}\end{pmatrix}.$$</p>
+<p>Acting on $|+\rangle$, it gives $e^{-i\theta/2}(|0\rangle+e^{i\theta}|1\rangle)/\sqrt2$. The relative phase increases by $\theta$. Thus $S=e^{i\pi/4}R_z(\pi/2)$ and $T=e^{i\pi/8}R_z(\pi/4)$. A gate that changes no computational-basis probabilities can still move the state around the equator and change later interference.</p>
+<p>For rotations about $y$, the matrix is real: $R_y(\theta)=\left(\begin{smallmatrix}\cos(\theta/2)&-\sin(\theta/2)\\\sin(\theta/2)&\cos(\theta/2)\end{smallmatrix}\right)$. In particular $R_y(\pi/2)|0\rangle=|+\rangle$. This prepares the same state as $H$ on input $|0\rangle$, but the two gates are not identical: their action on $|1\rangle$ differs.</p>
+<h2 id="section-4">Construct an arbitrary pure state</h2>
+<p>Starting from $|0\rangle$, apply $R_y(\theta)$ followed by $R_z(\varphi)$:</p>
+<p>$$R_z(\varphi)R_y(\theta)|0\rangle=e^{-i\varphi/2}\left(\cos\frac\theta2|0\rangle+e^{i\varphi}\sin\frac\theta2|1\rangle\right).$$</p>
+<p>After discarding the overall phase this is the general state from Chapter 1. State preparation requires only that the circuit act correctly on the known initial state. Specifying an entire gate requires its action on a basis. Up to overall phase, any one-qubit unitary admits an Euler form $R_z(\alpha)R_y(\beta)R_z(\gamma)$. That decomposition uses continuously variable angles; compiling them into a fixed alphabet is the separate approximation problem of Chapter 4.</p>
+<h2 id="section-5">Detuning changes both the speed and the reachable population</h2>
+<p>An idealised driven qubit in a <strong>rotating frame</strong> (coordinates that rotate about $z$ at the drive frequency $\omega_d$, which removes $\mathcal H_0$ from the equation of motion) can have the effective Hamiltonian $\mathcal H_{\rm eff}=\hbar(\Omega X+\Delta Z)/2$. Here $\Omega$ is the transverse drive rate and $\Delta$ the <strong>detuning</strong> $\Delta=\omega_d-\omega_0$, the difference between the drive frequency and the qubit's level splitting. This form assumes the rotating-wave approximation; we analyse the effective model rather than deriving it from a specific device.</p>
+<p>Set $\omega=\sqrt{\Omega^2+\Delta^2}$. The axis is $(\Omega,0,\Delta)/\omega$. Substituting it into the exponential formula gives, on input $|0\rangle$,</p>
+<p>$$p(1;t)=\frac{\Omega^2}{\Omega^2+\Delta^2}\sin^2\left(\frac{\sqrt{\Omega^2+\Delta^2}\,t}{2}\right).$$</p>
+<p>At resonance $\Delta=0$ we recover full inversion. If $\Delta=\Omega$, the peak population is only $1/2$, however we choose the duration of this constant pulse. Changing the duration cannot correct an axis error. This is why a gate specification must include both the intended rotation and the physical control assumptions.</p>
+<h2 id="section-6">Problems</h2>
+<p><strong>1.</strong> A resonant $\pi$ pulse is over-rotated by $\epsilon$. Find the probability that input $|0\rangle$ remains $0$.</p>
+<details><summary>Worked answer</summary><p>Use the actual rotation angle $\theta=\pi+\epsilon$ in the expression for $R_x(\theta)|0\rangle$. The amplitude of $|0\rangle$ is $\cos((\pi+\epsilon)/2)=-\sin(\epsilon/2)$. Thus</p><p>$$p(0)=|-\sin(\epsilon/2)|^2=\sin^2(\epsilon/2)=\epsilon^2/4+O(\epsilon^4).$$</p><p>The final notation means the omitted terms are bounded by a constant times $\epsilon^4$ for small $\epsilon$. Equivalently, using $\sin u\approx u$ gives the leading approximation directly. At zero angle error the probability vanishes. This measures population error for input $|0\rangle$; it does not by itself describe the gate on every possible input.</p></details>
+<p><strong>2.</strong> Give angles preparing $(\sqrt3|0\rangle+i|1\rangle)/2$.</p>
+<details><summary>Worked answer</summary><p>Match the desired amplitudes to $\cos(\theta/2)$ and $e^{i\varphi}\sin(\theta/2)$. Their magnitudes require $\cos(\theta/2)=\sqrt3/2$ and $\sin(\theta/2)=1/2$, giving $\theta=\pi/3$. Their relative phase is $i$, giving $\varphi=\pi/2$.</p><p>$$\begin{aligned}R_y(\pi/3)|0\rangle&=\tfrac{\sqrt3}{2}|0\rangle+\tfrac12|1\rangle,\\R_z(\pi/2)R_y(\pi/3)|0\rangle&=e^{-i\pi/4}\left(\tfrac{\sqrt3}{2}|0\rangle+\tfrac i2|1\rangle\right).\end{aligned}$$</p><p>The common factor has unit magnitude and is an unobservable global phase. The order is $R_y$ first, then $R_z$; this second operation sets the relative phase after the populations are prepared.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §2.2.2 (evolution) and §4.2 (single-qubit operations). Sakurai &amp; Napolitano, Modern Quantum Mechanics, spin precession and magnetic resonance (topic reference).</p></section><nav class="chapter-nav"><a href="04-unitary-gates.html"><span class="dir">Previous</span>Gates, circuits, and universality</a><a class="next" href="06-linearity-no-cloning.html"><span class="dir">Next chapter</span>Why an unknown state cannot be copied</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>

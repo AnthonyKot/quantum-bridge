@@ -57,6 +57,12 @@ print(f"  {len(order)} essays in contents order, chain contiguous" if not prob e
 sys.exit(1 if prob else 0)
 PY
 
+echo "== reading structure and internal anchors =="
+python3 scripts/check_content.py || fail=1
+
+echo "== worked calculation checks =="
+python3 scripts/check_calculations.py || fail=1
+
 echo "== quotation scan (no reproduced source prose) =="
 grep -rn "<blockquote>" chapters/*.html >/dev/null && echo "  (read each <blockquote> by eye — curly-quote regex is unreliable)"
 lifted=$(grep -rIn "Many introductions\|augmented by unitary operations\|coarse way\|without in any way disturbing\|element of physical reality corresponding" chapters/ 2>/dev/null)

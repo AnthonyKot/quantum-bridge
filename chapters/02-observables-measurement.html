@@ -1,8 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>02 · Measurement &amp; the subspace — The Bridge</title>
-<meta name="description" content="Projective measurement is what you see from inside a subspace. Enlarge the space and it becomes the POVM of Nielsen &amp; Chuang; Naimark's theorem says that is the whole story.">
+<title>Measurement: probabilities and state changes — The Bridge</title>
+<meta name="description" content="A measurement must specify both the chance of each outcome and what happens to the system. These are different pieces of information.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -10,147 +12,59 @@
 <script defer src="../static/katex/auto-render.min.js"></script>
 <script defer src="../static/theme.js"></script>
 
-<header class="site-header">
-  <div class="wrap">
-    <a class="brand" href="../index.html">The&nbsp;<span>Bridge</span></a>
-    <nav class="site-nav">
-      <a href="../index.html">Contents</a>
-      <a href="../about.html">About</a>
-      <button class="theme-toggle" type="button">☾ Dark</button>
-    </nav>
-  </div>
-</header>
-
-<main>
-  <div class="wrap">
-    <p class="kicker">Part I · States — Essay 02</p>
-    <h1>Measurement, and the world outside the subspace</h1>
-    <p class="lede">A course teaches projective measurement as the whole theory of observation. It is
-      not the whole theory — it is the view from inside a subspace. Widen the space and a larger,
-      simpler notion of measurement appears, and Naimark's theorem says nothing was ever left out.</p>
-
-    <div class="bridge">
-      <div class="side from"><span class="tag">In the course</span><span class="what">L&amp;L §7 — measurement as projection onto an eigenbasis, and where it stops</span></div>
-      <div class="arrow">→</div>
-      <div class="side to"><span class="tag">The result</span><span class="what">N&amp;C §2.2.6 — POVMs, and Naimark's dilation theorem</span></div>
-    </div>
-
-    <section class="move">
-      <h2><span class="num">Move 1</span> In the course</h2>
-      <p>Landau &amp; Lifshitz give measurement one section, §7, and it is decisive. To measure an
-        observable is to name a Hermitian operator $\hat A$, expand the state in its orthonormal
-        eigenbasis $\{|n\rangle\}$, and collapse: the outcome is an eigenvalue $a_n$ with probability
-        $|\langle n|\psi\rangle|^2$, and the state is left in $|n\rangle$. Written with the projectors
-        $P_n = |n\rangle\langle n|$, this is the <strong>projective</strong> (or von Neumann)
-        measurement, and it carries three rigid features:</p>
-      <p>$$ P_n P_m = \delta_{nm} P_n, \qquad \sum_n P_n = I, \qquad p(n) = \langle\psi|P_n|\psi\rangle. $$</p>
-      <p>The projectors are <em>orthogonal</em> and <em>idempotent</em>. Two consequences follow that a
-        course rarely flags as assumptions. First, orthogonality caps the number of distinct outcomes at
-        the dimension $d$ of the space — a qubit measurement has at most two. Second, idempotence makes
-        the measurement <em>repeatable</em>: measure again and you get the same $n$ with certainty. This
-        is presented, in L&amp;L and in every first course, as <em>the</em> account of measurement — most
-        introductions stop exactly here, at the projective case, and never let on that a more general
-        notion of measurement exists at all. The question is what that habit quietly assumes.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 2</span> The step across</h2>
-      <p>It assumes the thing you measure is the whole world. It almost never is. Your qubit sits next to
-        an ancilla, a probe, a stray mode of the apparatus; what you actually control and read out is a
-        <em>larger</em> system, and the qubit is a subspace of it. So do the honest thing: adjoin an
-        ancilla in a fixed state, let system and ancilla interact through a joint unitary $U$, and then
-        perform an ordinary projective measurement — but only on the enlarged system. Ask what
-        statistics the original qubit alone appears to obey.</p>
-      <p>Grinding through the algebra (a projective $\{P_m\}$ upstairs, pulled back through $U$ and the
-        ancilla state down onto the qubit) leaves each outcome governed by an operator
-        $E_m = \langle a|U^\dagger P_m U|a\rangle$ acting on the qubit, and these operators have lost the
-        rigidity of Move 1. They need not be orthogonal. They need not be projectors, so the measurement
-        need not be repeatable. There can be <em>more</em> of them than the dimension $d$. Exactly two
-        properties survive the descent into the subspace:</p>
-      <p>$$ E_m \ge 0 \quad(\text{each is positive}), \qquad \sum_m E_m = I \quad(\text{they resolve the identity}), $$</p>
-      <p>with the outcome probabilities still $p(m) = \langle\psi|E_m|\psi\rangle$. That is the step
-        across, and it is a loosening, not a new law: drop “orthogonal projector,” keep “positive
-        operator summing to the identity.” The course was not wrong. It was computing inside a subspace
-        and mistaking the walls of that subspace for the walls of the theory.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 3</span> The result</h2>
-      <p>The surviving object is a <strong>POVM</strong> — a positive operator-valued measure — and it is
-        the general measurement of Nielsen &amp; Chuang, §2.2.6. A POVM is any set $\{E_m\}$ of positive
-        operators with $\sum_m E_m = I$; the outcome probabilities are $p(m)=\langle\psi|E_m|\psi\rangle$.
-        Projective measurement is the special case where the $E_m$ happen to be orthogonal projectors.
-        The generalization earns its keep by doing something projective measurement provably cannot.</p>
-
-      <h3>A worked example: telling apart states you shouldn't be able to</h3>
-      <p>Alice hands Bob a qubit she promises is either $|0\rangle$ or $|{+}\rangle =
-        \tfrac{1}{\sqrt2}(|0\rangle+|1\rangle)$. These are not orthogonal — $\langle 0|{+}\rangle =
-        1/\sqrt2$ — and N&amp;C's Box 2.3 proves no measurement can <em>reliably</em> tell them apart:
-        none can always name which state it was handed. A projective measurement, forced to answer on
-        every shot, must sometimes answer wrong; a POVM escapes by sometimes declining to answer at all. Take three elements, with $c = \tfrac{\sqrt2}{1+\sqrt2}$:</p>
-      <p>$$ E_1 = c\,|1\rangle\langle 1|, \qquad
-             E_2 = c\,|{-}\rangle\langle{-}|, \qquad
-             E_3 = I - E_1 - E_2, $$</p>
-      <p>where $|{-}\rangle = \tfrac{1}{\sqrt2}(|0\rangle-|1\rangle)$. Check the logic. If the state was
-        $|0\rangle$, then $\langle 0|E_1|0\rangle = c\,|\langle 0|1\rangle|^2 = 0$: outcome 1 is
-        <em>impossible</em> for $|0\rangle$, so seeing outcome 1 means the state was certainly
-        $|{+}\rangle$. Symmetrically, $\langle{+}|E_2|{+}\rangle \propto |\langle{+}|{-}\rangle|^2 = 0$,
-        so outcome 2 certifies $|0\rangle$. Outcome 3 is the honest “don't know.” Bob is
-        <strong>never wrong</strong> — he is only, sometimes, silent.</p>
-      <p>The constant is forced by positivity: $E_3 \ge 0$ requires $\det E_3 \ge 0$, and
-        $c = \sqrt2/(1+\sqrt2) = 2-\sqrt2$ is exactly the value where $\det E_3 = 0$, the largest $c$
-        the constraint allows. At that value the inconclusive outcome has probability
-        $\langle\psi|E_3|\psi\rangle = 1/\sqrt2$ for either input, so Bob gets a definite,
-        never-mistaken answer with probability $1 - 1/\sqrt2 \approx 0.29$ — precisely the optimal
-        unambiguous-discrimination rate $1 - |\langle 0|{+}\rangle|$. No projective measurement on the
-        qubit alone can match this; it takes the extra outcomes a POVM allows.</p>
-
-      <h3>Naimark: nothing was actually added</h3>
-      <p>Move 2 built a POVM by measuring projectively on a larger space. The remarkable converse —
-        <strong>Naimark's dilation theorem</strong> — is that <em>every</em> POVM arises this way. Any
-        general measurement on a system is a projective measurement on that system together with an
-        ancilla, after a suitable unitary — a POVM is the shadow such a measurement casts back on the
-        smaller space. N&amp;C make this equivalence explicit in Box 2.5: projective measurement dressed
-        with ancillas and unitaries, and the general POVM formalism, describe exactly the same physics.
-        So the loosening of Move 2 added no new physics to the postulates — it revealed that the
-        course's projective measurement was already the general one, seen through the keyhole of a
-        subspace. The three extra outcomes Bob used were projective outcomes upstairs, in dimensions his
-        course never mentioned.</p>
-    </section>
-
-    <section class="move">
-      <h2><span class="num">Move 4</span> Reading</h2>
-      <p><strong>Course side — and the gap, named.</strong> Landau &amp; Lifshitz §7, “The wave function
-        and measurements,” for projective measurement — and note that it <em>stops there</em>, as does
-        Sakurai and every standard course. This is not an oversight to tiptoe around; it is the essay's
-        subject. N&amp;C's own Box 2.5 gives the reason physicists skip it: in most real experiments the
-        apparatus is too coarse to realize anything finer than a crude projective measurement, so the
-        general formalism is rarely needed — which is exactly the admission that the course works in a
-        subspace.</p>
-      <p><strong>Result side.</strong> Nielsen &amp; Chuang: §2.2.5 for projective measurements, §2.2.6
-        for POVMs, §2.2.4 with Box 2.3 for distinguishing states, and Box 2.5 (with the composite-system
-        construction of §2.2.8) for the projective-measurement-on-a-larger-space equivalence — the
-        content of Naimark's dilation theorem.</p>
-      <p><strong>What this essay unblocks.</strong> POVMs are the vocabulary the rest of Part&nbsp;I
-        and Part&nbsp;V are written in. The density operator (Essay&nbsp;03) is the state on which POVMs
-        act; quantum operations and Kraus operators (Essay&nbsp;13) are barely more than a POVM with the
-        post-measurement states kept; and accessible information and the Holevo bound (Essay&nbsp;15) are
-        statements about the best POVM. Fixing this notion here unblocks all three.</p>
-      <p><strong>Check the crossing.</strong> Verify $\sum_m E_m = I$ for the three elements above, then
-        confirm that demanding $E_3 \ge 0$ forces $c = \sqrt2/(1+\sqrt2)$ (compute $\det E_3$ in the
-        $\{|0\rangle,|1\rangle\}$ basis and set it to zero — it factors to $c^2 - 4c + 2 = 0$). The
-        never-err discrimination is entirely in that one constraint.</p>
-    </section>
-
-    <nav class="chapter-nav">
-      <a href="01-superposition-qubit.html"><span class="dir">← Previous</span> 01 · Superposition &amp; the qubit</a>
-      <a class="next" href="03-density-matrix.html"><span class="dir">Next essay →</span> 03 · The density matrix &amp; the state of a part</a>
-    </nav>
-  </div>
-</main>
-
-<footer class="site-footer">
-  <div class="wrap">
-    <p>The Bridge · Essay 02 · Original prose; no copyrighted source text reproduced.</p>
-  </div>
-</footer>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
+</div></header>
+<main id="main"><div class="wrap"><p class="kicker">Chapter 02</p><h1>Measurement: probabilities and state changes</h1>
+<p class="lede">A measurement must specify both the chance of each outcome and what happens to the system. These are different pieces of information.</p><p class="prerequisites"><strong>Before you start:</strong> Chapter 1: bras, kets, orthogonality, and measurement amplitudes. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Projectors and conditional states</a></li>
+<li><a href="#section-2">Introducing a measuring apparatus</a></li>
+<li><a href="#section-3">Why effects do not determine disturbance</a></li>
+<li><a href="#section-4">A measurement allowed to answer “inconclusive”</a></li>
+<li><a href="#section-5">Every finite POVM has an apparatus construction</a></li>
+<li><a href="#section-6">Problems</a></li>
+</ol></nav>
+<h2 id="section-1">Projectors and conditional states</h2>
+<p>An ideal projective measurement is described by mutually orthogonal projectors $P_m$, with $P_mP_n=\delta_{mn}P_m$ and $\sum_mP_m=I$. The projectors may have rank greater than one. For a pure input state,</p>
+<p>$$p(m)=\langle\psi|P_m|\psi\rangle,\qquad |\psi_m\rangle=\frac{P_m|\psi\rangle}{\sqrt{p(m)}}.$$</p>
+<p>The second expression is conditional on an outcome with nonzero probability. Its denominator restores norm one. This is the ideal Lüders update; the same outcome statistics can be accompanied by additional physical disturbance.</p>
+<p>For $P_0=|0\rangle\langle0|$, a computational-basis outcome $0$ leaves the qubit in $|0\rangle$. Repeating that ideal measurement gives $0$ with certainty because $P_0^2=P_0$. A degenerate measurement behaves differently from measuring a complete basis. On two qubits, even parity uses $P_{\rm even}=|00\rangle\langle00|+|11\rangle\langle11|$. It preserves $\alpha|00\rangle+\beta|11\rangle$; separate measurements of the two bits destroy the coherence between those terms.</p>
+<h2 id="section-2">Introducing a measuring apparatus</h2>
+<p>Prepare an auxiliary system in $|0\rangle_A$, couple it to the system by a unitary $U$, and read its orthonormal pointer basis $\{|m\rangle_A\}$. Define an operator on the original system by taking the apparatus matrix element,</p>
+<p>$$M_m=(I\otimes\langle m|_A)U(I\otimes|0\rangle_A).$$</p>
+<p>There are three spaces to distinguish in this expression. $I\otimes|0\rangle_A$ attaches the prepared apparatus to any system vector. $U$ acts on the resulting joint vector. Finally, $I\otimes\langle m|_A$ extracts the component with pointer value $m$, leaving a vector in the system space. Their composition is therefore a linear map from the system space back to itself: the operator $M_m$.</p>
+<p>For example, if the joint output has the form $|v_0\rangle_S|0\rangle_A+|v_1\rangle_S|1\rangle_A$, applying $I\otimes\langle0|_A$ leaves $|v_0\rangle_S$. The other term vanishes because $\langle0|1\rangle=0$. The vectors $v_0,v_1$ need not be normalised: their squared norms are the two pointer probabilities. This is why the selected branch must later be divided by its norm.</p>
+<p>The joint output is $\sum_m M_m|\psi\rangle\otimes|m\rangle_A$. Its norm is one for every normalised input, so $\sum_mM_m^\dagger M_m=I$. Projecting the apparatus onto $m$ selects the vector $M_m|\psi\rangle$. Therefore</p>
+<p>$$p(m)=\langle\psi|M_m^\dagger M_m|\psi\rangle,\qquad |\psi_m\rangle=\frac{M_m|\psi\rangle}{\sqrt{p(m)}}.$$</p>
+<p>The positive operators $E_m=M_m^\dagger M_m$ are called effects. Their collection is a positive operator-valued measure, or POVM: $E_m\ge0$ and $\sum_mE_m=I$. These conditions guarantee nonnegative probabilities summing to one. Effects need not be orthogonal projectors, and there may be more effects than the system dimension.</p>
+<p>The completeness relation can also be derived without reasoning from probabilities. Insert the full apparatus basis between $U^\dagger$ and $U$:</p>
+<p>$$\begin{aligned}\sum_mM_m^\dagger M_m
+&=(I\otimes\langle0|)U^\dagger\left(I\otimes\sum_m|m\rangle\langle m|\right)U(I\otimes|0\rangle)\\
+&=(I\otimes\langle0|)U^\dagger U(I\otimes|0\rangle)=I.
+\end{aligned}$$</p>
+<p>The first simplification uses an exhaustive list of pointer outcomes. The second uses reversible joint evolution and a normalised initial apparatus. The general measurement rule thus follows from ordinary evolution and projective readout on a larger system.</p>
+<h2 id="section-3">Why effects do not determine disturbance</h2>
+<p>Set $M_0=|0\rangle\langle0|$ and $M_1=|1\rangle\langle1|$. This is the familiar ideal measurement. Now replace them by $N_0=|1\rangle\langle0|$ and $N_1=|0\rangle\langle1|$. The effects are unchanged: $N_m^\dagger N_m=M_m^\dagger M_m$. Every input gives the same outcome probabilities, but after outcome $0$ the second apparatus leaves $|1\rangle$, not $|0\rangle$.</p>
+<p>In general $M_m=V_m\sqrt{E_m}$ with an outcome-dependent unitary $V_m$ gives the same effects and potentially different states. If one recorded outcome groups several unobserved apparatus outcomes, it requires several operators rather than one; Chapter 13 gives that update for density matrices.</p>
+<h2 id="section-4">A measurement allowed to answer “inconclusive”</h2>
+<p>Suppose the input is either $|0\rangle$ or $|+\rangle$, with equal prior probabilities. We want some outcomes that identify the state without error, while allowing other runs to fail. Choose</p>
+<p>$$E_+=c|1\rangle\langle1|,\quad E_0=c|-\rangle\langle-|,\quad E_?=I-E_+-E_0.$$</p>
+<p>The label on an effect is the conclusion. $E_+$ cannot occur on input $|0\rangle$, and $E_0$ cannot occur on input $|+\rangle$. Each conclusive result has conditional probability $c/2$ on the input it identifies. To find an allowed $c$, write</p>
+<p>$$|1\rangle\langle1|+|-\rangle\langle-|=\begin{pmatrix}1/2&-1/2\\-1/2&3/2\end{pmatrix}.$$</p>
+<p>Its characteristic polynomial is $\lambda^2-2\lambda+1/2$, so its eigenvalues are $1\pm1/\sqrt2$. Positivity of $E_?$ requires $1-c(1+1/\sqrt2)\ge0$. Taking the largest allowed value in this family gives $c=2-\sqrt2$, and hence $p(\text{success})=1-1/\sqrt2\approx0.293$. Failure is explicitly reported; it is not an incorrect identification. We have optimised this symmetric construction, without proving optimality over all measurements.</p>
+<h2 id="section-5">Every finite POVM has an apparatus construction</h2>
+<p>Given effects, define $V|\psi\rangle=\sum_m\sqrt{E_m}|\psi\rangle\otimes|m\rangle$. Then $V^\dagger V=\sum_mE_m=I$, so $V$ preserves inner products. In finite dimensions it can be extended to a unitary on a sufficiently large space by completing an orthonormal basis. Reading the apparatus realises the required POVM. This is a dilation construction. The original system is a tensor factor; identifying it with the initial subspace $\mathcal H_S\otimes|0\rangle_A$ is part of the construction, not a new physical postulate.</p>
+<h2 id="section-6">Problems</h2>
+<p><strong>1.</strong> Apply even/odd parity measurement to $|++\rangle$. Find both outcome probabilities and normalised conditional states.</p>
+<details><summary>Worked answer</summary><p>Expand the input before applying either projector: $|++\rangle=(|00\rangle+|01\rangle+|10\rangle+|11\rangle)/2$. Even parity keeps the equal-bit terms:</p><p>$$P_{\rm even}|++\rangle=(|00\rangle+|11\rangle)/2,\qquad p_{\rm even}=1/4+1/4=1/2.$$</p><p>Divide this vector by $\sqrt{1/2}$ to obtain $(|00\rangle+|11\rangle)/\sqrt2$. Odd parity similarly gives unnormalised $(|01\rangle+|10\rangle)/2$, probability $1/2$, and normalised $(|01\rangle+|10\rangle)/\sqrt2$. Both branches retain a superposition because parity does not distinguish the two terms within the selected subspace.</p></details>
+<p><strong>2.</strong> Is $c=1$ allowed in the three-effect example?</p>
+<details><summary>Worked answer</summary><p>Let $A=|1\rangle\langle1|+|-\rangle\langle-|$, whose eigenvalues are $1\pm1/\sqrt2$. The inconclusive effect is $E_?=I-cA$, so on an eigenvector of $A$ with eigenvalue $\lambda$ its eigenvalue is $1-c\lambda$.</p><p>$$\lambda_{\min}(E_?)=1-c(1+1/\sqrt2)\xrightarrow{c=1}-1/\sqrt2.$$</p><p>A normalised eigenvector with that eigenvalue would have outcome probability $\langle v|E_?|v\rangle=-1/\sqrt2$. Thus $c=1$ is invalid even though the three effects still sum to identity: positivity is the failing condition.</p></details>
+<section class="references"><h2>References and further reading</h2>
+<p>Nielsen &amp; Chuang, §2.2.3–2.2.6 (measurement operators, state discrimination, projective measurements, POVMs).</p></section><nav class="chapter-nav"><a href="01-superposition-qubit.html"><span class="dir">Previous</span>Qubits, amplitudes, and relative phase</a><a class="next" href="03-density-matrix.html"><span class="dir">Next chapter</span>Density matrices and the state of a subsystem</a></nav>
+</div></main>
+<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
+</body></html>
