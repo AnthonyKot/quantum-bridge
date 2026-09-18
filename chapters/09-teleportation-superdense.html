@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Teleportation and dense coding, step by step — The Bridge</title>
-<meta name="description" content="A Bell pair supports two different communication protocols. Tracking every register shows where the message resides and why the classical and quantum transmissions are necessary.">
+<meta name="description" content="What Alice must send so that Bob recovers an unknown qubit, why he cannot have it earlier, and the reverse protocol that sends two bits in one qubit.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -20,10 +20,11 @@
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 09</p><h1>Teleportation and dense coding, step by step</h1>
-<p class="lede">A Bell pair supports two different communication protocols. Tracking every register shows where the message resides and why the classical and quantum transmissions are necessary.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 3–4 and 6–7: reduced states, CNOT, Bell pairs, and no-cloning. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Fix the Bell-state convention</a></li>
+<p class="lede">Alice holds a qubit in a state she does not know, and shares a Bell pair with Bob. What must she send him so that he ends up with that state, and why can he not have it before her message arrives?</p><p class="prerequisites"><strong>Before you start:</strong> Circuits and the controlled-NOT (<a href="04-unitary-gates.html#one-circuit">Chapter 4</a>); averaging over unread outcomes and reduced states (<a href="03-density-matrix.html">Chapter 3</a>); no-cloning (<a href="06-linearity-no-cloning.html">Chapter 6</a>). Three-register basis labels extend the two-register ones: $|q\,a\,b\rangle$, leftmost first. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Fix the Bell-state convention</a></li>
 <li><a href="#section-2">Teleportation: three registers and one unknown input</a></li>
 <li><a href="#section-3">What Bob has before the message arrives</a></li>
 <li><a href="#section-4">Dense coding: encode a classical label in a Bell state</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-5">Problems</a></li>
 </ol></nav>
 <h2 id="section-1">Fix the Bell-state convention</h2>
@@ -32,7 +33,63 @@
 <p>Thus $\beta_{00}=(|00\rangle+|11\rangle)/\sqrt2$, $\beta_{01}=(|01\rangle+|10\rangle)/\sqrt2$, $\beta_{10}=(|00\rangle-|11\rangle)/\sqrt2$, and $\beta_{11}=(|01\rangle-|10\rangle)/\sqrt2$. The order in $X^bZ^a$ means $Z^a$ acts first.</p>
 <p>The preparation circuit $\operatorname{CNOT}(H\otimes I)$ maps $|ab\rangle$ to $|\beta_{ab}\rangle$. Its inverse, CNOT followed by $H$ on the first qubit, maps each Bell state to its two-bit label. A Bell measurement can therefore be implemented by that inverse circuit followed by ordinary computational-basis measurements.</p>
 <h2 id="section-2">Teleportation: three registers and one unknown input</h2>
-<p>Alice holds an unknown input $Q$ in $|\psi\rangle=\alpha|0\rangle+\beta|1\rangle$ and one half $A$ of a shared Bell pair. Bob holds the other half $B$. In register order $Q,A,B$, the initial state is</p>
+<p>Alice holds an unknown input $Q$ in $|\psi\rangle=\alpha|0\rangle+\beta|1\rangle$ and one half $A$ of a shared Bell pair. Bob holds the other half $B$. The figure shows the whole protocol before the algebra.</p>
+<figure class="fig-narrow">
+<div class="fig-scroll">
+<!-- FIGURE:teleport -->
+<svg class="fig-svg" viewBox="0 0 360 274" role="img" aria-labelledby="fig-teleport-title fig-teleport-desc">
+<title id="fig-teleport-title">Teleportation, register by register</title>
+<desc id="fig-teleport-desc">A circuit with three wires. Alice holds Q, which carries the unknown state psi, and A; Bob holds B. A and B start as a shared Bell pair. Alice applies a controlled-NOT from Q to A, then H to Q, then measures Q to get bit a and A to get bit b. Double lines carry the two bits to Bob, who applies X if b is one and then Z if a is one. Bob's wire ends in psi. Bob's unconditioned state is I over 2 until the bits arrive; conditioned on Alice's outcome a, b it is X to the b, Z to the a, psi.</desc>
+<rect class="fig-zone" x="0" y="34" width="360" height="118" rx="6"/>
+<rect class="fig-zone fig-zone-alt" x="0" y="176" width="360" height="96" rx="6"/>
+<text class="fig-label fig-strong" x="8" y="50">Alice</text>
+<text class="fig-label fig-strong" x="8" y="192">Bob</text>
+<text class="fig-label fig-soft" x="0" y="18">time →</text>
+<text class="fig-label fig-strong" x="10" y="69">Q</text>
+<text class="fig-label fig-math" x="30" y="69">|ψ⟩</text>
+<text class="fig-label fig-strong" x="10" y="129">A</text>
+<text class="fig-label fig-strong" x="10" y="219">B</text>
+<path class="fig-bell" d="M44,124 C28,154 28,184 44,214"/>
+<text class="fig-label fig-soft fig-math" x="46" y="174.0">Φ⁺ shared</text>
+<line class="fig-wire" x1="48" y1="64" x2="196" y2="64"/>
+<line class="fig-wire" x1="48" y1="124" x2="196" y2="124"/>
+<line class="fig-wire" x1="48" y1="214" x2="316" y2="214"/>
+<line class="fig-wire" x1="88" y1="64" x2="88" y2="135"/>
+<circle class="fig-control" cx="88" cy="64" r="5"/>
+<circle class="fig-target" cx="88" cy="124" r="11"/>
+<line class="fig-wire" x1="77" y1="124" x2="99" y2="124"/>
+<rect class="fig-gate" x="122" y="50" width="28" height="28" rx="3"/>
+<text class="fig-label fig-strong" x="136" y="69" text-anchor="middle">H</text>
+<rect class="fig-gate" x="180" y="50" width="32" height="28" rx="3"/>
+<path class="fig-line" d="M186,71 A11,11 0 0 1 206,71"/>
+<line class="fig-line" x1="196" y1="71" x2="204" y2="57"/>
+<line class="fig-classical" x1="212" y1="62" x2="293.5" y2="62"/>
+<line class="fig-classical" x1="212" y1="66" x2="290.5" y2="66"/>
+<line class="fig-classical" x1="290.5" y1="66" x2="290.5" y2="200"/>
+<line class="fig-classical" x1="293.5" y1="62" x2="293.5" y2="200"/>
+<text class="fig-label fig-strong" x="220" y="56">a</text>
+<rect class="fig-gate" x="180" y="110" width="32" height="28" rx="3"/>
+<path class="fig-line" d="M186,131 A11,11 0 0 1 206,131"/>
+<line class="fig-line" x1="196" y1="131" x2="204" y2="117"/>
+<line class="fig-classical" x1="212" y1="122" x2="245.5" y2="122"/>
+<line class="fig-classical" x1="212" y1="126" x2="242.5" y2="126"/>
+<line class="fig-classical" x1="242.5" y1="126" x2="242.5" y2="200"/>
+<line class="fig-classical" x1="245.5" y1="122" x2="245.5" y2="200"/>
+<text class="fig-label fig-strong" x="220" y="116">b</text>
+<rect class="fig-gate" x="228" y="200" width="32" height="28" rx="3"/>
+<text class="fig-label fig-strong" x="244" y="219" text-anchor="middle">X<tspan dy="-6" font-size="12">b</tspan></text>
+<rect class="fig-gate" x="276" y="200" width="32" height="28" rx="3"/>
+<text class="fig-label fig-strong" x="292" y="219" text-anchor="middle">Z<tspan dy="-6" font-size="12">a</tspan></text>
+<text class="fig-label fig-math" x="322" y="219">|ψ⟩</text>
+<text class="fig-label fig-soft" x="360" y="18" text-anchor="end">double lines: classical bits</text>
+<text class="fig-label fig-soft fig-math" x="52" y="244" text-anchor="start">unconditioned, until the bits arrive: I/2</text>
+<text class="fig-label fig-soft fig-math" x="52" y="264" text-anchor="start">conditioned on Alice’s outcome (a, b): XᵇZᵃ|ψ⟩</text>
+</svg>
+<!-- /FIGURE:teleport -->
+</div>
+<figcaption>Registers $Q$, $A$, $B$, in the order used in every basis label below. Alice applies a controlled-NOT from $Q$ to $A$ and then $H$ to $Q$, and measures both, obtaining bits $a$ (from $Q$) and $b$ (from $A$). The double lines are classical: the two bits travel to Bob by an ordinary channel. Bob applies $X$ if $b=1$ and then $Z$ if $a=1$. Bob's unconditioned state, which is all he can use before the bits arrive, is $I/2$ whatever $|\psi\rangle$ is, and it stays $I/2$ after Alice has measured. Conditioned on Alice's outcome $(a,b)$, his qubit is $X^bZ^a|\psi\rangle$. After the correction it is $|\psi\rangle$.</figcaption>
+</figure>
+<p>In register order $Q,A,B$, the initial state is</p>
 <p>$$|\psi\rangle_Q|\Phi^+\rangle_{AB}=\frac1{\sqrt2}\left(\alpha|000\rangle+\alpha|011\rangle+\beta|100\rangle+\beta|111\rangle\right).$$</p>
 <p>Alice applies CNOT from $Q$ to $A$. The four terms become $\alpha|000\rangle+\alpha|011\rangle+\beta|110\rangle+\beta|101\rangle$, with the same factor $1/\sqrt2$. To apply $H$ to $Q$, replace the leading $|0\rangle$ in each term by $(|0\rangle+|1\rangle)/\sqrt2$, and each leading $|1\rangle$ by $(|0\rangle-|1\rangle)/\sqrt2$. The existing factor $1/\sqrt2$ combines with this new one to give $1/2$. Before collecting any terms, the result is</p>
 <p>$$\begin{aligned}\frac12\big(&\alpha|000\rangle+\alpha|100\rangle
@@ -55,9 +112,17 @@
 <p>To check it, expand $\rho=(I+r_xX+r_yY+r_zZ)/2$: conjugation by the four Paulis cancels each Bloch component. Bob's local state contains no dependence on the unknown input until the classical record permits correction. Teleportation therefore cannot signal faster than the classical channel.</p>
 <p>After Alice's measurement, her input register has a definite computational-basis value; it no longer carries $|\psi\rangle$. The shared Bell pair is consumed. The amplitude pair $\alpha,\beta$ survives in Bob’s corrected register, while Alice’s measured registers contain only the two random outcome bits. There is no second remaining register in state $|\psi\rangle$, which is why this transfer is compatible with the no-cloning theorem. Moreover, the protocol preserves entanglement with an external reference: expand a joint input as $\sum_jc_j|j\rangle_R|\psi_j\rangle_Q$ and apply the same identity term by term. Every corrected branch transfers that joint state from $RQ$ to $RB$.</p>
 <h2 id="section-4">Dense coding: encode a classical label in a Bell state</h2>
-<p>Now Alice and Bob share $|\Phi^+\rangle$, and Alice wants to transmit two classical bits $(a,b)$. She applies $X^bZ^a$ to her qubit and sends that qubit to Bob. Moving a matrix across this Bell state transposes it: $(M\otimes I)|\Phi^+\rangle=(I\otimes M^T)|\Phi^+\rangle$. To see this, write $|\Phi^+\rangle=\frac1{\sqrt2}\sum_j|j\rangle|j\rangle$; then $\sum_j M|j\rangle|j\rangle=\sum_{i,j}M_{ij}|i\rangle|j\rangle=\sum_i|i\rangle\sum_j (M^T)_{ji}|j\rangle=\sum_i|i\rangle\,M^T|i\rangle$. For these Paulis the transpose changes at most a global sign, so the joint state is $|\beta_{ab}\rangle$ up to phase.</p>
+<p>Now Alice and Bob share $|\Phi^+\rangle$, and Alice wants to transmit two classical bits $(a,b)$. She applies $X^bZ^a$ to her qubit and sends that qubit to Bob. Moving a matrix across this Bell state transposes it: $(M\otimes I)|\Phi^+\rangle=(I\otimes M^T)|\Phi^+\rangle$. </p>
+<details class="more"><summary>Why a matrix moves across the Bell state as its transpose</summary>
+<p>To see this, write $|\Phi^+\rangle=\frac1{\sqrt2}\sum_j|j\rangle|j\rangle$; then $\sum_j M|j\rangle|j\rangle=\sum_{i,j}M_{ij}|i\rangle|j\rangle=\sum_i|i\rangle\sum_j (M^T)_{ji}|j\rangle=\sum_i|i\rangle\,M^T|i\rangle$.
+</p>
+</details>
+<p>For these Paulis the transpose changes at most a global sign, so the joint state is $|\beta_{ab}\rangle$ up to phase.</p>
 <p>Bob now possesses both qubits and uses the Bell-decoding circuit to read $a,b$ with certainty. This transmits two classical bits using one transmitted qubit <em>and one previously shared Bell pair</em>. Both resources belong in the statement.</p>
 <p>Each transmitted-qubit state on its own is $I/2$, for all four messages. An observer holding only that qubit learns zero bits about the chosen label, not one. The information is in joint correlations with Bob's retained qubit. Chapter 15 will calculate this using the Holevo quantity.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>Alice must send two classical bits, the results of her two measurements. With them Bob applies one of four corrections and holds $|\psi\rangle$; without them his qubit is described by $I/2$ for every input, so nothing about $|\psi\rangle$ reaches him faster than the bits do. The Bell pair is used up, and Alice is left with two random bits and no copy. Dense coding runs the trade the other way: one transmitted qubit plus a shared Bell pair carries two classical bits.</p>
+<p>Both protocols hinge on the same move. Information held in phases and correlations is invisible to a computational-basis measurement until a change of basis, here the Bell-decoding circuit, turns it into definite outcomes. The next chapter uses that move to compute: it writes a function's values into phases and reads a property of the function out with a final change of basis.</p>
 <h2 id="section-5">Problems</h2>
 <p><strong>1.</strong> Teleport $|\psi\rangle=(|0\rangle+i|1\rangle)/\sqrt2$ in the branch $(a,b)=(1,1)$. Verify the correction.</p>
 <details><summary>Worked answer</summary><p>First apply $Z$ and then $X$, in the order specified by $XZ$:</p><p>$$\frac{|0\rangle+i|1\rangle}{\sqrt2}\xrightarrow{Z}\frac{|0\rangle-i|1\rangle}{\sqrt2}\xrightarrow{X}\frac{|1\rangle-i|0\rangle}{\sqrt2}.$$</p><p>Bob’s inverse $ZX$ means applying $X$ first. That gives $(|0\rangle-i|1\rangle)/\sqrt2$; applying $Z$ then gives $(|0\rangle+i|1\rangle)/\sqrt2$, the input. The algebraic check is $ZX\,XZ=Z(X^2)Z=Z^2=I$. The two noncommuting factors must be reversed when taking the inverse.</p></details>

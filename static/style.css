@@ -316,6 +316,15 @@ figure.fig-narrow .fig-scroll { max-width: 30rem; margin: 0 auto; }
 .fig-faint { stroke-opacity: .5; }
 .fig-dot.fig-dot-alt { fill: var(--fig-second); }
 .fig-svg .fig-alt-text { fill: var(--fig-second); }
+.fig-bar-alt { fill: var(--fig-second); }
+.fig-cell { fill: var(--bg-raised); stroke: var(--rule); stroke-width: 1; }
+.fig-cell-on { fill: var(--accent-bg); stroke: var(--fig-accent); }
+.fig-vector-alt { stroke: var(--fig-second); }
+.fig-band { fill: var(--fig-plain); fill-opacity: .18; }
+.fig-zone { fill: var(--accent-bg); stroke: none; }
+.fig-zone-alt { fill: var(--bg-subtle); fill-opacity: .6; }
+.fig-bell { fill: none; stroke: var(--fig-second); stroke-width: 1.6; stroke-dasharray: 4 3; }
+.fig-classical { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
 .fig-bar { fill: var(--fig-accent); }
 .fig-bar-plain { fill: var(--fig-plain); }
 .fig-dot { fill: var(--ink); stroke: var(--bg-raised); stroke-width: 1.5; }

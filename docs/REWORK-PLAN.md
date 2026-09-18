@@ -198,3 +198,27 @@ Review wording qualifications (applied at checkpoint): photon Bloch angle = 2 ×
 linear polarisation, along that great circle; the detuning peak Ω²/(Ω²+Δ²) is scoped to a constant drive at
 fixed detuning from |0⟩, not every control sequence; an unread measurement makes source A equivalent to
 source C for later measurements on the qubit alone, while the apparatus keeps a correlated record.
+
+## Batch 6–9 record (18 September 2026)
+
+| Ch | Question | Figure | Main-path example | Moved to fold-outs |
+|---|---|---|---|---|
+| 6 | A machine copies \|0⟩ and \|1⟩: what does it do to \|+⟩, and could any machine copy every state? | `linearity` (the forced output beside two copies) | CNOT on \|+⟩\|0⟩; the overlap argument | product inner products; the discrimination proof |
+| 7 | Is a two-qubit pure state a product, and if not how far from one? | `schmidt` (C, det C, s² for a product, the worked state, a Bell pair) | (\|00⟩+\|01⟩+\|10⟩)/√3 | SVD construction |
+| 8 | What does 2√2 against 2 rule out, and what does it leave standing? | `chsh` (settings as Bloch directions; S = 3cosφ − cos3φ) | Φ⁺ with Z, X, (Z±X)/√2 | Tsirelson derivation (statement kept) |
+| 9 | What must Alice send, and why can Bob not have the state sooner? | `teleport` (registers Q, A, B; ownership; classical bits; corrections) | the eight-term regrouping | the transpose identity for dense coding |
+
+Tests extended: test_06 (rows against CNOT and tensor products), test_07 (s² sum and product against
+det C; rows against the Bell vector and tensor products), test_08 (S(φ) from 4×4 matrices at seven angles,
+68.5° crossing, settings at 45°), test_09 (executes the drawn STEPS in register order Q, A, B for three
+inputs and all four branches; register ownership). Qualifications kept visible: no-cloning's scope, the
+mixed-state definition and the identical-particle caution, the assumptions CHSH tests plus practical
+experimental gaps, no signalling, dense coding's resource count. Continuous read fixed: a stale phrase
+reference, "positive" terminology, the linear-polariser qualifier.
+
+Review fixes (batch 6–9): chapter 6's conclusion scoped to the copying unitary specified (records or
+input-dependent phases change the output, not the theorem); chapter 7's question made concrete as the best
+squared overlap with a product state, s²_max (≈0.873 worked state, 0.5 Bell pair; test_07 searches product
+states), and s² wording made consistent; chapter 8's graph carries the explicit settings and the caption calls
+the change coordinated, not a rigid rotation, with S = 2 at both ends; chapter 9's figure and caption label
+Bob's state as unconditioned (I/2) or conditioned on (a, b).

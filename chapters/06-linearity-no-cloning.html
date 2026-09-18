@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Why an unknown state cannot be copied — The Bridge</title>
-<meta name="description" content="Copying two orthogonal basis states is possible. Requiring the same apparatus to copy their superpositions leads to a contradiction.">
+<meta name="description" content="A machine that copies |0⟩ and |1⟩ is forced by linearity to entangle |+⟩ instead of copying it. No device copies every unknown state.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -20,24 +20,84 @@
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 06</p><h1>Why an unknown state cannot be copied</h1>
-<p class="lede">Copying two orthogonal basis states is possible. Requiring the same apparatus to copy their superpositions leads to a contradiction.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 1 and 4: inner products, linearity, and controlled-NOT. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Specify what copying would mean</a></li>
+<p class="lede">A machine copies $|0\rangle$ and $|1\rangle$ perfectly. Feed it $|+\rangle$: what comes out? And could any machine, however it is built, copy every state it is given?</p><p class="prerequisites"><strong>Before you start:</strong> Inner products (<a href="01-superposition-qubit.html">Chapter 1</a>); unitaries and the controlled-NOT (<a href="04-unitary-gates.html#section-3">Chapter 4</a>). One section uses effects (<a href="02-observables-measurement.html#section-2">Chapter 2</a>) and one problem uses reduced states (<a href="03-density-matrix.html#section-4">Chapter 3</a>). <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Specify what copying would mean</a></li>
 <li><a href="#section-2">The inner-product proof</a></li>
 <li><a href="#section-3">An extra apparatus does not evade the result</a></li>
 <li><a href="#section-4">Why measuring first does not solve the problem</a></li>
 <li><a href="#section-5">The boundaries of the theorem</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-6">Problems</a></li>
 </ol></nav>
 <h2 id="section-1">Specify what copying would mean</h2>
-<p>A copier receives a system in a state $|\psi\rangle$ and a blank register in a fixed state $|b\rangle$. It must produce $|\psi\rangle|\psi\rangle$ for every allowed input without being told which input it received. The words “same apparatus” matter: if a classical description of $|\psi\rangle$ is supplied, a preparation procedure can simply be run twice.</p>
+<p>A copier receives a system in a state $|\psi\rangle$ and a blank register in a fixed state $|b\rangle$. It must produce $|\psi\rangle|\psi\rangle$ for every allowed input without being told which input it received. The requirement that one device handle every input, without being told which, is what makes the problem hard: if a classical description of $|\psi\rangle$ is supplied, a preparation procedure can simply be run twice.</p>
 <p>CNOT already copies a restricted set: $|0\rangle|0\rangle\mapsto|00\rangle$ and $|1\rangle|0\rangle\mapsto|11\rangle$. Apply that operation to a superposition:</p>
 <p>$$\operatorname{CNOT}\left[(\alpha|0\rangle+\beta|1\rangle)|0\rangle\right]=\alpha|00\rangle+\beta|11\rangle.$$</p>
 <p>Two independent copies would instead be</p>
 <p>$$|\psi\rangle^{\otimes2}=\alpha^2|00\rangle+\alpha\beta|01\rangle+\alpha\beta|10\rangle+\beta^2|11\rangle.$$</p>
 <p>The amplitudes of a physical linear map depend linearly on the input amplitudes; the desired expression is quadratic. For $|+\rangle$, CNOT produces a Bell pair, not $|++\rangle$. The Bell pair has only $00$ and $11$ outcomes in the computational basis. Independent copies produce all four outcomes equally.</p>
+<p>CNOT is only one example. Specify a copier as any unitary $U$ on the two registers alone that sends $|00\rangle$ to $|00\rangle$ and $|10\rangle$ to $|11\rangle$, with no extra phases and no apparatus. Linearity then fixes its output for $|+\rangle$: $U(|+\rangle|0\rangle)=(U|00\rangle+U|10\rangle)/\sqrt2=(|00\rangle+|11\rangle)/\sqrt2$. The figure sets that forced output beside what two copies would be.</p>
+<figure class="fig-narrow">
+<div class="fig-scroll">
+<!-- FIGURE:linearity -->
+<svg class="fig-svg" viewBox="0 0 360 422" role="img" aria-labelledby="fig-linearity-title fig-linearity-desc">
+<title id="fig-linearity-title">What a copier must do to a superposition</title>
+<desc id="fig-linearity-desc">Four rows of amplitude bars over 00, 01, 10, 11. Input zero is copied to 00, and input one to 11. For input plus, linearity forces amplitude one over root two on 00 and on 11 and nothing on 01 or 10. Two copies of plus would instead have amplitude one half on all four.</desc>
+<line class="fig-rule" x1="0" y1="2" x2="360" y2="2"/>
+<text class="fig-label fig-strong fig-math" x="0" y="22">Input |0⟩: copied, |00⟩</text>
+<line class="fig-axis" x1="60" y1="66" x2="350" y2="66"/>
+<rect class="fig-bar-plain" x="76" y="30" width="34" height="36"/>
+<text class="fig-label" x="116" y="52">1</text>
+<text class="fig-label fig-math" x="93" y="86" text-anchor="middle">|00⟩</text>
+<text class="fig-label fig-math" x="165" y="86" text-anchor="middle">|01⟩</text>
+<text class="fig-label fig-math" x="237" y="86" text-anchor="middle">|10⟩</text>
+<text class="fig-label fig-math" x="309" y="86" text-anchor="middle">|11⟩</text>
+<line class="fig-rule" x1="0" y1="106" x2="360" y2="106"/>
+<text class="fig-label fig-strong fig-math" x="0" y="126">Input |1⟩: copied, |11⟩</text>
+<line class="fig-axis" x1="60" y1="170" x2="350" y2="170"/>
+<text class="fig-label fig-math" x="93" y="190" text-anchor="middle">|00⟩</text>
+<text class="fig-label fig-math" x="165" y="190" text-anchor="middle">|01⟩</text>
+<text class="fig-label fig-math" x="237" y="190" text-anchor="middle">|10⟩</text>
+<rect class="fig-bar-plain" x="292" y="134" width="34" height="36"/>
+<text class="fig-label" x="332" y="156">1</text>
+<text class="fig-label fig-math" x="309" y="190" text-anchor="middle">|11⟩</text>
+<line class="fig-rule" x1="0" y1="210" x2="360" y2="210"/>
+<text class="fig-label fig-strong fig-math" x="0" y="230">Input |+⟩: what linearity forces</text>
+<line class="fig-axis" x1="60" y1="274" x2="350" y2="274"/>
+<rect class="fig-bar" x="76" y="248.5" width="34" height="25.5"/>
+<text class="fig-label" x="116" y="265.3">1/√2</text>
+<text class="fig-label fig-math" x="93" y="294" text-anchor="middle">|00⟩</text>
+<text class="fig-label fig-math" x="165" y="294" text-anchor="middle">|01⟩</text>
+<text class="fig-label fig-math" x="237" y="294" text-anchor="middle">|10⟩</text>
+<rect class="fig-bar" x="292" y="248.5" width="34" height="25.5"/>
+<text class="fig-label" x="332" y="265.3">1/√2</text>
+<text class="fig-label fig-math" x="309" y="294" text-anchor="middle">|11⟩</text>
+<line class="fig-rule" x1="0" y1="314" x2="360" y2="314"/>
+<text class="fig-label fig-strong fig-math" x="0" y="334">What two copies of |+⟩ would be</text>
+<line class="fig-axis" x1="60" y1="378" x2="350" y2="378"/>
+<rect class="fig-bar-alt" x="76" y="360" width="34" height="18"/>
+<text class="fig-label" x="116" y="373">½</text>
+<text class="fig-label fig-math" x="93" y="398" text-anchor="middle">|00⟩</text>
+<rect class="fig-bar-alt" x="148" y="360" width="34" height="18"/>
+<text class="fig-label" x="188" y="373">½</text>
+<text class="fig-label fig-math" x="165" y="398" text-anchor="middle">|01⟩</text>
+<rect class="fig-bar-alt" x="220" y="360" width="34" height="18"/>
+<text class="fig-label" x="260" y="373">½</text>
+<text class="fig-label fig-math" x="237" y="398" text-anchor="middle">|10⟩</text>
+<rect class="fig-bar-alt" x="292" y="360" width="34" height="18"/>
+<text class="fig-label" x="332" y="373">½</text>
+<text class="fig-label fig-math" x="309" y="398" text-anchor="middle">|11⟩</text>
+<line class="fig-rule" x1="0" y1="418" x2="360" y2="418"/>
+</svg>
+<!-- /FIGURE:linearity -->
+</div>
+<figcaption>Amplitudes, with the input register as the first symbol and the blank as the second. The first two rows are the machine working correctly. The third is not a choice: it is the sum of the first two divided by $\sqrt2$, because the machine is linear. The fourth is what a copy of $|+\rangle$ would require: amplitude $\tfrac12$ on every term, including $|01\rangle$ and $|10\rangle$, which the linear output never reaches. Measured in the computational basis, the forced output gives $00$ or $11$, half the time each; two real copies would give each of the four outcomes a quarter of the time.</figcaption>
+</figure>
 <h2 id="section-2">The inner-product proof</h2>
 <p>The overlap proof uses one property of composite systems that is worth writing out. If the two registers are independent product states, their inner product factorises:</p>
 <p>$$(\langle a|\otimes\langle b|)(|c\rangle\otimes|d\rangle)=\langle a|c\rangle\,\langle b|d\rangle.$$</p>
+<details class="more"><summary>Why the inner product of product states factorises</summary>
 <p>To derive it, expand each local state in an orthonormal basis. The joint inner product is $\sum_{i,j}a_i^*b_j^*c_id_j$. The $i$ and $j$ sums are independent, so it equals $(\sum_i a_i^*c_i)(\sum_jb_j^*d_j)$. We will apply this rule to the proposed product outputs, not to an arbitrary entangled output.</p>
+</details>
 <p>Next, unitarity gives $\langle Uv|Uw\rangle=\langle v|U^\dagger U|w\rangle=\langle v|w\rangle$. Thus a unitary cannot change the overlap of two possible inputs. The blank adds no distinguishability because it is the same normalised state in both cases: its overlap with itself is one. Two copies would multiply the input overlap by itself. For an overlap strictly between zero and one in magnitude, squaring makes it smaller, contradicting preservation by the unitary.</p>
 <p>Suppose one unitary copies two states $|\psi\rangle$ and $|\phi\rangle$, with the same normalised blank. Unitarity preserves their input overlap. Writing $s=\langle\psi|\phi\rangle$ gives</p>
 <p>$$\langle\psi|\phi\rangle\langle b|b\rangle=\langle\psi|\phi\rangle\langle\psi|\phi\rangle,\qquad s=s^2.$$</p>
@@ -47,14 +107,19 @@
 <p>$$s=s^2\langle a_\psi|a_\phi\rangle.$$</p>
 <p>For $0&lt;|s|&lt;1$, taking magnitudes would require $|\langle a_\psi|a_\phi\rangle|=1/|s|>1$, which is impossible for normalised apparatus states. General deterministic physical channels can be represented by such a unitary with an environment and a discarded record. Thus adding an environment or forgetting an outcome does not create a deterministic exact copier.</p>
 <h2 id="section-4">Why measuring first does not solve the problem</h2>
-<p>One might try to identify the input and then prepare two copies. Perfect discrimination of nonorthogonal states is itself impossible. For a short proof, let effect $E$ identify $|\psi\rangle$ with certainty and never occur on $|\phi\rangle$. Here $0\le E\le I$ means that both $E$ and $I-E$ are positive semidefinite: every expectation $\langle\chi|E|\chi\rangle$ lies between $0$ and $1$. The assumptions are $\langle\psi|E|\psi\rangle=1$ and $\langle\phi|E|\phi\rangle=0$, with $0\le E\le I$.</p>
-<p>Positivity implies $(I-E)|\psi\rangle=0$: a positive semidefinite operator $P$ with $\langle\psi|P|\psi\rangle=0$ satisfies $\|\sqrt P|\psi\rangle\|^2=0$, hence $\sqrt P|\psi\rangle=0$ and $P|\psi\rangle=0$ and $E|\phi\rangle=0$. Therefore $\langle\psi|\phi\rangle=\langle\psi|E|\phi\rangle=0$. Certainty for one and impossibility for the other requires orthogonality. Chapter 2's discrimination scheme avoids this obstruction by explicitly allowing an inconclusive outcome.</p>
+<p>One might try to identify the input and then prepare two copies. Perfect discrimination of nonorthogonal states is itself impossible: no measurement can identify $|\psi\rangle$ with certainty while never giving that result on a nonorthogonal $|\phi\rangle$. To set up the proof, let effect $E$ identify $|\psi\rangle$ with certainty and never occur on $|\phi\rangle$. Here $0\le E\le I$ means that both $E$ and $I-E$ are positive in the sense of Chapter 2: every expectation $\langle\chi|E|\chi\rangle$ lies between $0$ and $1$. The assumptions are $\langle\psi|E|\psi\rangle=1$ and $\langle\phi|E|\phi\rangle=0$, with $0\le E\le I$.</p>
+<details class="more"><summary>The proof that certainty on one input forces orthogonality</summary>
+<p>Positivity implies $(I-E)|\psi\rangle=0$: a positive operator $P$ with $\langle\psi|P|\psi\rangle=0$ satisfies $\|\sqrt P|\psi\rangle\|^2=0$, hence $\sqrt P|\psi\rangle=0$ and $P|\psi\rangle=0$ and $E|\phi\rangle=0$. Therefore $\langle\psi|\phi\rangle=\langle\psi|E|\phi\rangle=0$. Certainty for one and impossibility for the other requires orthogonality. Chapter 2's discrimination scheme avoids this obstruction by explicitly allowing an inconclusive outcome.</p>
+</details>
 <h2 id="section-5">The boundaries of the theorem</h2>
 <p>No-cloning forbids deterministic, exact copying of arbitrary unknown states. It allows copying a known orthogonal alphabet, preparing a known state repeatedly, approximate copying with imperfect outputs, and some probabilistic procedures with reported failure. It does not forbid transferring a state: teleportation consumes the original encoding and requires classical communication.</p>
 <p>It also does not forbid encoding one qubit into many physical qubits. The map $\alpha|0\rangle+\beta|1\rangle\mapsto\alpha|000\rangle+\beta|111\rangle$ is linear. Its output stores amplitudes jointly; the individual qubits do not each contain $|\psi\rangle$. Chapter 14 uses precisely this distinction.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>Fed $|+\rangle$, the copying unitary specified above produces $(|00\rangle+|11\rangle)/\sqrt2$, not $|+\rangle|+\rangle$, because a linear map must act on the two terms separately. A copier that adds input-dependent phases or keeps an apparatus record gives a different output, but not two copies either. No machine copies every state: copying two states requires their overlap $s$ to satisfy $|s|=|s|^2$, so they must be identical or orthogonal. An apparatus that keeps a record, or a measurement made first, does not escape this. What remains allowed is copying a known orthogonal set, approximate or probabilistic copying, and moving a state from one place to another.</p>
+<p>The output $(|00\rangle+|11\rangle)/\sqrt2$ is not two copies of anything. It is a two-qubit state that cannot be written as a product at all. The next chapter turns “cannot be written as a product” into a calculation, and measures how far a state is from one.</p>
 <h2 id="section-6">Problems</h2>
 <p><strong>1.</strong> For the CNOT output $\alpha|00\rangle+\beta|11\rangle$, find the state of the second qubit. When does it equal the original pure input?</p>
-<details><summary>Worked answer</summary><p>Form the projector of the output $|\Psi\rangle=\alpha|00\rangle+\beta|11\rangle$. Its four terms have coefficients $|\alpha|^2,\alpha\beta^*,\beta\alpha^*,|\beta|^2$. When tracing the first qubit, the cross terms vanish because their first-qubit overlaps are zero. Therefore</p><p>$$\rho_2=\begin{pmatrix}|\alpha|^2&0\\0&|\beta|^2\end{pmatrix},\qquad\rho_{\rm input}=\begin{pmatrix}|\alpha|^2&\alpha\beta^*\\\alpha^*\beta&|\beta|^2\end{pmatrix}.$$</p><p>Equality requires $\alpha\beta^*=0$. Since these are complex numbers, at least one amplitude must vanish. Normalisation then makes the input $|0\rangle$ or $|1\rangle$ up to a common phase. A general superposition is not copied into the second register.</p></details>
+<details><summary>Worked answer</summary><p>Form the projector of the output $|\Psi\rangle=\alpha|00\rangle+\beta|11\rangle$. Its four terms have coefficients $|\alpha|^2,\alpha\beta^*,\beta\alpha^*,|\beta|^2$. When tracing the first qubit, the cross terms vanish because their first-qubit overlaps are zero. Therefore</p><p>$$\rho_2=\begin{pmatrix}|\alpha|^2&0\\0&|\beta|^2\end{pmatrix},\qquad\rho_{\rm input}=\begin{pmatrix}|\alpha|^2&\alpha\beta^*\\\alpha^*\beta&|\beta|^2\end{pmatrix}.$$</p><p>Equality requires $\alpha\beta^*=0$. Since these are complex numbers, at least one amplitude must vanish. Normalisation then makes the input $|0\rangle$ or $|1\rangle$ up to a common phase. A general superposition is not copied into the second register.</p><p>The tempting wrong turn is to compare only the diagonals. They agree, so every computational-basis measurement on the second qubit gives the input’s statistics. The missing off-diagonal entries show up in any measurement that combines the two amplitudes: for input $|+\rangle$, the second qubit gives $+$ with probability $\tfrac12$ instead of $1$.</p></details>
 <p><strong>2.</strong> Can one apparatus copy both $|+\rangle$ and $|-\rangle$? Give a circuit.</p>
 <details><summary>Worked answer</summary><p>Convert the known orthogonal alphabet into the computational basis, copy that basis, then convert both outputs back. With the second register initially zero, the two paths are</p><p>$$\begin{aligned}|+0\rangle&\xrightarrow{H\otimes I}|00\rangle\xrightarrow{\mathrm{CNOT}}|00\rangle\xrightarrow{H\otimes H}|++\rangle,\\|-0\rangle&\xrightarrow{H\otimes I}|10\rangle\xrightarrow{\mathrm{CNOT}}|11\rangle\xrightarrow{H\otimes H}|--\rangle.\end{aligned}$$</p><p>The same circuit works for both promised inputs because they are orthogonal. Its success on this two-state alphabet does not extend to arbitrary superpositions of its members; linearity would again produce correlated outputs instead of two independent copies.</p></details>
 <section class="references"><h2>References and further reading</h2>

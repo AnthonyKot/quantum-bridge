@@ -218,6 +218,13 @@ class Calculations(unittest.TestCase):
         for v in (plus, minus):
             self.same(mm(circuit,tensor(v,zero)),tensor(v,v))
         self.assertNotEqual(projector(bell),projector(tensor(plus,plus)))
+        # Figure rows (scripts/figures/ch06_cloning.py): check with CNOT and tensor products.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch06_cloning as fig
+        want = [mm(CNOT, tensor(zero, zero)), mm(CNOT, tensor(ket(0, 1), zero)),
+                mm(CNOT, tensor(plus, zero)), tensor(plus, plus)]
+        for (_, state, _), w in zip(fig.rows(), want):
+            self.same([[state[k]] for k in fig.LABELS], w)
 
     def test_07_schmidt_spectrum(self):
         c = scale(1/math.sqrt(3),[[1,1],[1,0]])
@@ -225,12 +232,51 @@ class Calculations(unittest.TestCase):
         self.assertAlmostEqual(trace(mm(rho,rho)).real,7/9)
         for lam in ((3+math.sqrt(5))/6,(3-math.sqrt(5))/6):
             self.assertAlmostEqual((rho[0][0]-lam)*(rho[1][1]-lam)-rho[0][1]*rho[1][0],0)
+        # Figure spectra (scripts/figures/ch07_schmidt.py) use the eigenvalues of C C^dagger.
+        # Check by another route: s1^2 + s2^2 = 1 and s1^2 s2^2 = |det C|^2, and the product and
+        # Bell rows against tensor products and the Bell vector.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch07_schmidt as fig
+        for _, cm in fig.STATES:
+            l1, l2 = fig.schmidt_squares(cm)
+            self.assertAlmostEqual(l1 + l2, 1)
+            self.assertAlmostEqual(l1 * l2, fig.det(cm)**2)
+        self.same([[x] for row in fig.STATES[0][1] for x in row], tensor(plus, ket(0, 1)))
+        self.same([[x] for row in fig.STATES[2][1] for x in row], bell)
+        self.same(scale(math.sqrt(3), [[x] for row in fig.STATES[1][1] for x in row]), ket(1, 1, 1, 0))
+        # Best product overlap equals the largest s^2 (text claim): search product states on a grid.
+        def best_overlap(cm):
+            # For fixed u the best v gives |<u x v|Psi>| = ||C^dagger u||; search u over the sphere.
+            best = 0
+            for i in range(241):
+                for j in range(96):
+                    ta, pa = math.pi*i/240, 2*math.pi*j/96
+                    u = (math.cos(ta/2), cmath.exp(1j*pa)*math.sin(ta/2))
+                    w = [sum(u[r].conjugate()*cm[r][s] for r in range(2)) for s in range(2)]
+                    best = max(best, sum(abs(x)**2 for x in w))
+            return best
+        for _, cm in fig.STATES:
+            got = best_overlap(cm); top = max(fig.schmidt_squares(cm))
+            self.assertLessEqual(got, top + 1e-9); self.assertGreater(got, top - 1e-3)
 
     def test_08_chsh(self):
         b0,b1 = scale(1/math.sqrt(2),add(Z,X)),scale(1/math.sqrt(2),add(Z,scale(-1,X)))
         observables = [tensor(Z,b0),tensor(Z,b1),tensor(X,b0),tensor(X,b1)]
         values = [mm(mm(adj(bell),a),bell)[0][0].real for a in observables]
         self.assertAlmostEqual(values[0]+values[1]+values[2]-values[3],2*math.sqrt(2))
+        # Figure curve (scripts/figures/ch08_chsh.py): S(phi) = 3cos(phi) - cos(3phi) from cosines.
+        # Recompute from 4x4 matrices on |Phi+>, and check the 68.5 degree crossing.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch08_chsh as fig
+        def obs(t): return add(scale(math.cos(t), Z), scale(math.sin(t), X))
+        for deg in (0, 15, 30, 45, 60, 75, 90):
+            phi = math.radians(deg); st = fig.settings(phi)
+            e = lambda a, b: mm(mm(adj(bell), tensor(obs(st[a]), obs(st[b]))), bell)[0][0].real
+            s = e("A0","B0") + e("A0","B1") + e("A1","B0") - e("A1","B1")
+            self.assertAlmostEqual(fig.s_value(phi), s)
+        self.assertAlmostEqual(fig.s_value(fig.crossing()), 2)
+        self.assertAlmostEqual(math.degrees(fig.crossing()), 68.53, places=2)
+        self.same(obs(fig.settings(math.pi/4)["B0"]), b0); self.same(obs(fig.settings(math.pi/4)["B1"]), b1)
 
     def test_09_all_teleportation_branches(self):
         # Full three-register circuit; compare every branch on several complex inputs.
@@ -244,6 +290,35 @@ class Calculations(unittest.TestCase):
                     self.same(mm(recovery,scale(2,branch)),v)
             rho=projector(v)
             self.same(scale(.25,add(*(mm(mm(p,rho),adj(p)) for p in (I,X,Z,mm(X,Z))))),scale(.5,I))
+        # Figure (scripts/figures/ch09_teleport.py): execute the drawn STEPS with 8x8 matrices in
+        # register order Q, A, B, and check every branch recovers the input.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch09_teleport as fig
+        self.assertEqual(fig.REGISTERS, ["Q", "A", "B"])
+        self.assertEqual([fig.OWNER[r] for r in fig.REGISTERS], ["Alice", "Alice", "Bob"])
+        def on(reg, g):
+            ops = [g if r == reg else I for r in fig.REGISTERS]
+            return tensor(tensor(ops[0], ops[1]), ops[2])
+        def cnot_on(c, tg):
+            idx = {r: i for i, r in enumerate(fig.REGISTERS)}
+            m = [[0]*8 for _ in range(8)]
+            for s in range(8):
+                bits = [(s >> (2 - i)) & 1 for i in range(3)]
+                if bits[idx[c]]: bits[idx[tg]] ^= 1
+                m[bits[0]*4 + bits[1]*2 + bits[2]][s] = 1
+            return m
+        for v in (zero, plus, ket(math.sqrt(.3), 1j*math.sqrt(.7))):
+            state = tensor(v, bell)
+            for step in fig.STEPS:
+                if step[0] == "cnot": state = mm(cnot_on(step[1], step[2]), state)
+                elif step[0] == "h": state = mm(on(step[1], H), state)
+            corrections = [s for s in fig.STEPS if s[0] in ("x_if", "z_if")]
+            for a in range(2):
+                for b in range(2):
+                    bob = [[state[4*a + 2*b + k][0]*2] for k in range(2)]
+                    for kind, _, bit in corrections:
+                        if {"a": a, "b": b}[bit]: bob = mm(X if kind == "x_if" else Z, bob)
+                    self.same(bob, v)
 
     def test_10_all_two_bit_deutsch_jozsa_promises(self):
         h2=tensor(H,H)
