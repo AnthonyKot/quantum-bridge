@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Qubits, amplitudes, and relative phase — The Bridge</title>
-<meta name="description" content="A qubit is specified by complex amplitudes. To understand what those amplitudes mean, calculate the outcomes of two different measurements on the same state.">
+<meta name="description" content="Two sources can give identical 0/1 statistics and still prepare different states. A second measurement reveals the relative phase between a qubit's amplitudes.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -20,23 +20,98 @@
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 01</p><h1>Qubits, amplitudes, and relative phase</h1>
-<p class="lede">A qubit is specified by complex amplitudes. To understand what those amplitudes mean, calculate the outcomes of two different measurements on the same state.</p><p class="prerequisites"><strong>Before you start:</strong> Complex numbers, vectors, inner products, and matrix multiplication. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">What a state vector predicts</a></li>
+<p class="lede">Two sources emit qubits. Measured one way, both give 0 half the time and 1 half the time. How can two preparations give identical measurement statistics and still be different states?</p><p class="prerequisites"><strong>Before you start:</strong> Complex numbers, vectors, inner products, and matrix multiplication. No quantum mechanics is assumed. If you want a slower first meeting with amplitudes and interference, see <a href="https://anthonykot.github.io/quantum-quartet/chapters/04-quantum-behavior.html">the double-slit essay</a> in the companion guide; for bras and kets, <a href="https://anthonykot.github.io/quantum-quartet/chapters/08-dirac-formalism.html">its essay on state notation</a>. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#three-sources">Three sources that look alike</a></li>
+<li><a href="#section-1">What a state vector predicts</a></li>
 <li><a href="#section-2">Two states with the same computational-basis statistics</a></li>
 <li><a href="#section-3">Deriving the Bloch coordinates</a></li>
 <li><a href="#section-4">Adding a second qubit</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-5">Problems</a></li>
 </ol></nav>
+<h2 id="three-sources">Three sources that look alike</h2>
+<p>Imagine three sources, A, B and C. Each emits one two-level quantum system at a time: a <strong>qubit</strong>. Your detector reports 0 or 1. With any of the three sources, a long run gives 0 about half the time and 1 about half the time, in no discernible order. On this evidence the sources are interchangeable.</p>
+<p>Now replace the detector by one that asks a different two-outcome question, with outcomes called $+$ and $-$. For a spin-½ particle this means turning the analysing magnet from the $z$ axis to the $x$ axis; for a photon's polarisation, rotating the analyser by $45^\circ$. Source A now gives $+$ on every run. Source B gives $-$ on every run. Source C still gives each outcome half the time.</p>
+<p>So the 0/1 statistics did not determine the state. The description that accounts for all three sources has these parts. A pure qubit state is described by two complex amplitudes. The 0/1 detector responds only to their magnitudes. The $+/-$ detector also responds to the phase between them. Source C is a different kind of preparation, a classical coin flip between two pure states. Such a mixed preparation is not described by a single pair of amplitudes; its full treatment needs the density matrices of Chapter 3, and here it serves as a comparison.</p>
 <h2 id="section-1">What a state vector predicts</h2>
-<p>Choose two orthonormal states and write them as column vectors. For a spin-½ particle, these could be the eigenstates of the spin component along a chosen axis; the labels themselves do not specify the hardware.</p>
+<p>Choose two orthonormal states and write them as column vectors. For a spin-½ particle, these could be the eigenstates of the spin component along a chosen axis, with $|0\rangle$ as spin up and $|1\rangle$ as spin down; the labels themselves do not specify the hardware.</p>
 <p>$$|0\rangle=\begin{pmatrix}1\\0\end{pmatrix},\quad |1\rangle=\begin{pmatrix}0\\1\end{pmatrix},\quad |\psi\rangle=\alpha|0\rangle+\beta|1\rangle=\begin{pmatrix}\alpha\\\beta\end{pmatrix}.$$</p>
-<p>The bra $\langle\psi|=(\alpha^*,\beta^*)$ is the conjugate transpose. Normalisation means $\langle\psi|\psi\rangle=|\alpha|^2+|\beta|^2=1$. In a measurement in the computational basis, the Born rule gives $p(0)=|\alpha|^2$ and $p(1)=|\beta|^2$. An amplitude may be negative or complex; a probability is real and nonnegative. Add amplitudes before squaring when alternatives interfere.</p>
+<p>The bra $\langle\psi|=(\alpha^*,\beta^*)$ is the conjugate transpose. Normalisation means $\langle\psi|\psi\rangle=|\alpha|^2+|\beta|^2=1$. The pair $\{|0\rangle,|1\rangle\}$ is called the <strong>computational basis</strong>, and the detector that reports 0 or 1 measures in it. For that measurement, the Born rule gives $p(0)=|\alpha|^2$ and $p(1)=|\beta|^2$. An amplitude may be negative or complex; a probability is real and nonnegative. Add amplitudes before squaring when alternatives interfere.</p>
 <p>For $|\psi\rangle=(\sqrt3|0\rangle+i|1\rangle)/2$, the two probabilities are $3/4$ and $1/4$. One run produces one outcome. To estimate these probabilities experimentally, prepare the state repeatedly and count outcomes. The state vector describes that distribution; it does not promise a fractional result in a single run.</p>
 <h2 id="section-2">Two states with the same computational-basis statistics</h2>
-<p>Define $|+\rangle=(|0\rangle+|1\rangle)/\sqrt2$ and $|-\rangle=(|0\rangle-|1\rangle)/\sqrt2$. Both give $p(0)=p(1)=1/2$. Nevertheless they are orthogonal: $\langle+|-\rangle=(1-1)/2=0$. A measurement in the $\{|+\rangle,|-\rangle\}$ basis distinguishes them perfectly.</p>
+<p>Define $|+\rangle=(|0\rangle+|1\rangle)/\sqrt2$ and $|-\rangle=(|0\rangle-|1\rangle)/\sqrt2$. Both give $p(0)=p(1)=1/2$. Nevertheless they are orthogonal: $\langle+|-\rangle=(1-1)/2=0$. A measurement in the $\{|+\rangle,|-\rangle\}$ basis distinguishes them perfectly. These are sources A and B.</p>
 <p>For a general state, the amplitude for the $+$ outcome is $\langle+|\psi\rangle=(\alpha+\beta)/\sqrt2$, so</p>
 <p>$$p(+)=\frac{|\alpha+\beta|^2}{2}=\frac12+\operatorname{Re}(\alpha^*\beta),\qquad p(-)=\frac12-\operatorname{Re}(\alpha^*\beta).$$</p>
 <p>The interference term follows from multiplying the amplitude by its conjugate. In detail, $(\alpha+\beta)^*(\alpha+\beta)=|\alpha|^2+|\beta|^2+\alpha^*\beta+\beta^*\alpha$. The first two terms sum to one, while the last two sum to $2\operatorname{Re}(\alpha^*\beta)$. These terms appear because the apparatus combines both components into the same $+$ outcome. If a preparation instead chooses one basis state or the other classically, we average the two resulting probabilities; there is no sum of amplitudes and hence no cross term.</p>
-<p>The cross term contains the relative phase. It is missing from a classical mixture in which half the preparations are $|0\rangle$ and half are $|1\rangle$. That mixture gives equal probabilities in the $+$/$-$ measurement too; the pure state $|+\rangle$ gives $+$ every time. Chapter 3 expresses this distinction with density matrices.</p>
+<p>The cross term contains the relative phase. It is missing from a classical mixture in which half the preparations are $|0\rangle$ and half are $|1\rangle$. That mixture gives equal probabilities in the $+$/$-$ measurement too; the pure state $|+\rangle$ gives $+$ every time. This mixture is source C. Chapter 3 expresses the distinction with density matrices.</p>
+<figure>
+<div class="fig-scroll">
+<!-- FIGURE:sources -->
+<svg class="fig-svg" viewBox="0 0 680 306" role="img" aria-labelledby="fig-sources-title fig-sources-desc">
+<title id="fig-sources-title">Three sources under two measurements</title>
+<desc id="fig-sources-desc">A grid of outcome probabilities. With the detector that reads 0 or 1, sources A, B and C all give one half and one half. With the detector that reads plus or minus, source A gives plus with probability one, source B gives minus with probability one, and source C gives one half and one half.</desc>
+<text class="fig-head" x="190" y="22">Detector reads 0 or 1</text>
+<text class="fig-head" x="440" y="22">Detector reads + or −</text>
+<line class="fig-rule" x1="0" y1="40" x2="680" y2="40"/>
+<text class="fig-label fig-strong" x="4" y="76">Source A</text>
+<text class="fig-label fig-soft fig-math" x="4" y="96">state |+⟩</text>
+<text class="fig-label" x="198" y="72" text-anchor="middle">0</text>
+<line class="fig-axis" x1="214" y1="54" x2="214" y2="80"/>
+<rect class="fig-bar-plain" x="214" y="56" width="75" height="22"/>
+<text class="fig-label" x="297" y="72">½</text>
+<text class="fig-label" x="198" y="104" text-anchor="middle">1</text>
+<line class="fig-axis" x1="214" y1="86" x2="214" y2="112"/>
+<rect class="fig-bar-plain" x="214" y="88" width="75" height="22"/>
+<text class="fig-label" x="297" y="104">½</text>
+<text class="fig-label" x="448" y="72" text-anchor="middle">+</text>
+<line class="fig-axis" x1="464" y1="54" x2="464" y2="80"/>
+<rect class="fig-bar" x="464" y="56" width="150" height="22"/>
+<text class="fig-label" x="622" y="72">1</text>
+<text class="fig-label" x="448" y="104" text-anchor="middle">−</text>
+<line class="fig-axis" x1="464" y1="86" x2="464" y2="112"/>
+<text class="fig-label" x="472" y="104">0</text>
+<line class="fig-rule" x1="0" y1="128" x2="680" y2="128"/>
+<text class="fig-label fig-strong" x="4" y="164">Source B</text>
+<text class="fig-label fig-soft fig-math" x="4" y="184">state |−⟩</text>
+<text class="fig-label" x="198" y="160" text-anchor="middle">0</text>
+<line class="fig-axis" x1="214" y1="142" x2="214" y2="168"/>
+<rect class="fig-bar-plain" x="214" y="144" width="75" height="22"/>
+<text class="fig-label" x="297" y="160">½</text>
+<text class="fig-label" x="198" y="192" text-anchor="middle">1</text>
+<line class="fig-axis" x1="214" y1="174" x2="214" y2="200"/>
+<rect class="fig-bar-plain" x="214" y="176" width="75" height="22"/>
+<text class="fig-label" x="297" y="192">½</text>
+<text class="fig-label" x="448" y="160" text-anchor="middle">+</text>
+<line class="fig-axis" x1="464" y1="142" x2="464" y2="168"/>
+<text class="fig-label" x="472" y="160">0</text>
+<text class="fig-label" x="448" y="192" text-anchor="middle">−</text>
+<line class="fig-axis" x1="464" y1="174" x2="464" y2="200"/>
+<rect class="fig-bar" x="464" y="176" width="150" height="22"/>
+<text class="fig-label" x="622" y="192">1</text>
+<line class="fig-rule" x1="0" y1="216" x2="680" y2="216"/>
+<text class="fig-label fig-strong" x="4" y="252">Source C</text>
+<text class="fig-label fig-soft fig-math" x="4" y="272">coin flip: |0⟩ or |1⟩</text>
+<text class="fig-label" x="198" y="248" text-anchor="middle">0</text>
+<line class="fig-axis" x1="214" y1="230" x2="214" y2="256"/>
+<rect class="fig-bar-plain" x="214" y="232" width="75" height="22"/>
+<text class="fig-label" x="297" y="248">½</text>
+<text class="fig-label" x="198" y="280" text-anchor="middle">1</text>
+<line class="fig-axis" x1="214" y1="262" x2="214" y2="288"/>
+<rect class="fig-bar-plain" x="214" y="264" width="75" height="22"/>
+<text class="fig-label" x="297" y="280">½</text>
+<text class="fig-label" x="448" y="248" text-anchor="middle">+</text>
+<line class="fig-axis" x1="464" y1="230" x2="464" y2="256"/>
+<rect class="fig-bar" x="464" y="232" width="75" height="22"/>
+<text class="fig-label" x="547" y="248">½</text>
+<text class="fig-label" x="448" y="280" text-anchor="middle">−</text>
+<line class="fig-axis" x1="464" y1="262" x2="464" y2="288"/>
+<rect class="fig-bar" x="464" y="264" width="75" height="22"/>
+<text class="fig-label" x="547" y="280">½</text>
+<line class="fig-rule" x1="0" y1="304" x2="680" y2="304"/>
+</svg>
+<!-- /FIGURE:sources -->
+</div>
+<figcaption>Outcome probabilities for the three sources under the two measurements. In the left column the three rows are identical, so no amount of 0/1 data separates the sources. In the right column the amplitudes $\alpha$ and $\beta$ are combined before squaring: their relative sign sends source A entirely to $+$ and source B entirely to $-$, while source C, which has no fixed relative phase, stays at one half.</figcaption>
+</figure>
 <p>A common phase has a different status. Replacing $|\psi\rangle$ by $e^{i\gamma}|\psi\rangle$ multiplies every measurement amplitude by $e^{i\gamma}$ and leaves its absolute square unchanged. Multiplying just one component changes interference and is generally observable.</p>
 <h2 id="section-3">Deriving the Bloch coordinates</h2>
 <p>Two complex amplitudes contain four real parameters. Normalisation removes one, and the unobservable common phase removes another. We can therefore parametrise a pure state by two angles:</p>
@@ -52,16 +127,64 @@
 <p>This is exactly the probability-weighted mean of the two possible readings. The same definition applies to $Y$ and $Z$. One measurement produces an eigenvalue, whereas the expectation value may lie anywhere between $-1$ and $+1$.</p>
 <p>Direct matrix multiplication gives $\langle X\rangle=2\operatorname{Re}(\alpha^*\beta)$, $\langle Y\rangle=2\operatorname{Im}(\alpha^*\beta)$, and $\langle Z\rangle=|\alpha|^2-|\beta|^2$. Substituting the angles gives the unit vector</p>
 <p>$$\mathbf r=(\sin\theta\cos\varphi,\sin\theta\sin\varphi,\cos\theta).$$</p>
+<details class="more"><summary>The matrix products and the substitution, step by step</summary>
+<p>Since $X|\psi\rangle=(\beta,\alpha)^T$, the row $(\alpha^*,\beta^*)$ times this column is $\alpha^*\beta+\beta^*\alpha=2\operatorname{Re}(\alpha^*\beta)$. Since $Y|\psi\rangle=(-i\beta,i\alpha)^T$, the same row gives $-i(\alpha^*\beta-\beta^*\alpha)$. The bracket is a number minus its conjugate, $2i\operatorname{Im}(\alpha^*\beta)$, so $\langle Y\rangle=2\operatorname{Im}(\alpha^*\beta)$. Since $Z|\psi\rangle=(\alpha,-\beta)^T$, $\langle Z\rangle=|\alpha|^2-|\beta|^2$.</p>
+<p>With $\alpha=\cos(\theta/2)$ and $\beta=e^{i\varphi}\sin(\theta/2)$, the double-angle formula gives</p>
+<p>$$\alpha^*\beta=\cos\frac\theta2\sin\frac\theta2\,e^{i\varphi}=\frac12\sin\theta\,(\cos\varphi+i\sin\varphi).$$</p>
+<p>Twice its real part is $\sin\theta\cos\varphi$ and twice its imaginary part is $\sin\theta\sin\varphi$. Finally $\cos^2(\theta/2)-\sin^2(\theta/2)=\cos\theta$.</p>
+</details>
+<p>This vector locates the state on a unit sphere, the <strong>Bloch sphere</strong>. The polar angle $\theta$ sets the 0/1 probabilities through $r_z=\cos\theta$, and the azimuth $\varphi$ is the relative phase.</p>
+<figure>
+<div class="fig-scroll">
+<!-- FIGURE:bloch -->
+<svg class="fig-svg" viewBox="0 0 680 400" role="img" aria-labelledby="fig-bloch-title fig-bloch-desc">
+<title id="fig-bloch-title">States on the Bloch sphere</title>
+<desc id="fig-bloch-desc">A sphere with the z axis vertical. The state zero is at the top and one at the bottom. Plus and minus are at opposite ends of the x axis, on the equator, and plus i is on the y axis. The worked state is on the front of the sphere, above the y axis, at height one half. Source C is at the centre.</desc>
+<circle class="fig-outline" cx="330" cy="200" r="150"/>
+<path class="fig-line fig-dashed" d="M480,199.2 L479.8,197.6 L479.4,196 L478.9,194.4 L478.2,192.7 L477.2,191.2 L476.2,189.6 L474.9,188 L473.4,186.4 L471.8,184.9 L470,183.4 L468.1,181.9 L465.9,180.4 L463.7,179 L461.2,177.5 L458.6,176.1 L455.8,174.8 L452.9,173.4 L449.8,172.1 L446.6,170.8 L443.2,169.6 L439.7,168.4 L436.1,167.2 L432.3,166.1 L428.4,165 L424.4,164 L420.3,163 L416,162 L411.7,161.1 L407.3,160.3 L402.7,159.5 L398.1,158.7 L393.4,158 L388.6,157.3 L383.8,156.7 L378.8,156.2 L373.9,155.7 L368.8,155.2 L363.7,154.8 L358.6,154.5 L353.5,154.2 L348.3,154 L343.1,153.8 L337.9,153.7 L332.6,153.7 L327.4,153.7 L322.1,153.7 L316.9,153.8 L311.7,154 L306.5,154.2 L301.4,154.5 L296.3,154.8 L291.2,155.2 L286.1,155.7 L281.2,156.2 L276.2,156.7 L271.4,157.3 L266.6,158 L261.9,158.7 L257.3,159.5 L252.7,160.3 L248.3,161.1 L244,162 L239.7,163 L235.6,164 L231.6,165 L227.7,166.1 L223.9,167.2 L220.3,168.4 L216.8,169.6 L213.4,170.8 L210.2,172.1 L207.1,173.4 L204.2,174.8 L201.4,176.1 L198.8,177.5 L196.3,179 L194.1,180.4 L191.9,181.9 L190,183.4 L188.2,184.9 L186.6,186.4 L185.1,188 L183.8,189.6 L182.8,191.2 L181.8,192.7 L181.1,194.4 L180.6,196 L180.2,197.6 L180,199.2 L180,200.8"/>
+<path class="fig-line" d="M266.6,242 L271.4,242.7 L276.2,243.3 L281.2,243.8 L286.1,244.3 L291.2,244.8 L296.3,245.2 L301.4,245.5 L306.5,245.8 L311.7,246 L316.9,246.2 L322.1,246.3 L327.4,246.3 L332.6,246.3 L337.9,246.3 L343.1,246.2 L348.3,246 L353.5,245.8 L358.6,245.5 L363.7,245.2 L368.8,244.8 L373.9,244.3 L378.8,243.8 L383.8,243.3 L388.6,242.7 L393.4,242 L398.1,241.3 L402.7,240.5 L407.3,239.7 L411.7,238.9 L416,238 L420.3,237 L424.4,236 L428.4,235 L432.3,233.9 L436.1,232.8 L439.7,231.6 L443.2,230.4 L446.6,229.2 L449.8,227.9 L452.9,226.6 L455.8,225.2 L458.6,223.9 L461.2,222.5 L463.7,221 L465.9,219.6 L468.1,218.1 L470,216.6 L471.8,215.1 L473.4,213.6 L474.9,212 L476.2,210.4 L477.2,208.8 L478.2,207.3 L478.9,205.6 L479.4,204 L479.8,202.4 L480,200.8 L480,199.2"/>
+<path class="fig-line" d="M180,200.8 L180.2,202.4 L180.6,204 L181.1,205.6 L181.8,207.3 L182.8,208.8 L183.8,210.4 L185.1,212 L186.6,213.6 L188.2,215.1 L190,216.6 L191.9,218.1 L194.1,219.6 L196.3,221 L198.8,222.5 L201.4,223.9 L204.2,225.2 L207.1,226.6 L210.2,227.9 L213.4,229.2 L216.8,230.4 L220.3,231.6 L223.9,232.8 L227.7,233.9 L231.6,235 L235.6,236 L239.7,237 L244,238 L248.3,238.9 L252.7,239.7 L257.3,240.5 L261.9,241.3 L266.6,242"/>
+<line class="fig-axis" x1="393.4" y1="158" x2="252.7" y2="251.3"/>
+<text class="fig-label fig-soft fig-italic" x="240.7" y="265.3" text-anchor="middle">x</text>
+<line class="fig-axis" x1="194.1" y1="180.4" x2="495.9" y2="223.9"/>
+<text class="fig-label fig-soft fig-italic" x="503.9" y="215.9" text-anchor="middle">y</text>
+<line class="fig-axis" x1="330" y1="342.7" x2="330" y2="26"/>
+<text class="fig-label fig-soft fig-italic" x="326" y="16" text-anchor="middle">z</text>
+<line class="fig-line fig-dashed" x1="447.7" y1="145.6" x2="330" y2="128.7"/>
+<line class="fig-vector" x1="330" y1="200" x2="447.7" y2="145.6"/>
+<text class="fig-label fig-soft" x="322" y="125.7" text-anchor="end"><tspan class="fig-italic">r</tspan><tspan dy="4" font-size="11">z</tspan><tspan dy="-4"> = ½</tspan></text>
+<circle class="fig-dot" cx="330" cy="57.3" r="5"/>
+<text class="fig-label fig-math" x="342" y="51.3" text-anchor="start">|0⟩</text>
+<circle class="fig-dot" cx="330" cy="342.7" r="5"/>
+<text class="fig-label fig-math" x="342" y="358.7" text-anchor="start">|1⟩</text>
+<circle class="fig-dot" cx="266.6" cy="242" r="5"/>
+<text class="fig-label fig-math" x="254.6" y="234" text-anchor="end">|+⟩  (source A)</text>
+<circle class="fig-dot fig-dot-back" cx="393.4" cy="158" r="5"/>
+<text class="fig-label fig-math" x="381.4" y="150" text-anchor="end">|−⟩  (source B)</text>
+<circle class="fig-dot" cx="465.9" cy="219.6" r="5"/>
+<text class="fig-label fig-math" x="477.9" y="235.6" text-anchor="start">|+i⟩</text>
+<circle class="fig-dot fig-dot-accent" cx="447.7" cy="145.6" r="5"/>
+<text class="fig-label fig-math" x="459.7" y="137.6" text-anchor="start">(√3|0⟩ + i|1⟩)/2</text>
+<circle class="fig-dot fig-dot-back" cx="330" cy="200" r="4"/>
+<text class="fig-label fig-soft" x="320" y="194" text-anchor="end">source C</text>
+</svg>
+<!-- /FIGURE:bloch -->
+</div>
+<figcaption>Pure states on the Bloch sphere. The height $r_z$ fixes the 0/1 statistics: $|+\rangle$ and $|-\rangle$ both lie on the equator, where $r_z=0$, which is why sources A and B looked alike. They sit at opposite ends of the $x$ axis, so a measurement of $X$ separates them completely. The worked state $(\sqrt3|0\rangle+i|1\rangle)/2$ has $\mathbf r=(0,\sqrt3/2,1/2)$. Source C is not on the sphere: its three means all vanish, which puts it at the centre (Chapter 3).</figcaption>
+</figure>
 <p>These are expectation values, estimated on separate ensembles. They are not three simultaneously definite spin components. Since each Pauli measurement returns an eigenvalue $+1$ or $-1$, its mean is $p(+1)-p(-1)$. Thus a measurement along $z$ has $p(+1)=(1+r_z)/2$. The outcome label $0$ corresponds to eigenvalue $+1$ of $Z$; it is not an eigenvalue zero.</p>
 <h2 id="section-4">Adding a second qubit</h2>
 <p>Use the ordered basis $|00\rangle,|01\rangle,|10\rangle,|11\rangle$, with the first symbol referring to the first subsystem. Distributing a tensor product gives</p>
 <p>$$(\alpha|0\rangle+\beta|1\rangle)\otimes(\gamma|0\rangle+\delta|1\rangle)=\alpha\gamma|00\rangle+\alpha\delta|01\rangle+\beta\gamma|10\rangle+\beta\delta|11\rangle.$$</p>
 <p>For example, $|+\rangle\otimes|1\rangle=(|01\rangle+|11\rangle)/\sqrt2$. Its column vector is $(0,1,0,1)^T/\sqrt2$. A general two-qubit state need not factor this way; we will test factorisation in Chapter 7. For $n$ qubits there are $2^n$ basis strings, but measurement still returns one string per preparation. The number of amplitudes alone does not establish a computational advantage.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>Sources A and B give the same 0/1 statistics because that measurement responds only to $|\alpha|^2$ and $|\beta|^2$. They are different states because their amplitudes differ in relative phase, and a measurement that combines both amplitudes into one outcome converts that phase into a probability. Source C matches them in one measurement for a different reason: it has no fixed relative phase, so every two-outcome projective measurement of this qubit gives equal probabilities.</p>
+<p>Every probability in this chapter was the chance of an outcome. Nothing has been said about the state of the qubit after the outcome is recorded, and that matters as soon as a gate or a second measurement follows. The next chapter separates the two questions.</p>
 <h2 id="section-5">Problems</h2>
 <p><strong>1.</strong> For $(\sqrt3|0\rangle+i|1\rangle)/2$, compute all three Pauli means and the probability of the $+1$ outcome of $Y$.</p>
 <details><summary>Worked answer</summary><p>Identify $\alpha=\sqrt3/2$ and $\beta=i/2$. Compute the shared product first: $\alpha^*\beta=i\sqrt3/4$. Its real part is zero and its imaginary part is $\sqrt3/4$. Therefore</p><p>$$\begin{aligned}\langle X\rangle&=2\operatorname{Re}(\alpha^*\beta)=0,\\\langle Y\rangle&=2\operatorname{Im}(\alpha^*\beta)=\sqrt3/2,\\\langle Z\rangle&=|\alpha|^2-|\beta|^2=3/4-1/4=1/2.\end{aligned}$$</p><p>For the $Y$ measurement, write $p_++p_-=1$ and $p_+-p_-=\langle Y\rangle$. Adding gives $2p_+=1+\sqrt3/2$, hence $p_+=(2+\sqrt3)/4$. As a check, the Bloch vector has squared length $0+3/4+1/4=1$, as expected for a pure state.</p></details>
 <p><strong>2.</strong> Consider $|\psi_\phi\rangle=(|0\rangle+e^{i\phi}|1\rangle)/\sqrt2$. Which computational-basis statistics change with $\phi$? What is $p(+)$?</p>
-<details><summary>Worked answer</summary><p>In the computational basis, the amplitudes are $1/\sqrt2$ and $e^{i\phi}/\sqrt2$. Their squared magnitudes are both $1/2$, since $|e^{i\phi}|=1$. In the other basis, first take the overlap and then square:</p><p>$$\begin{aligned}\langle+|\psi_\phi\rangle&=(1+e^{i\phi})/2,\\p(+)&=\frac{(1+e^{-i\phi})(1+e^{i\phi})}{4}\\&=\frac{2+2\cos\phi}{4}=\cos^2(\phi/2).\end{aligned}$$</p><p>At $\phi=0$, this gives one; at $\phi=\pi$, zero. The first measurement loses the phase dependence, while the second combines the two amplitudes and reveals it.</p></details>
+<details><summary>Worked answer</summary><p>In the computational basis, the amplitudes are $1/\sqrt2$ and $e^{i\phi}/\sqrt2$. Their squared magnitudes are both $1/2$, since $|e^{i\phi}|=1$. In the other basis, first take the overlap and then square:</p><p>$$\begin{aligned}\langle+|\psi_\phi\rangle&=(1+e^{i\phi})/2,\\p(+)&=\frac{(1+e^{-i\phi})(1+e^{i\phi})}{4}\\&=\frac{2+2\cos\phi}{4}=\cos^2(\phi/2).\end{aligned}$$</p><p>At $\phi=0$, this gives one; at $\phi=\pi$, zero. The first measurement loses the phase dependence, while the second combines the two amplitudes and reveals it.</p><p>The tempting wrong turn is to conclude from the first result that $\phi$ is unobservable. That is true of a common phase multiplying both amplitudes, not of a phase on one of them. On the Bloch sphere these states run round the equator: every one has $r_z=0$, and $\phi$ is the azimuth.</p></details>
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §1.2 (qubits), §2.1.3–2.1.7 (Pauli matrices, inner products, tensor products), and §2.2.7 (phase).</p></section><nav class="chapter-nav"><a href="../index.html"><span class="dir">Previous</span>Contents</a><a class="next" href="02-observables-measurement.html"><span class="dir">Next chapter</span>Measurement: probabilities and state changes</a></nav>
 </div></main>

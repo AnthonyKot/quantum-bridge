@@ -19,8 +19,9 @@ class Page(HTMLParser):
         if tag=='html': self.lang=a.get('lang')
         if 'id' in a:self.ids.append(a['id'])
         if tag=='h1':self.h1+=1
-        if tag=='details':self.details+=1
-        if tag=='summary':self.summaries+=1
+        if tag=='details' and 'more' in (a.get('class') or '').split():self.optional=True
+        elif tag=='details':self.details+=1;self.optional=False
+        if tag=='summary' and not getattr(self,'optional',False):self.summaries+=1
         for key in ('href','src'):
             if key in a:self.links.append(a[key])
         if tag not in {'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}:

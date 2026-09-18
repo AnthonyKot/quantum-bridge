@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Grover search as two reflections — The Bridge</title>
-<meta name="description" content="Grover search increases the probability of a marked answer by repeatedly reflecting amplitudes. A two-dimensional calculation gives both the speedup and the stopping rule.">
+<meta name="description" content="A sign flip changes no probability. Followed by a second reflection it becomes a rotation towards the marked answer, and past it if the pair is repeated too often.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -20,14 +20,19 @@
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 12</p><h1>Grover search as two reflections</h1>
-<p class="lede">Grover search increases the probability of a marked answer by repeatedly reflecting amplitudes. A two-dimensional calculation gives both the speedup and the stopping rule.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 4 and 10: oracle circuits, phase flips, and uniform superpositions. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Specify the search problem</a></li>
+<p class="lede">An oracle call flips the sign of one amplitude and changes no measurement probability. How can a sign flip, followed by a second operation, increase the answer's probability, and why must we stop repeating that pair?</p><p class="prerequisites"><strong>Before you start:</strong> Amplitudes and relative signs (Chapter 1); reversible evaluation of a function as an oracle (<a href="04-unitary-gates.html#section-4">Chapter 4</a>); turning a function value into a phase, and the uniform superposition made by $H^{\otimes n}$ (<a href="10-interference-deutsch.html#section-1">Chapter 10</a>). The double-angle formulas for sine and cosine. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#the-task">A checker and nothing else</a></li>
+<li><a href="#section-1">Specify the search problem</a></li>
 <li><a href="#section-2">The diffusion operator reflects amplitudes about their mean</a></li>
 <li><a href="#section-3">One iteration with four candidates</a></li>
 <li><a href="#section-4">Reduce the general problem to a plane</a></li>
 <li><a href="#section-5">Choose when to stop</a></li>
 <li><a href="#section-6">What the square-root speedup counts</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-7">Problems</a></li>
 </ol></nav>
+<h2 id="the-task">A checker and nothing else</h2>
+<p>Suppose a routine can check a proposed answer, and exactly one of $N$ candidates passes: a key that decrypts a message, an assignment that satisfies a set of constraints. Suppose also that nothing about the routine suggests where to look, so the only use of it is to try candidates. Classically, finding the answer takes about $N/2$ checks on average and $N-1$ in the worst case.</p>
+<p>A quantum computer can run the same check on a superposition of all candidates. Chapter 10 showed what that produces: the answer's amplitude changes sign, and every measurement probability stays at $1/N$. The sign is information that a measurement cannot yet see. This chapter follows the one further operation that makes it visible, first on four candidates by arithmetic and then in general as a rotation. The rotation also shows why the iterations must be counted: it does not stop at the answer.</p>
 <h2 id="section-1">Specify the search problem</h2>
 <p>Let $N=2^n\ge2$ candidate strings contain exactly one marked item $w$. The oracle recognises it coherently: $O_w|x\rangle=(-1)^{[x=w]}|x\rangle$. Here $[x=w]$ is one if the equality holds and zero otherwise. It can be obtained from a reversible Boolean checker using the $|-\rangle$ target of Chapter 10.</p>
 <p>Prepare $|s\rangle=N^{-1/2}\sum_x|x\rangle$ with $H^{\otimes n}$. A direct measurement finds $w$ with probability $1/N$. One oracle call flips its amplitude's sign but leaves every probability unchanged. The next operation must convert that phase difference into a probability difference.</p>
@@ -38,28 +43,164 @@
 <h2 id="section-3">One iteration with four candidates</h2>
 <p>Take $N=4,w=2$. The initial amplitudes are $(1/2,1/2,1/2,1/2)$. The oracle gives $(1/2,1/2,-1/2,1/2)$, whose mean is $1/4$. Diffusion maps each amplitude to $1/2-a_x$: the three unmarked amplitudes become zero and the marked one becomes one. A single iteration $G=DO_w$ therefore finds the answer with certainty.</p>
 <p>The example makes the sequence explicit: a sign change first, then cancellation on unmarked states and reinforcement on the marked state. Measuring between these two operations would prevent that interference.</p>
+<figure>
+<div class="fig-scroll">
+<!-- FIGURE:amplitudes -->
+<svg class="fig-svg" viewBox="0 0 680 268" role="img" aria-labelledby="fig-amplitudes-title fig-amplitudes-desc">
+<title id="fig-amplitudes-title">One Grover iteration with four candidates</title>
+<desc id="fig-amplitudes-desc">Three bar charts of four amplitudes. At the start all four are one half. After the oracle the marked amplitude, item 2, is minus one half and the mean of the four is one quarter. After diffusion the marked amplitude is one and the other three are zero.</desc>
+<text class="fig-head" x="20" y="22">1. Start</text>
+<line class="fig-axis" x1="20" y1="140" x2="210" y2="140"/>
+<rect class="fig-bar-plain" x="32" y="100" width="30" height="40"/>
+<text class="fig-label" x="47" y="93" text-anchor="middle">½</text>
+<text class="fig-label" x="47" y="224" text-anchor="middle">0</text>
+<text class="fig-label fig-soft" x="47" y="242" text-anchor="middle">00</text>
+<rect class="fig-bar-plain" x="76" y="100" width="30" height="40"/>
+<text class="fig-label" x="91" y="93" text-anchor="middle">½</text>
+<text class="fig-label" x="91" y="224" text-anchor="middle">1</text>
+<text class="fig-label fig-soft" x="91" y="242" text-anchor="middle">01</text>
+<rect class="fig-bar" x="120" y="100" width="30" height="40"/>
+<text class="fig-label" x="135" y="93" text-anchor="middle">½</text>
+<text class="fig-label fig-strong" x="135" y="224" text-anchor="middle">2</text>
+<text class="fig-label fig-soft" x="135" y="242" text-anchor="middle">10</text>
+<rect class="fig-bar-plain" x="164" y="100" width="30" height="40"/>
+<text class="fig-label" x="179" y="93" text-anchor="middle">½</text>
+<text class="fig-label" x="179" y="224" text-anchor="middle">3</text>
+<text class="fig-label fig-soft" x="179" y="242" text-anchor="middle">11</text>
+<text class="fig-head" x="245" y="22">2. After the oracle</text>
+<line class="fig-axis" x1="245" y1="140" x2="435" y2="140"/>
+<line class="fig-line fig-dashed" x1="245" y1="120" x2="435" y2="120"/>
+<text class="fig-label fig-soft" x="360" y="113" text-anchor="middle">mean ¼</text>
+<rect class="fig-bar-plain" x="257" y="100" width="30" height="40"/>
+<text class="fig-label" x="272" y="93" text-anchor="middle">½</text>
+<text class="fig-label" x="272" y="224" text-anchor="middle">0</text>
+<text class="fig-label fig-soft" x="272" y="242" text-anchor="middle">00</text>
+<rect class="fig-bar-plain" x="301" y="100" width="30" height="40"/>
+<text class="fig-label" x="316" y="93" text-anchor="middle">½</text>
+<text class="fig-label" x="316" y="224" text-anchor="middle">1</text>
+<text class="fig-label fig-soft" x="316" y="242" text-anchor="middle">01</text>
+<rect class="fig-bar" x="345" y="140" width="30" height="40"/>
+<text class="fig-label" x="360" y="197" text-anchor="middle">−½</text>
+<text class="fig-label fig-strong" x="360" y="224" text-anchor="middle">2</text>
+<text class="fig-label fig-soft" x="360" y="242" text-anchor="middle">10</text>
+<rect class="fig-bar-plain" x="389" y="100" width="30" height="40"/>
+<text class="fig-label" x="404" y="93" text-anchor="middle">½</text>
+<text class="fig-label" x="404" y="224" text-anchor="middle">3</text>
+<text class="fig-label fig-soft" x="404" y="242" text-anchor="middle">11</text>
+<text class="fig-head" x="470" y="22">3. After diffusion</text>
+<line class="fig-axis" x1="470" y1="140" x2="660" y2="140"/>
+<text class="fig-label" x="497" y="133" text-anchor="middle">0</text>
+<text class="fig-label" x="497" y="224" text-anchor="middle">0</text>
+<text class="fig-label fig-soft" x="497" y="242" text-anchor="middle">00</text>
+<text class="fig-label" x="541" y="133" text-anchor="middle">0</text>
+<text class="fig-label" x="541" y="224" text-anchor="middle">1</text>
+<text class="fig-label fig-soft" x="541" y="242" text-anchor="middle">01</text>
+<rect class="fig-bar" x="570" y="60" width="30" height="80"/>
+<text class="fig-label" x="585" y="53" text-anchor="middle">1</text>
+<text class="fig-label fig-strong" x="585" y="224" text-anchor="middle">2</text>
+<text class="fig-label fig-soft" x="585" y="242" text-anchor="middle">10</text>
+<text class="fig-label" x="629" y="133" text-anchor="middle">0</text>
+<text class="fig-label" x="629" y="224" text-anchor="middle">3</text>
+<text class="fig-label fig-soft" x="629" y="242" text-anchor="middle">11</text>
+<text class="fig-label fig-soft" x="676" y="263" text-anchor="end">candidate x (decimal, binary); the marked item is 2</text>
+</svg>
+<!-- /FIGURE:amplitudes -->
+</div>
+<figcaption>One iteration with $N=4$ and marked item $w=2$. The oracle changes only a sign, so the first two panels have identical probabilities. The sign matters because it pulls the mean down to $1/4$, below the unmarked amplitudes and far above the marked one. Reflecting each amplitude about that mean, $a\mapsto2\bar a-a$, sends the unmarked amplitudes to zero and the marked amplitude to one.</figcaption>
+</figure>
 <h2 id="section-4">Reduce the general problem to a plane</h2>
 <p>Let $|r\rangle=(N-1)^{-1/2}\sum_{x\ne w}|x\rangle$, orthogonal to $|w\rangle$. The initial state is</p>
 <p>$$|s\rangle=\sin\theta|w\rangle+\cos\theta|r\rangle,\qquad \sin\theta=\frac1{\sqrt N}.$$</p>
+<p>Both the oracle and diffusion map this plane to itself, and inside it each is a reflection. The oracle negates the $|w\rangle$ component and leaves every unmarked basis state, hence $|r\rangle$, unchanged: it reflects about the $|r\rangle$ axis. Diffusion, $2|s\rangle\langle s|-I$, keeps the component along $|s\rangle$ and negates the component perpendicular to it: it reflects about the line through $|s\rangle$.</p>
+<p>Two reflections about lines that meet at angle $\theta$ compose to a rotation by $2\theta$. To see this, describe a real unit vector in the plane by its angle $\alpha$ from $|r\rangle$, measured towards $|w\rangle$, so that its column in the ordered basis $(|w\rangle,|r\rangle)$ is $(\sin\alpha,\cos\alpha)^T$. The oracle sends $\alpha$ to $-\alpha$. Reflection about the line at angle $\theta$ sends any angle $\beta$ to $2\theta-\beta$. Applying one and then the other gives $\alpha\mapsto2\theta+\alpha$. In matrix form, the iteration $G=DO_w$ is</p>
+
+<p>$$G=\begin{pmatrix}\cos2\theta&\sin2\theta\\-\sin2\theta&\cos2\theta\end{pmatrix}.$$</p>
+<details class="more"><summary>The same matrix from the definitions of $D$ and $O_w$, entry by entry</summary>
 <p>We can calculate diffusion in this basis directly from its definition. The projector is the column for $|s\rangle$ multiplied by its row:</p>
 <p>$$|s\rangle\langle s|=\begin{pmatrix}\sin^2\theta&\sin\theta\cos\theta\\\sin\theta\cos\theta&\cos^2\theta\end{pmatrix}.$$</p>
 <p>Multiplying by two and subtracting the identity gives diagonal entries $2\sin^2\theta-1=-\cos2\theta$ and $2\cos^2\theta-1=\cos2\theta$. Its off-diagonal entries are $2\sin\theta\cos\theta=\sin2\theta$. In particular, diffusion mixes marked and unmarked amplitudes; it is not diagonal in this basis.</p>
-<p>The oracle is diagonal here because it negates $|w\rangle$ and leaves every unmarked basis state, hence $|r\rangle$, unchanged. To form $G=DO_w$, multiply $D$ by this diagonal matrix on the right: negate the first column of $D$ and retain the second. This explains each sign in the rotation matrix below.</p>
+<p>The oracle is diagonal here because it negates $|w\rangle$ and leaves every unmarked basis state, hence $|r\rangle$, unchanged. To form $G=DO_w$, multiply $D$ by this diagonal matrix on the right: negate the first column of $D$ and retain the second. This explains each sign in the rotation matrix above.</p>
 <p>Both oracle and diffusion preserve this plane. In the ordered basis $(|w\rangle,|r\rangle)$, write $|s\rangle$ as the real column $(\sin\theta,\cos\theta)^T$. The two individual matrices are</p>
 <p>$$O_w=\begin{pmatrix}-1&0\\0&1\end{pmatrix},\qquad D=\begin{pmatrix}-\cos2\theta&\sin2\theta\\\sin2\theta&\cos2\theta\end{pmatrix}.$$</p>
-<p>Multiplying the two reflections in circuit order gives</p>
-<p>$$G=\begin{pmatrix}\cos2\theta&\sin2\theta\\-\sin2\theta&\cos2\theta\end{pmatrix}.$$</p>
-<p>Multiplying $G$ by $(\sin\alpha,\cos\alpha)^T$ gives $(\sin(\alpha+2\theta),\cos(\alpha+2\theta))^T$. Thus after $k$ iterations,</p>
+<p>Multiplying the two reflections in circuit order, oracle first, gives the rotation matrix above.</p>
+</details>
+<p>Multiplying $G$ by $(\sin\alpha,\cos\alpha)^T$ gives $(\sin(\alpha+2\theta),\cos(\alpha+2\theta))^T$, as the angle argument requires. The start state $|s\rangle$ is at angle $\theta$. Thus after $k$ iterations,</p>
 <p>$$G^k|s\rangle=\sin((2k+1)\theta)|w\rangle+\cos((2k+1)\theta)|r\rangle,\quad p_k=\sin^2((2k+1)\theta).$$</p>
 <p>Writing the plane in terms of $|w\rangle$ is for analysis; the circuit never needs to prepare that unknown basis vector directly.</p>
 <h2 id="section-5">Choose when to stop</h2>
 <p>The first probability maximum occurs near $(2k+1)\theta=\pi/2$. Choose a nonnegative integer nearest to $\pi/(4\theta)-1/2$. For large $N$, $\theta\approx1/\sqrt N$, giving $k\approx(\pi/4)\sqrt N$. Rounding introduces at most an angular error $\theta$, so for this single-target setting the resulting success probability is at least $\cos^2\theta=1-1/N$.</p>
-<p>For $N=8$, the initial success chance is $1/8$. One iteration raises it to $25/32\approx0.781$; two raise it to $121/128\approx0.945$; three reduce it to $169/512\approx0.330$. Continuing indefinitely is not harmless. The state rotates past the target and its overlap falls again.</p>
+<p>For $N=8$, the initial success chance is $1/8$. One iteration raises it to $25/32\approx0.781$; two raise it to $121/128\approx0.945$; three reduce it to $169/512\approx0.330$. Continuing indefinitely is not harmless. The state rotates past the target and its overlap falls again. Later peaks exist, and one may happen to be higher than the first, but each costs more queries; the stopping rule aims at the first.</p>
+<figure>
+<div class="fig-scroll">
+<!-- FIGURE:rotation -->
+<svg class="fig-svg" viewBox="0 0 680 345" role="img" aria-labelledby="fig-rotation-title fig-rotation-desc">
+<title id="fig-rotation-title">Grover iterations as a rotation, and the overshoot</title>
+<desc id="fig-rotation-desc">Left: a half circle with the unmarked direction horizontal and the marked direction vertical. The start state is 20.7 degrees above horizontal. Each iteration adds 41.4 degrees: 62.1, 103.5, then 144.9 degrees. The state after two iterations is closest to vertical. Right: success probabilities 0.13, 0.78, 0.95, 0.33, 0.01, 0.55 and 0.9998 for zero to six iterations, rising, falling and rising again.</desc>
+<text class="fig-head" x="20" y="22">The state in the plane of |r⟩ and |w⟩, N = 8</text>
+<text class="fig-head" x="425" y="22">Success probability after k iterations</text>
+<path class="fig-line" d="M295.7,305.2 L298.1,298.3 L300.2,291.2 L301.9,284.1 L303.3,276.9 L304.2,269.6 L304.8,262.3 L305,255 L304.8,247.7 L304.2,240.4 L303.3,233.1 L301.9,225.9 L300.2,218.8 L298.1,211.7 L295.7,204.8 L292.9,198.1 L289.7,191.4 L286.2,185 L282.4,178.8 L278.3,172.7 L273.8,166.9 L269,161.3 L264,156 L258.7,151 L253.1,146.2 L247.3,141.7 L241.2,137.6 L235,133.8 L228.6,130.3 L221.9,127.1 L215.2,124.3 L208.3,121.9 L201.2,119.8 L194.1,118.1 L186.9,116.7 L179.6,115.8 L172.3,115.2 L165,115 L157.7,115.2 L150.4,115.8 L143.1,116.7 L135.9,118.1 L128.8,119.8 L121.7,121.9 L114.8,124.3 L108.1,127.1 L101.4,130.3 L95,133.8 L88.8,137.6 L82.7,141.7 L76.9,146.2 L71.3,151 L66,156 L61,161.3 L56.2,166.9 L51.7,172.7 L47.6,178.8 L43.8,185 L40.3,191.4 L37.1,198.1 L34.3,204.8 L31.9,211.7 L29.8,218.8 L28.1,225.9 L26.7,233.1 L25.8,240.4 L25.2,247.7 L25,255"/>
+<line class="fig-axis" x1="15" y1="255" x2="327" y2="255"/>
+<line class="fig-axis" x1="165" y1="325" x2="165" y2="93"/>
+<text class="fig-label fig-math" x="313" y="247">|r⟩</text>
+<text class="fig-label fig-math" x="173" y="103">|w⟩</text>
+<line class="fig-line fig-dashed" x1="165" y1="255" x2="296" y2="304.5"/>
+<text class="fig-label fig-soft" x="300" y="322.5" text-anchor="end">after the first oracle call</text>
+<line class="fig-vector fig-vector-plain" x1="165" y1="255" x2="296" y2="205.5"/>
+<circle class="fig-dot" cx="296" cy="205.5" r="4.5"/>
+<text class="fig-label" x="314.7" y="202.4" text-anchor="start">k = 0 (start)</text>
+<line class="fig-vector fig-vector-plain" x1="165" y1="255" x2="230.5" y2="131.3"/>
+<circle class="fig-dot" cx="230.5" cy="131.3" r="4.5"/>
+<text class="fig-label" x="239.8" y="117.6" text-anchor="start">k = 1</text>
+<line class="fig-vector" x1="165" y1="255" x2="132.3" y2="118.9"/>
+<circle class="fig-dot fig-dot-accent" cx="132.3" cy="118.9" r="4.5"/>
+<text class="fig-label" x="127.6" y="103.4" text-anchor="middle">k = 2</text>
+<line class="fig-vector fig-vector-plain" x1="165" y1="255" x2="50.4" y2="174.6"/>
+<circle class="fig-dot" cx="50.4" cy="174.6" r="4.5"/>
+<text class="fig-label" x="34" y="167.1" text-anchor="end">k = 3</text>
+<text class="fig-label fig-soft fig-italic" x="226" y="247.9">θ</text>
+<text class="fig-label fig-soft fig-italic" x="217.5" y="208.7">2θ</text>
+<line class="fig-axis" x1="432" y1="285" x2="671" y2="285"/>
+<line class="fig-rule" x1="432" y1="285" x2="671" y2="285"/>
+<text class="fig-label fig-soft" x="428" y="289" text-anchor="end">0</text>
+<line class="fig-rule" x1="432" y1="180" x2="671" y2="180"/>
+<text class="fig-label fig-soft" x="428" y="184" text-anchor="end">½</text>
+<line class="fig-rule" x1="432" y1="75" x2="671" y2="75"/>
+<text class="fig-label fig-soft" x="428" y="79" text-anchor="end">1</text>
+<rect class="fig-bar-plain" x="440" y="258.8" width="24" height="26.2"/>
+<text class="fig-label" x="452" y="252.8" text-anchor="middle">0.12</text>
+<text class="fig-label" x="452" y="303" text-anchor="middle">0</text>
+<rect class="fig-bar-plain" x="473" y="120.9" width="24" height="164.1"/>
+<text class="fig-label" x="485" y="114.9" text-anchor="middle">0.78</text>
+<text class="fig-label" x="485" y="303" text-anchor="middle">1</text>
+<rect class="fig-bar" x="506" y="86.5" width="24" height="198.5"/>
+<text class="fig-label" x="518" y="80.5" text-anchor="middle">0.95</text>
+<text class="fig-label" x="518" y="303" text-anchor="middle">2</text>
+<rect class="fig-bar-plain" x="539" y="215.7" width="24" height="69.3"/>
+<text class="fig-label" x="551" y="209.7" text-anchor="middle">0.33</text>
+<text class="fig-label" x="551" y="303" text-anchor="middle">3</text>
+<rect class="fig-bar-plain" x="572" y="282.4" width="24" height="2.6"/>
+<text class="fig-label" x="584" y="276.4" text-anchor="middle">0.01</text>
+<text class="fig-label" x="584" y="303" text-anchor="middle">4</text>
+<rect class="fig-bar-plain" x="605" y="169.9" width="24" height="115.1"/>
+<text class="fig-label" x="617" y="163.9" text-anchor="middle">0.55</text>
+<text class="fig-label" x="617" y="303" text-anchor="middle">5</text>
+<rect class="fig-bar-plain" x="638" y="75" width="24" height="210"/>
+<text class="fig-label" x="650" y="69" text-anchor="middle">0.9998</text>
+<text class="fig-label" x="650" y="303" text-anchor="middle">6</text>
+<text class="fig-label fig-soft" x="555.5" y="323" text-anchor="middle">iterations k</text>
+</svg>
+<!-- /FIGURE:rotation -->
+</div>
+<figcaption>Left: for $N=8$ the start state is $\theta=20.7^\circ$ from $|r\rangle$. The first oracle call reflects it to $-\theta$ (dashed), and diffusion reflects that about $|s\rangle$ to $3\theta$; every later iteration adds another $2\theta=41.4^\circ$. The success probability is the squared height of the vector. After two iterations the state is $13.5^\circ$ past $|w\rangle$: $k=2$ is the best integer stopping point near the first peak. Right: the same probabilities against $k$. They fall after $k=2$ and later rise again. The bar at $k=6$ is higher, $0.9998$ against $0.945$, because $13\theta$ happens to fall within a degree of $270^\circ$, but it costs three times the oracle queries; two runs of two iterations already fail together with probability only $0.003$. Either way, a run must be stopped at a count chosen in advance. With $N=4$, $\theta=30^\circ$ and one step lands exactly on $|w\rangle$, which is the four-candidate calculation above.</figcaption>
+</figure>
 <p>If $1\le M&lt;N$ targets are marked, replace $|w\rangle$ by the uniform superposition of targets and use $\sin\theta=\sqrt{M/N}$. The same rotation formula follows, but the stopping count depends on $M$. An unknown target count requires an additional strategy; the single-target prescription cannot simply be assumed.</p>
 <h2 id="section-6">What the square-root speedup counts</h2>
 <p>We use asymptotic notation to compare resource growth as $N$ increases. A query count $Q(N)=O(g(N))$ has an upper bound $C g(N)$ for sufficiently large $N$, for a constant $C$ independent of $N$. Writing $Q(N)=\Theta(g(N))$ means there are also a positive lower constant $c$ and bounds $c g(N)\le Q(N)\le C g(N)$. Thus a $\Theta(\sqrt N)$ claim combines an algorithm using at most a constant times $\sqrt N$ queries with a theorem excluding asymptotically smaller counts under the same problem assumptions.</p>
 <p>For unstructured search with a unique target and bounded error, the oracle-query complexity is $\Theta(\sqrt N)$ quantumly versus $\Theta(N)$ classically. The lower bound is a theorem, not proved by the two-reflection calculation. This is a quadratic improvement, not an exponential one.</p>
 <p>Total runtime includes the reversible checker, diffusion, preparation, and final verification of the candidate. If data must first be loaded into a memory, account for that cost and whether it is reused across searches. If the candidates are defined implicitly and the predicate is inexpensive, the oracle model can better reflect the task. Neither the existence of a checker nor the query bound alone establishes a practical advantage.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>A sign change makes the answer more likely because the second operation acts on amplitudes, not probabilities. Flipping one sign lowers the mean amplitude, the marked amplitude now lies furthest below that mean, and reflection about the mean raises it while lowering the rest. In the plane of $|w\rangle$ and $|r\rangle$ the two reflections are a rotation by $2\theta$, with $\sin\theta=1/\sqrt N$, so about $(\pi/4)\sqrt N$ iterations bring the state close to $|w\rangle$. We must stop there because the rotation does not: the next iterations carry the state away from the answer. What the $\sqrt N$ counts is oracle queries, under the assumptions stated in the previous section.</p>
+<p>This chapter, like the two before it, treated every gate as exact and the register as isolated for the whole run. A search over many candidates needs on the order of $\sqrt N$ coherent iterations, each of which gives the surroundings a chance to interact with the register. The next chapter describes what such an interaction does to a state.</p>
 <h2 id="section-7">Problems</h2>
 <p><strong>1.</strong> Reproduce $p_1=25/32$ for $N=8$ using mean reflection.</p>
 <details><summary>Worked answer</summary><p>Write each initial amplitude as $a=1/\sqrt8$. After the oracle there are seven $+a$ amplitudes and one $-a$, so the sum is $6a$ and the mean is $6a/8=3a/4$.</p><p>$$a'_w=2(3a/4)-(-a)=5a/2,\qquad a'_{x\ne w}=2(3a/4)-a=a/2.$$</p><p>Squaring the marked amplitude gives $p_1=25a^2/4=25/32$. The seven others contribute $7a^2/4=7/32$, checking total probability one. The probability gain comes from the amplitude update; squaring before averaging would give the wrong result.</p></details>

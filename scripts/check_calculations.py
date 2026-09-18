@@ -4,7 +4,9 @@ Standard library only. These are examples and regression checks, not theorem pro
 """
 import cmath
 import math
+import sys
 import unittest
+from pathlib import Path
 
 
 def adj(a):
@@ -77,6 +79,24 @@ class Calculations(unittest.TestCase):
         means = [mm(mm(adj(v), p), v)[0][0] for p in (X,Y,Z)]
         self.same([means], [[0,math.sqrt(3)/2,.5]])
         self.assertAlmostEqual(abs(mm(adj(plus), v)[0][0])**2, .5)
+        # Figure data (scripts/figures/ch01_qubit.py) computes probabilities from amplitudes.
+        # Check it by a different route: density matrices and p(+1) = (1 + <P>)/2.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch01_qubit as fig
+        rhos = [projector(plus), projector(minus), scale(.5, I)]
+        for (_, _, pz, px), rho in zip(fig.source_table(), rhos):
+            for probs, pauli in ((pz, Z), (px, X)):
+                mean = trace(mm(rho, pauli)).real
+                self.assertAlmostEqual(probs[0], (1+mean)/2)
+                self.assertAlmostEqual(probs[1], (1-mean)/2)
+        for got, want in zip(fig.bloch(fig.WORKED), means):
+            self.assertAlmostEqual(got, want.real)
+        # Projection used for the sphere is orthonormal, so the outline is a circle.
+        for u in (fig.RIGHT, fig.UP, fig.TOWARDS):
+            self.assertAlmostEqual(fig.dot(u, u), 1)
+        self.assertAlmostEqual(fig.dot(fig.RIGHT, fig.UP), 0)
+        self.assertAlmostEqual(fig.dot(fig.RIGHT, fig.TOWARDS), 0)
+        self.assertAlmostEqual(fig.dot(fig.UP, fig.TOWARDS), 0)
 
     def test_02_unambiguous_discrimination(self):
         c = 2-math.sqrt(2)
@@ -176,6 +196,36 @@ class Calculations(unittest.TestCase):
                 if n==8 and k in (1,2,3):
                     self.assertAlmostEqual(abs(state[2][0])**2,{1:25/32,2:121/128,3:169/512}[k])
                 state=mm(g,state)
+        # Figure data (scripts/figures/ch12_grover.py) uses the mean-reflection rule and the
+        # closed form. Check both against the matrix G = D O_w, and the plotted angles against
+        # the simulated components along |w> and |r>.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch12_grover as fig
+        def simulate(n, w, steps):
+            s=ket(*[1/math.sqrt(n)]*n)
+            eye=[[int(i==j) for j in range(n)] for i in range(n)]
+            oracle=[row[:] for row in eye];oracle[w][w]=-1
+            d=add(scale(2,projector(s)),scale(-1,eye))
+            states=[s]
+            for _ in range(steps):states.append(mm(d,mm(oracle,states[-1])))
+            return states,oracle
+        states,oracle=simulate(fig.N_SMALL,fig.W_SMALL,1)
+        panels=[amps for _,amps in fig.small_panels()]
+        self.same([panels[0]],[[row[0] for row in states[0]]])
+        self.same([panels[1]],[[row[0] for row in mm(oracle,states[0])]])
+        self.same([panels[2]],[[row[0] for row in states[1]]])
+        self.assertEqual(format(fig.W_SMALL,'02b'),'10')  # label order: leftmost register first
+        n=fig.N_PLANE;states,_=simulate(n,0,fig.K_BARS-1)
+        for k,state in enumerate(states):
+            along_w=state[0][0].real;along_r=sum(row[0].real for row in state[1:])/math.sqrt(n-1)
+            self.assertAlmostEqual(along_w**2+along_r**2,1)
+            self.assertAlmostEqual(math.atan2(along_w,along_r)%(2*math.pi),fig.angle(k,n)%(2*math.pi))
+            self.assertAlmostEqual(along_w**2,fig.success(k,n))
+        best=max(range(4),key=lambda k:abs(states[k][0][0])**2)
+        self.assertEqual(fig.stopping_count(n),best)
+        # Caption claims: k = 6 beats k = 2 (a later peak), and two runs at k = 2 both fail with p = 0.003.
+        self.assertGreater(fig.success(6,n),fig.success(2,n));self.assertAlmostEqual(fig.success(6,n),0.9998,places=4)
+        self.assertAlmostEqual((1-fig.success(2,n))**2,0.003,places=3)
 
     def test_13_damping(self):
         operators=[[[1,0],[0,.5]],[[0,math.sqrt(.75)],[0,0]]]
