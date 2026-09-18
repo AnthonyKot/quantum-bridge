@@ -8,7 +8,7 @@ closed by default, and each chapter ends with a closing section and two problems
 worked answers. The site was previously titled "The Bridge"; URLs are unchanged.
 
 Readers need complex numbers, linear algebra, and elementary probability. The companion
-guide, The Quantum Quartet (https://anthonykot.github.io/quantum-quartet/), is a
+guide, Quantum Mechanics, Explained (https://anthonykot.github.io/quantum-quartet/), is a
 recommended but optional introduction to quantum mechanics itself.
 
 ## Read locally
