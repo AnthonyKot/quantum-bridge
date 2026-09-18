@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fourier sampling, phase estimation, and periods — The Bridge</title>
-<meta name="description" content="The quantum Fourier transform changes amplitudes into Fourier amplitudes. Its output becomes useful when the sampling distribution reveals a phase or a period.">
+<meta name="description" content="One Fourier sample returns a single integer. What it reveals about a hidden period, why the peaks can be spread, and the classical work that finishes the job.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -20,7 +20,7 @@
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 11</p><h1>Fourier sampling, phase estimation, and periods</h1>
-<p class="lede">The quantum Fourier transform changes amplitudes into Fourier amplitudes. Its output becomes useful when the sampling distribution reveals a phase or a period.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 4 and 10: controlled gates, phase kickback, and interference. Finite geometric sums. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">What a Fourier measurement can reveal</a></li>
+<p class="lede">The powers of 2 modulo 21 run $1,2,4,8,16,11$ and then repeat, so their period is 6. A quantum circuit can sample information about such a period with a Fourier transform, but one run returns only a single integer. What does that integer reveal about the period, and what classical work is still left to do?</p><p class="prerequisites"><strong>Before you start:</strong> Controlled gates and reversible evaluation of a function (<a href="04-unitary-gates.html#section-3">Chapter 4</a>); conditional states after measuring one register (<a href="02-observables-measurement.html#section-1">Chapter 2</a>); phases written by an oracle and read by a change of basis (<a href="10-interference-deutsch.html">Chapter 10</a>). Finite geometric sums, and remainders modulo an integer. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">What a Fourier measurement can reveal</a></li>
 <li><a href="#section-2">From a function table to a periodic state</a></li>
 <li><a href="#section-3">Calculate the Fourier peaks</a></li>
 <li><a href="#section-4">Phase estimation when the phase is not exactly representable</a></li>
@@ -28,13 +28,18 @@
 <li><a href="#section-6">Recover a phase fraction using continued fractions</a></li>
 <li><a href="#section-7">Verify the denominator instead of trusting a sample</a></li>
 <li><a href="#section-8">Account for the operations used</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-9">Problems</a></li>
 </ol></nav>
 
 <h2 id="section-1">What a Fourier measurement can reveal</h2>
 <p>Let $N=2^n$, and identify $n$-bit computational-basis strings with the integers $0,\ldots,N-1$. Our positive-sign Fourier transform is</p>
 <p>$$F_N|x\rangle=\frac1{\sqrt N}\sum_{k=0}^{N-1}e^{2\pi ixk/N}|k\rangle.$$</p>
-<p>To check unitarity, compare columns $x$ and $y$. Their overlap is $N^{-1}\sum_ke^{2\pi i(y-x)k/N}$. For $x=y$, all $N$ terms are one. Otherwise set $z=e^{2\pi i(y-x)/N}$: then $z\ne1$, $z^N=1$, and $\sum_{k=0}^{N-1}z^k=(1-z^N)/(1-z)=0$. The columns are orthonormal, so the matrix is unitary. Its inverse $F_N^\dagger$ has the opposite sign in the exponent.</p>
+<p>$F_N$ is unitary, so it is a legitimate gate on $n$ qubits.</p>
+<details class="more"><summary>Why $F_N$ is unitary</summary>
+<p>To check unitarity, compare columns $x$ and $y$. Their overlap is $N^{-1}\sum_ke^{2\pi i(y-x)k/N}$. For $x=y$, all $N$ terms are one. Otherwise set $z=e^{2\pi i(y-x)/N}$: then $z\ne1$, $z^N=1$, and $\sum_{k=0}^{N-1}z^k=(1-z^N)/(1-z)=0$. The columns are orthonormal, so the matrix is unitary.</p>
+</details>
+<p>Its inverse $F_N^\dagger$ has the opposite sign in the exponent.</p>
 <p>For an input $\sum_xc_x|x\rangle$, the output amplitude at $k$ is $N^{-1/2}\sum_xe^{2\pi ixk/N}c_x$. Measuring produces one integer drawn from the squared magnitudes of these amplitudes. To obtain a period from that integer, we must first prepare amplitudes whose Fourier probabilities depend on the period. The following two-register construction explains how.</p>
 <h2 id="section-2">From a function table to a periodic state</h2>
 <p>Use input register $A$ and output register $B$. For this first calculation, assume the period $r$ divides $N$ and $f(x)=f(x')$ exactly when $x,x'$ have the same remainder modulo $r$. These assumptions make the peaks exact; order-finding later will not require $r$ to divide $N$.</p>
@@ -61,14 +66,128 @@
 <p>Otherwise, write $\delta=\phi-k/N$ and sum the series: $a_k=(1-e^{2\pi iN\delta})/[N(1-e^{2\pi i\delta})]$. The identity $|1-e^{it}|=2|\sin(t/2)|$ then yields</p>
 <p>$$p(k)=\frac{\sin^2(\pi N\delta)}{N^2\sin^2(\pi\delta)}.$$</p>
 <p>Values at removable zeroes are obtained by a limit. The probability concentrates near $k=N\phi$, but a measurement can land away from the nearest integer. We therefore obtain an estimate, not an exact general phase. Increasing $N$ improves the resolution; repeated attempts address unfavourable samples.</p>
+<figure class="fig-narrow">
+<div class="fig-scroll">
+<!-- FIGURE:peaks -->
+<svg class="fig-svg" viewBox="0 0 360 408" role="img" aria-labelledby="fig-peaks-title fig-peaks-desc">
+<title id="fig-peaks-title">Fourier outcomes: exact and spread peaks</title>
+<desc id="fig-peaks-desc">Two bar charts of outcome probability. Top: for N 16 and period 4, four bars of height one quarter at k 0, 4, 8 and 12 and nothing elsewhere. Bottom: for the order of 2 modulo 21 with N 64, a tall bar at 0 and at 32, and clusters of two or three bars around 10.7, 21.3, 42.7 and 53.3, where 64 s over 6 is not an integer, with small bars spread between the clusters.</desc>
+<text class="fig-head" x="0" y="20">Exact period: N = 16, r = 4</text>
+<line class="fig-rule" x1="34" y1="144" x2="350" y2="144"/>
+<text class="fig-label fig-soft" x="28" y="148" text-anchor="end">0</text>
+<line class="fig-rule" x1="34" y1="89" x2="350" y2="89"/>
+<text class="fig-label fig-soft" x="28" y="93" text-anchor="end">0.125</text>
+<line class="fig-rule" x1="34" y1="34" x2="350" y2="34"/>
+<text class="fig-label fig-soft" x="28" y="38" text-anchor="end">0.25</text>
+<rect class="fig-bar" x="37" y="34" width="13.8" height="110"/>
+<rect class="fig-bar" x="116" y="34" width="13.8" height="110"/>
+<rect class="fig-bar" x="195" y="34" width="13.8" height="110"/>
+<rect class="fig-bar" x="274" y="34" width="13.8" height="110"/>
+<text class="fig-label fig-soft" x="43.9" y="160" text-anchor="middle">0</text>
+<text class="fig-label fig-soft" x="122.9" y="160" text-anchor="middle">4</text>
+<text class="fig-label fig-soft" x="201.9" y="160" text-anchor="middle">8</text>
+<text class="fig-label fig-soft" x="280.9" y="160" text-anchor="middle">12</text>
+<text class="fig-label fig-soft" x="340.1" y="160" text-anchor="middle">15</text>
+<text class="fig-head" x="0" y="200">Order of 2 mod 21 (r = 6), N = 64</text>
+<line class="fig-rule" x1="34" y1="364" x2="350" y2="364"/>
+<text class="fig-label fig-soft" x="28" y="368" text-anchor="end">0</text>
+<line class="fig-rule" x1="34" y1="289" x2="350" y2="289"/>
+<text class="fig-label fig-soft" x="28" y="293" text-anchor="end">0.09</text>
+<line class="fig-rule" x1="34" y1="214" x2="350" y2="214"/>
+<text class="fig-label fig-soft" x="28" y="218" text-anchor="end">0.18</text>
+<rect class="fig-bar" x="34.7" y="224.8" width="3.5" height="139.2"/>
+<rect class="fig-bar-plain" x="39.7" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="44.6" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="49.6" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="54.5" y="363.6" width="3.5" height="0.4"/>
+<rect class="fig-bar-plain" x="59.4" y="363.5" width="3.5" height="0.5"/>
+<rect class="fig-bar-plain" x="64.4" y="363.4" width="3.5" height="0.6"/>
+<rect class="fig-bar-plain" x="69.3" y="363.1" width="3.5" height="0.9"/>
+<rect class="fig-bar-plain" x="74.2" y="362.4" width="3.5" height="1.6"/>
+<rect class="fig-bar-plain" x="79.2" y="360.1" width="3.5" height="3.9"/>
+<rect class="fig-bar-plain" x="84.1" y="340.1" width="3.5" height="23.9"/>
+<rect class="fig-bar" x="89.1" y="268.8" width="3.5" height="95.2"/>
+<rect class="fig-bar-plain" x="94" y="357.9" width="3.5" height="6.1"/>
+<rect class="fig-bar-plain" x="98.9" y="361.8" width="3.5" height="2.2"/>
+<rect class="fig-bar-plain" x="103.9" y="362.8" width="3.5" height="1.2"/>
+<rect class="fig-bar-plain" x="108.8" y="363.1" width="3.5" height="0.9"/>
+<rect class="fig-bar-plain" x="113.7" y="363.2" width="3.5" height="0.8"/>
+<rect class="fig-bar-plain" x="118.7" y="363.1" width="3.5" height="0.9"/>
+<rect class="fig-bar-plain" x="123.6" y="362.8" width="3.5" height="1.2"/>
+<rect class="fig-bar-plain" x="128.6" y="361.8" width="3.5" height="2.2"/>
+<rect class="fig-bar-plain" x="133.5" y="357.9" width="3.5" height="6.1"/>
+<rect class="fig-bar" x="138.4" y="268.8" width="3.5" height="95.2"/>
+<rect class="fig-bar-plain" x="143.4" y="340.1" width="3.5" height="23.9"/>
+<rect class="fig-bar-plain" x="148.3" y="360.1" width="3.5" height="3.9"/>
+<rect class="fig-bar-plain" x="153.2" y="362.4" width="3.5" height="1.6"/>
+<rect class="fig-bar-plain" x="158.2" y="363.1" width="3.5" height="0.9"/>
+<rect class="fig-bar-plain" x="163.1" y="363.4" width="3.5" height="0.6"/>
+<rect class="fig-bar-plain" x="168.1" y="363.5" width="3.5" height="0.5"/>
+<rect class="fig-bar-plain" x="173" y="363.6" width="3.5" height="0.4"/>
+<rect class="fig-bar-plain" x="177.9" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="182.9" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="187.8" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar" x="192.7" y="224.8" width="3.5" height="139.2"/>
+<rect class="fig-bar-plain" x="197.7" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="202.6" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="207.6" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="212.5" y="363.6" width="3.5" height="0.4"/>
+<rect class="fig-bar-plain" x="217.4" y="363.5" width="3.5" height="0.5"/>
+<rect class="fig-bar-plain" x="222.4" y="363.4" width="3.5" height="0.6"/>
+<rect class="fig-bar-plain" x="227.3" y="363.1" width="3.5" height="0.9"/>
+<rect class="fig-bar-plain" x="232.2" y="362.4" width="3.5" height="1.6"/>
+<rect class="fig-bar-plain" x="237.2" y="360.1" width="3.5" height="3.9"/>
+<rect class="fig-bar-plain" x="242.1" y="340.1" width="3.5" height="23.9"/>
+<rect class="fig-bar" x="247.1" y="268.8" width="3.5" height="95.2"/>
+<rect class="fig-bar-plain" x="252" y="357.9" width="3.5" height="6.1"/>
+<rect class="fig-bar-plain" x="256.9" y="361.8" width="3.5" height="2.2"/>
+<rect class="fig-bar-plain" x="261.9" y="362.8" width="3.5" height="1.2"/>
+<rect class="fig-bar-plain" x="266.8" y="363.1" width="3.5" height="0.9"/>
+<rect class="fig-bar-plain" x="271.7" y="363.2" width="3.5" height="0.8"/>
+<rect class="fig-bar-plain" x="276.7" y="363.1" width="3.5" height="0.9"/>
+<rect class="fig-bar-plain" x="281.6" y="362.8" width="3.5" height="1.2"/>
+<rect class="fig-bar-plain" x="286.6" y="361.8" width="3.5" height="2.2"/>
+<rect class="fig-bar-plain" x="291.5" y="357.9" width="3.5" height="6.1"/>
+<rect class="fig-bar" x="296.4" y="268.8" width="3.5" height="95.2"/>
+<rect class="fig-bar-plain" x="301.4" y="340.1" width="3.5" height="23.9"/>
+<rect class="fig-bar-plain" x="306.3" y="360.1" width="3.5" height="3.9"/>
+<rect class="fig-bar-plain" x="311.2" y="362.4" width="3.5" height="1.6"/>
+<rect class="fig-bar-plain" x="316.2" y="363.1" width="3.5" height="0.9"/>
+<rect class="fig-bar-plain" x="321.1" y="363.4" width="3.5" height="0.6"/>
+<rect class="fig-bar-plain" x="326.1" y="363.5" width="3.5" height="0.5"/>
+<rect class="fig-bar-plain" x="331" y="363.6" width="3.5" height="0.4"/>
+<rect class="fig-bar-plain" x="335.9" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="340.9" y="363.7" width="3.5" height="0.3"/>
+<rect class="fig-bar-plain" x="345.8" y="363.7" width="3.5" height="0.3"/>
+<text class="fig-label fig-soft" x="36.5" y="380" text-anchor="middle">0</text>
+<text class="fig-label fig-soft" x="90.8" y="380" text-anchor="middle">11</text>
+<text class="fig-label fig-soft" x="140.2" y="380" text-anchor="middle">21</text>
+<text class="fig-label fig-soft" x="194.5" y="380" text-anchor="middle">32</text>
+<text class="fig-label fig-soft" x="248.8" y="380" text-anchor="middle">43</text>
+<text class="fig-label fig-soft" x="298.2" y="380" text-anchor="middle">53</text>
+<text class="fig-label fig-soft" x="347.5" y="380" text-anchor="middle">63</text>
+<line class="fig-line fig-dashed" x1="89.1" y1="224" x2="89.1" y2="364"/>
+<line class="fig-line fig-dashed" x1="141.8" y1="224" x2="141.8" y2="364"/>
+<line class="fig-line fig-dashed" x1="194.5" y1="224" x2="194.5" y2="364"/>
+<line class="fig-line fig-dashed" x1="247.1" y1="224" x2="247.1" y2="364"/>
+<line class="fig-line fig-dashed" x1="299.8" y1="224" x2="299.8" y2="364"/>
+<text class="fig-label fig-soft" x="350" y="400" text-anchor="end">outcome k; dashed lines at k = 64s/6</text>
+</svg>
+<!-- /FIGURE:peaks -->
+</div>
+<figcaption>Outcome probabilities for two Fourier measurements. Top: when the period divides $N$, as with $r=4$ and $N=16$, the geometric sums cancel exactly and only $k=0,4,8,12$ occur, each with probability $\tfrac14$. Bottom: the order-finding example of the next sections, the order 6 of 2 modulo 21, sampled with $N=64$, which keeps the spread peaks easy to see. The worked samples below use $N=1024$, which supplies the precision margin $N\ge2M^2$ that the recovery step needs. The phases $s/6$ fall between grid points except for $s=0$ and $s=3$, so four of the six peaks are spread over neighbouring outcomes, and a small probability lands anywhere. A single sample is one bar, drawn at random: it gives an approximate fraction $k/N\approx s/6$ for an unknown $s$, which the continued-fraction step must then interpret.</figcaption>
+</figure>
 <h2 id="section-5">Which unitary contains the order?</h2>
 <p>Choose a known modulus $M\ge2$ and an integer $a$ coprime to it, meaning their only common positive divisor is one. The <strong>order</strong> $r$ is the smallest positive integer satisfying $a^r\equiv1\pmod M$. Define modular multiplication on basis labels $0\le y&lt;M$ by</p>
 <p>$$U_a|y\rangle=|ay\bmod M\rangle.$$</p>
 <p>Here $ay\bmod M$ is the remainder when $ay$ is divided by $M$. Coprimality means $a$ has an inverse modulo $M$, so this map permutes the basis and is unitary. In a qubit register whose dimension exceeds $M$, define it as identity on unused basis labels $y\ge M$. Multiplication of valid labels stays within the valid subspace, so the extended map is still a permutation.</p>
 <p>Starting at $|1\rangle$, repeated applications visit $|1\rangle,|a\bmod M\rangle,\ldots,|a^{r-1}\bmod M\rangle$ and then return. On this cycle, define</p>
 <p>$$|u_s\rangle=\frac1{\sqrt r}\sum_{j=0}^{r-1}e^{-2\pi isj/r}|a^j\bmod M\rangle,\qquad s=0,\ldots,r-1.$$</p>
-<p>Applying $U_a$ shifts the basis exponent $j$ to $j+1$. Relabel the new exponent as $\ell$; its coefficient becomes $e^{-2\pi is(\ell-1)/r}=e^{2\pi is/r}e^{-2\pi is\ell/r}$. Thus $U_a|u_s\rangle=e^{2\pi is/r}|u_s\rangle$. The eigenphases really are the fractions $s/r$.</p>
-<p>We do not need to know $r$ to prepare an eigenstate: use $|1\rangle=r^{-1/2}\sum_s|u_s\rangle$. To verify that identity, sum the Fourier coefficients over $s$: only $j=0$ survives. Phase estimation therefore samples the phase distributions for the different $s$ values with equal weights. The orthogonal target eigenstates prevent cross terms between those distributions when we measure the control alone.</p>
+<details class="more"><summary>Checking the eigenvalue, and why $|1\rangle$ is an equal superposition of eigenstates</summary>
+<p>Applying $U_a$ shifts the basis exponent $j$ to $j+1$. Relabel the new exponent as $\ell$; its coefficient becomes $e^{-2\pi is(\ell-1)/r}=e^{2\pi is/r}e^{-2\pi is\ell/r}$. Thus $U_a|u_s\rangle=e^{2\pi is/r}|u_s\rangle$.</p>
+<p>For the second claim, sum the Fourier coefficients of $r^{-1/2}\sum_s|u_s\rangle$ over $s$: only $j=0$ survives, leaving $|1\rangle$.</p>
+</details>
+<p>These are eigenstates, $U_a|u_s\rangle=e^{2\pi is/r}|u_s\rangle$, so the eigenphases are the fractions $s/r$. We do not need to prepare an individual eigenstate: the easily prepared state $|1\rangle$ is an equal superposition of them, $|1\rangle=r^{-1/2}\sum_s|u_s\rangle$. Phase estimation therefore samples the phase distributions for the different $s$ values with equal weights. The orthogonal target eigenstates prevent cross terms between those distributions when we measure the control alone.</p>
 <p>For $a=2,M=21$, the cycle is $1,2,4,8,16,11,1$, giving $r=6$. Phases such as $1/6$ and $1/3$ cannot be represented exactly with a power-of-two denominator. This is where rational approximation becomes necessary.</p>
 <h2 id="section-6">Recover a phase fraction using continued fractions</h2>
 <p>The measured rational number is $k/N$. Reducing it in lowest terms still gives a power-of-two denominator, so that operation alone cannot recover an odd factor of $r$. Instead, expand $k/N$ as a <strong>continued fraction</strong>, written $[a_0;a_1,a_2,\ldots]=a_0+1/(a_1+1/(a_2+\cdots))$. Truncating after successive entries gives rational approximations called <strong>convergents</strong>.</p>
@@ -79,16 +198,19 @@
 <p>Continue with $a=2,M=21$ and choose $N=1024$, which exceeds $2M^2$. A possible near-$1/3$ sample is $k=341$. Division gives $341/1024=[0;3,341]$, so one candidate phase fraction is $1/3$. Its approximation error is</p>
 <p>$$\left|\frac{341}{1024}-\frac13\right|=\frac1{3072}&lt;\frac1{2\cdot6^2}.$$</p>
 <p>The approximation is excellent, yet its denominator three is not the order: $2^3\bmod21=8\ne1$. This sample corresponds to $s=2,r=6$, whose fraction reduces to $1/3$. The information lost in that reduction cannot be restored from this sample alone.</p>
-<p>A second possible sample near $1/6$ is $171/1024=[0;5,1,84,2]$. Which convergent to test is fixed by the register-size margin: with $N\ge2M^2$ the fraction $s/r$ is guaranteed to be a convergent, and since $r&lt;M$ it is the convergent with the largest denominator below $M$. The convergents of $171/1024$ are $0,\ 1/5,\ 1/6,\ 85/509,\ 171/1024$; the last two have denominators above $M=21$, so the rule selects $[0;5,1]=1/6$ and candidate six, and $2^6\bmod21=1$. Checking its proper divisors one, two, and three excludes a smaller order in this example. In general a passing power test establishes a multiple of the order; further reduction or suitable candidate selection establishes the least one. Repetitions and classical verification are part of the algorithm.</p>
+<p>A second possible sample near $1/6$ is $171/1024=[0;5,1,84,2]$. Which convergent to test is fixed by the register-size margin: with $N\ge2M^2$ and a nearest-integer phase-estimation outcome, the fraction $s/r$ is guaranteed to be a convergent, and since $r&lt;M$ it is the convergent with the largest denominator below $M$. The convergents of $171/1024$ are $0,\ 1/5,\ 1/6,\ 85/509,\ 171/1024$; the last two have denominators above $M=21$, so the rule selects $[0;5,1]=1/6$ and candidate six, and $2^6\bmod21=1$. Checking its proper divisors one, two, and three excludes a smaller order in this example. In general a passing power test establishes a multiple of the order; further reduction or suitable candidate selection establishes the least one. Repetitions and classical verification are part of the algorithm.</p>
 <p>For factoring, an even order can yield factors through greatest common divisors of $a^{r/2}\pm1$ with $M$. Here $\gcd(7,21)=7$ and $\gcd(9,21)=3$. Some choices yield odd orders or unhelpful square roots and must be retried. The reference treats those cases and the success analysis.</p>
 <h2 id="section-8">Account for the operations used</h2>
 <p>The exact QFT circuit uses $n$ Hadamards, $n(n-1)/2$ controlled phase rotations, and qubit-order reversal: $O(n^2)$ elementary operations, meaning an upper bound proportional to $n^2$ for large $n$. This count assumes those specified rotations are available; synthesis into a fixed alphabet adds approximation overhead.</p>
 <p>Phase estimation also needs controlled powers. If $U$ is available only as a black box, constructing $U^{2^\ell}$ by repetition requires $2^\ell$ calls, for $N-1$ calls across the whole register. Modular multiplication has additional structure: $U_a^{2^\ell}$ is multiplication by the classically precomputed constant $a^{2^\ell}\bmod M$. Reversible arithmetic can implement each such multiplication efficiently in the number of bits of $M$. This arithmetic construction, rather than gate universality alone, supports the runtime advantage.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>One Fourier sample reveals an integer $k$ with $k/N$ close to $s/r$ for some unknown $s$: a noisy fraction, not the period. When $r$ divides $N$ the peaks are exact; otherwise they spread, and a sample can miss. What remains is classical: find the candidate fraction by continued fractions, test the candidate order with one modular power, and repeat when a sample reduces to a divisor of $r$ or falls away from a peak. For factoring there is one more classical step and sometimes a retry. The quantum part runs efficiently because the Fourier transform takes $O(n^2)$ gates and efficient reversible modular arithmetic implements the controlled powers; the existence of a Fourier transform alone would not be enough.</p>
+<p>All of this depends on structure: a periodic function whose period the Fourier transform can expose. The next chapter asks what is possible with no structure at all, only a routine that checks whether a candidate is the answer.</p>
 <h2 id="section-9">Problems</h2>
 <p><strong>1.</strong> Fourier-transform $(|0\rangle+|4\rangle)/\sqrt2$ for $N=8$. Show the amplitudes and verify their probabilities sum to one.</p>
 <details><summary>Worked answer</summary><p>Each of the two input terms contributes a Fourier amplitude $1/(\sqrt2\sqrt8)=1/4$. Keeping both contributions gives</p><p>$$a_k=\frac14\left(e^{2\pi i0k/8}+e^{2\pi i4k/8}\right)=\frac{1+(-1)^k}{4}.$$</p><p>For even $k$, the two contributions add to $1/2$; for odd $k$, they cancel. The probability list in integer order is $(1/4,0,1/4,0,1/4,0,1/4,0)$. There are four surviving outcomes, so the total is $4(1/4)=1$.</p></details>
 <p><strong>2.</strong> For modular multiplication by $2$ modulo $21$, phase estimation with $N=1024$ returns $k=341$. Compute the first nonzero convergent and test whether its denominator is the order. Explain what a sample $k=171$ adds.</p>
-<details><summary>Worked answer</summary><p>First use integer division: $1024=3\cdot341+1$, then $341=341\cdot1$. Thus $341/1024=[0;3,341]$, whose first nonzero convergent is $1/3$. Reducing $341/1024$ directly would leave denominator $1024$, not three.</p><p>Test the candidate with $2^3=8\not\equiv1\pmod{21}$, so three fails. The actual phase can be $2/6=1/3$, which explains how a close phase estimate can lose a factor of the order.</p><p>For the other sample, the divisions begin $1024=5\cdot171+169$ and $171=1\cdot169+2$. The convergent $[0;5,1]=1/(5+1)=1/6$ gives candidate six. Now $2^6=64\equiv1\pmod{21}$, while powers at the proper divisors $1,2,3$ give $2,4,8$. Hence six is the least positive order. The second sample supplied a numerator coprime to that order.</p></details>
+<details><summary>Worked answer</summary><p>First use integer division: $1024=3\cdot341+1$, then $341=341\cdot1$. Thus $341/1024=[0;3,341]$, whose first nonzero convergent is $1/3$. Reducing $341/1024$ directly would leave denominator $1024$, not three.</p><p>Test the candidate with $2^3=8\not\equiv1\pmod{21}$, so three fails. The actual phase can be $2/6=1/3$, which explains how a close phase estimate can lose a factor of the order.</p><p>For the other sample, the divisions begin $1024=5\cdot171+169$ and $171=1\cdot169+2$. The convergent $[0;5,1]=1/(5+1)=1/6$ gives candidate six. Now $2^6=64\equiv1\pmod{21}$, while powers at the proper divisors $1,2,3$ give $2,4,8$. Hence six is the least positive order. The second sample supplied a numerator coprime to that order.</p><p>The tempting wrong turn is to reduce $341/1024$ and read off a denominator. The fraction is already in lowest terms, with denominator $1024$; only the continued-fraction expansion exposes the nearby fraction with a small denominator.</p></details>
 
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §5.1–5.4.1 (QFT, phase estimation, order-finding, factoring, and periodic functions). For the approximation theorem, see <a href="https://crypto.stanford.edu/pbc/notes/contfrac/converge.html">Ben Lynn’s notes on continued-fraction convergence</a>. For the full algorithm and runtime argument, see <a href="https://arxiv.org/abs/quant-ph/9508027">Shor, Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer</a>.</p></section><nav class="chapter-nav"><a href="10-interference-deutsch.html"><span class="dir">Previous</span>Phase kickback and the Deutsch–Jozsa algorithm</a><a class="next" href="12-grover-search.html"><span class="dir">Next chapter</span>Grover search as two reflections</a></nav>

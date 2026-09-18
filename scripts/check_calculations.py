@@ -330,6 +330,16 @@ class Calculations(unittest.TestCase):
             p0=abs(mm(h2,state)[0][0])**2
             self.assertAlmostEqual(p0,1 if sum(values) in (0,4) else 0)
         self.same(mm(h2,ket(.5,-.5,-.5,.5)),ket(0,0,0,1))
+        # Figure panels (scripts/figures/ch10_deutsch.py) use sign rules and the a_z formula.
+        # Recompute them with 4x4 matrices: diagonal phase oracle, then H x H.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch10_deutsch as fig
+        hh = tensor(H, H); s = mm(hh, ket(1, 0, 0, 0))
+        for _, fn in fig.FUNCTIONS:
+            oracle = [[(-1)**fn(*fig.bits(fig.LABELS[r])) if r == c else 0 for c in range(4)] for r in range(4)]
+            after = mm(oracle, s); final = mm(hh, after)
+            self.same([[fig.after_oracle(fn)[k]] for k in fig.LABELS], after)
+            self.same([[fig.after_hadamards(fn)[k]] for k in fig.LABELS], final)
 
     def test_11_period_sampling_and_phase_estimation(self):
         state=ket(*[.5 if x in (1,5,9,13) else 0 for x in range(16)])
@@ -337,6 +347,25 @@ class Calculations(unittest.TestCase):
         self.same([probabilities],[[.25 if k%4==0 else 0 for k in range(16)]])
         phase=ket(*[cmath.exp(2j*math.pi*j*3/8)/math.sqrt(8) for j in range(8)])
         self.same(mm(qft(8,True),phase),ket(*[1 if k==3 else 0 for k in range(8)]))
+        # Figure (scripts/figures/ch11_fourier.py). Exact panel: build the conditional coset state
+        # for f(x) = x mod 4 and Fourier-transform it. Order panel: simulate the two-register
+        # circuit sum_j |j>|2^j mod 21> directly, inverse-QFT the control for each target value,
+        # and add probabilities; no eigenstates are used.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch11_fourier as fig
+        n = fig.EXACT_N
+        coset = [1/2 if x % 4 == 1 else 0 for x in range(n)]
+        probs = [abs(sum(cmath.exp(2j*math.pi*x*k/n)*coset[x] for x in range(n)))**2/n for k in range(n)]
+        for got, want in zip(fig.exact_distribution(), probs):
+            self.assertAlmostEqual(got, want)
+        n = fig.ORDER_N; groups = {}
+        for j in range(n):
+            groups.setdefault(pow(fig.BASE, j, fig.MOD), []).append(j)
+        self.assertEqual(len(groups), fig.ORDER_R)
+        direct = [sum(abs(sum(cmath.exp(-2j*math.pi*j*k/n) for j in js))**2 for js in groups.values())/n**2 for k in range(n)]
+        for got, want in zip(fig.order_distribution(), direct):
+            self.assertAlmostEqual(got, want)
+        self.assertAlmostEqual(sum(direct), 1)
 
     def test_12_grover_against_closed_form(self):
         for n in (4,8,16):

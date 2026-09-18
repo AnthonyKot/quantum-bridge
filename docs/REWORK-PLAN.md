@@ -222,3 +222,23 @@ squared overlap with a product state, s²_max (≈0.873 worked state, 0.5 Bell p
 states), and s² wording made consistent; chapter 8's graph carries the explicit settings and the caption calls
 the change coordinated, not a rigid rotation, with S = 2 at both ends; chapter 9's figure and caption label
 Bob's state as unconditioned (I/2) or conditioned on (a, b).
+
+## Batch 10–11 record (18 September 2026)
+
+| Ch | Question | Figure | Moved to fold-outs |
+|---|---|---|---|
+| 10 | How can one query decide f(0) = f(1) when neither value is read? | `kickback` (signs after the oracle; amplitudes after H⊗H; constant, x₁⊕x₂, x₁) | the n-qubit Hadamard identity (statement kept) |
+| 11 | What does one Fourier sample reveal about a period, and what classical work remains? | `peaks` (exact N = 16, r = 4; spread peaks for 2 mod 21, r = 6, N = 64) | unitarity of F_N; the U_a eigenvalue check and the \|1⟩ superposition identity (statements kept) |
+
+Tests extended: test_10 (both panels against a diagonal phase oracle and H⊗H matrices); test_11 (exact panel
+from the coset state; order panel from a direct two-register simulation of Σ_j |j⟩|2^j mod 21⟩ with no
+eigenstates). Qualifications kept in the main path: deterministic versus bounded-error query comparison and
+oracle cost (10); estimates not exact phases, retries, classical verification, the cost of controlled powers
+and why arithmetic, not universality, gives the speedup (11).
+
+Review fixes (batch 10–11): the convergent guarantee is conditioned on a nearest-integer phase-estimation
+outcome as well as N ≥ 2M²; \|1⟩ is described as an easily prepared equal superposition of eigenstates, not a
+way to prepare one; chapter 10's caption keeps "a single nonzero string" local to the functions shown; the
+opening classical claim says "with certainty"; chapter 11's caption explains N = 64 (visibility) against
+N = 1024 (precision margin); the runtime sentence credits efficient reversible modular arithmetic for the
+controlled powers.
