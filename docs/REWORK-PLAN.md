@@ -1,7 +1,7 @@
 # Book2 rework plan: make the explanations easier to reach
 
-Status: APPROVED 18 September 2026 with four process amendments (folded in below). Pilots (chapters 1 and 12)
-drafted and self-reviewed; awaiting the joint pilot review.
+Status: APPROVED 18 September 2026. Pilots (1, 12) approved and published. Batch 2–5 reviewed and checkpointed
+(agreement with the reported changes, not an independent verification). Next: batch 6–9.
 
 ## What kind of rework this is
 
@@ -168,3 +168,33 @@ main path with the final matrix visible, and only the entry-by-entry derivation 
 path, so folding away algebra shortened nothing the reader needs. (3) The old text used one term before
 defining it (computational basis); expect the same elsewhere and check definitions on every chapter.
 (4) The sans face lacks the ket bracket; figure labels containing kets use KaTeX's text face.
+
+## Batch 2–5 record (18 September 2026)
+
+Arc: what measurement does (2) → how to describe incomplete information (3) → what controlled operations
+change (4) → how to perform them physically (5).
+
+| Ch | Question | Figure(s) | Main-path example | Moved to fold-outs |
+|---|---|---|---|---|
+| 2 | Reads 0 with probability ¾: what state now, and do the probabilities decide it? | `apparatus` (branches for M and N: probability, reading, conditional state, repeat); `unambiguous` | (√3\|0⟩+i\|1⟩)/2 through projectors, the CNOT pointer model, and N = XM | second completeness derivation; dilation construction |
+| 3 | Can any measurement tell source C from a \|+⟩/\|−⟩ coin? What describes half of a pair? | `ensembles` (x–z slice: superposition vs mixture; two ensembles per matrix) | sources C and D, both I/2; diag(¾,¼) two ways; Bell half | partial-trace index calculation |
+| 4 | What does each gate do, and what can a controlled gate change? | `circuit` (wires, register order, amplitudes at ①②③, other order) | H then CNOT from \|00⟩, and the reversed order | countability argument; telescoping error bound |
+| 5 | How long, about which axis, to reach p(1) = 1 or ½; why detuning caps it | `pulse` (sphere paths, resonant and Δ = Ω; p(1) against Ωt) | π and π/2 pulses, 50 ns at Ω/2π = 10 MHz; Δ = Ω | A² = I and the series summation |
+
+Safeguards applied: chapter 2 treats ignored outcomes by the averaging rule only (no density matrices);
+POVM, local-mixedness and universality qualifications are in bold or in the closing section, never folded;
+chapter 5 states that Bloch angles are spin angles but twice polariser angles, and gives the book1 H/𝓗
+translation. Figures in chapters 2–5 are narrow (fit a phone column without scrolling).
+
+Tests extended, not added: test_02 (pointer model, N = XM, equal effects, probabilities sum to one,
+normalised states, figure rows against traces, the ignored-outcome ½), test_03 (ensemble matrices rebuilt from
+projectors), test_04 (label order and all four figure rows against 4×4 matrices), test_05 (sphere paths against
+the matrix exponential, closed-form p(1), 50 ns).
+
+Continuous read 1→5 fixed: chapter 3 comparison placed after the matrix it uses; "positive" aligned with
+chapter 2; √E defined; detuning cap stated for any Δ ≠ 0; contents entries for 2–5 rewritten as questions.
+
+Review wording qualifications (applied at checkpoint): photon Bloch angle = 2 × polariser angle only for
+linear polarisation, along that great circle; the detuning peak Ω²/(Ω²+Δ²) is scoped to a constant drive at
+fixed detuning from |0⟩, not every control sequence; an unread measurement makes source A equivalent to
+source C for later measurements on the qubit alone, while the apparatus keeps a correlated record.

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gates, circuits, and universality — The Bridge</title>
-<meta name="description" content="A circuit is a sequence of linear maps. Following the amplitudes through a small circuit explains reversibility, controlled operations, and the meaning of a universal gate set.">
+<meta name="description" content="Two gates take two qubits from |00⟩ to a Bell state. Following the amplitudes step by step shows what gate order and controlled operations change, and what universality does not promise.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -20,13 +20,90 @@
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 04</p><h1>Gates, circuits, and universality</h1>
-<p class="lede">A circuit is a sequence of linear maps. Following the amplitudes through a small circuit explains reversibility, controlled operations, and the meaning of a universal gate set.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 1–3: matrix multiplication, tensor products, and inner products. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Read a circuit as a matrix product</a></li>
+<p class="lede">A Hadamard gate followed by a controlled-NOT takes two qubits from $|00\rangle$ to $(|00\rangle+|11\rangle)/\sqrt2$. What does each gate do to the amplitudes, and what can the controlled gate change that gates acting on one qubit at a time cannot?</p><p class="prerequisites"><strong>Before you start:</strong> Matrix multiplication; two-qubit basis states and tensor products (<a href="01-superposition-qubit.html#section-4">Chapter 1</a>). Reduced states (<a href="03-density-matrix.html#section-4">Chapter 3</a>) appear in one remark and are not needed for the calculations. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#one-circuit">One circuit, step by step</a></li>
+<li><a href="#section-1">Read a circuit as a matrix product</a></li>
 <li><a href="#section-2">Where noncommutativity enters</a></li>
 <li><a href="#section-3">Controlled operations on a superposition</a></li>
 <li><a href="#section-4">Reversible evaluation of a function</a></li>
 <li><a href="#section-5">What “universal” does and does not guarantee</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-6">Problems</a></li>
 </ol></nav>
+<h2 id="one-circuit">One circuit, step by step</h2>
+<p>A circuit diagram draws each qubit as a horizontal wire and each gate as a box or symbol on it, with time running from left to right. Here there are two qubits, both starting in $|0\rangle$. Qubit 1 is the top wire, and it is the first symbol in every basis label: $|10\rangle$ means qubit 1 is 1 and qubit 2 is 0. The basis order is $|00\rangle,|01\rangle,|10\rangle,|11\rangle$.</p>
+<p>The first gate is the Hadamard $H$ on qubit 1, which sends $|0\rangle$ to $(|0\rangle+|1\rangle)/\sqrt2$. The second is a controlled-NOT: qubit 1 is the control (the dot) and qubit 2 the target (the circled plus). It flips the target in exactly those basis terms where the control is 1. The figure follows the four amplitudes through the two steps, and the sections below derive each step.</p>
+<figure class="fig-narrow">
+<div class="fig-scroll">
+<!-- FIGURE:circuit -->
+<svg class="fig-svg" viewBox="0 0 360 562" role="img" aria-labelledby="fig-circuit-title fig-circuit-desc">
+<title id="fig-circuit-title">A two-gate circuit, amplitude by amplitude</title>
+<desc id="fig-circuit-desc">A circuit with two wires, qubit 1 on top. A Hadamard gate on qubit 1 is followed by a controlled-NOT with qubit 1 as control and qubit 2 as target. Below, amplitude bars over the basis 00, 01, 10, 11. At the input only 00 has amplitude one. After H, 00 and 10 each have one over root two. After CNOT, 00 and 11 each have one over root two. In the other gate order, CNOT first then H, the result is 00 and 10 with one over root two each, a product state.</desc>
+<text class="fig-label fig-soft" x="0" y="39">qubit 1</text>
+<text class="fig-label fig-soft" x="0" y="89">qubit 2</text>
+<text class="fig-label fig-math" x="64" y="39">|0⟩</text>
+<text class="fig-label fig-math" x="64" y="89">|0⟩</text>
+<line class="fig-wire" x1="92" y1="34" x2="352" y2="34"/>
+<line class="fig-wire" x1="92" y1="84" x2="352" y2="84"/>
+<rect class="fig-gate" x="138" y="18" width="32" height="32" rx="3"/>
+<text class="fig-label fig-strong" x="154" y="39" text-anchor="middle">H</text>
+<line class="fig-wire" x1="236" y1="34" x2="236" y2="96"/>
+<circle class="fig-control" cx="236" cy="34" r="5"/>
+<circle class="fig-target" cx="236" cy="84" r="12"/>
+<line class="fig-wire" x1="224" y1="84" x2="248" y2="84"/>
+<line class="fig-line fig-dashed" x1="116" y1="12" x2="116" y2="104"/>
+<text class="fig-label fig-soft" x="116" y="120" text-anchor="middle">①</text>
+<line class="fig-line fig-dashed" x1="196" y1="12" x2="196" y2="104"/>
+<text class="fig-label fig-soft" x="196" y="120" text-anchor="middle">②</text>
+<line class="fig-line fig-dashed" x1="292" y1="12" x2="292" y2="104"/>
+<text class="fig-label fig-soft" x="292" y="120" text-anchor="middle">③</text>
+<line class="fig-rule" x1="0" y1="140" x2="360" y2="140"/>
+<text class="fig-label fig-strong fig-math" x="0" y="160">①  Input |00⟩</text>
+<line class="fig-axis" x1="60" y1="204" x2="350" y2="204"/>
+<rect class="fig-bar" x="76" y="168" width="34" height="36"/>
+<text class="fig-label" x="116" y="190">1</text>
+<text class="fig-label fig-math" x="93" y="224" text-anchor="middle">|00⟩</text>
+<text class="fig-label fig-math" x="165" y="224" text-anchor="middle">|01⟩</text>
+<text class="fig-label fig-math" x="237" y="224" text-anchor="middle">|10⟩</text>
+<text class="fig-label fig-math" x="309" y="224" text-anchor="middle">|11⟩</text>
+<line class="fig-rule" x1="0" y1="244" x2="360" y2="244"/>
+<text class="fig-label fig-strong fig-math" x="0" y="264">②  After H on qubit 1</text>
+<line class="fig-axis" x1="60" y1="308" x2="350" y2="308"/>
+<rect class="fig-bar" x="76" y="282.5" width="34" height="25.5"/>
+<text class="fig-label" x="116" y="299.3">1/√2</text>
+<text class="fig-label fig-math" x="93" y="328" text-anchor="middle">|00⟩</text>
+<text class="fig-label fig-math" x="165" y="328" text-anchor="middle">|01⟩</text>
+<rect class="fig-bar" x="220" y="282.5" width="34" height="25.5"/>
+<text class="fig-label" x="260" y="299.3">1/√2</text>
+<text class="fig-label fig-math" x="237" y="328" text-anchor="middle">|10⟩</text>
+<text class="fig-label fig-math" x="309" y="328" text-anchor="middle">|11⟩</text>
+<line class="fig-rule" x1="0" y1="348" x2="360" y2="348"/>
+<text class="fig-label fig-strong fig-math" x="0" y="368">③  After CNOT</text>
+<line class="fig-axis" x1="60" y1="412" x2="350" y2="412"/>
+<rect class="fig-bar" x="76" y="386.5" width="34" height="25.5"/>
+<text class="fig-label" x="116" y="403.3">1/√2</text>
+<text class="fig-label fig-math" x="93" y="432" text-anchor="middle">|00⟩</text>
+<text class="fig-label fig-math" x="165" y="432" text-anchor="middle">|01⟩</text>
+<text class="fig-label fig-math" x="237" y="432" text-anchor="middle">|10⟩</text>
+<rect class="fig-bar" x="292" y="386.5" width="34" height="25.5"/>
+<text class="fig-label" x="332" y="403.3">1/√2</text>
+<text class="fig-label fig-math" x="309" y="432" text-anchor="middle">|11⟩</text>
+<line class="fig-rule" x1="0" y1="452" x2="360" y2="452"/>
+<text class="fig-label fig-strong fig-math" x="0" y="472">Other order: CNOT, then H</text>
+<line class="fig-axis" x1="60" y1="516" x2="350" y2="516"/>
+<rect class="fig-bar-plain" x="76" y="490.5" width="34" height="25.5"/>
+<text class="fig-label" x="116" y="507.3">1/√2</text>
+<text class="fig-label fig-math" x="93" y="536" text-anchor="middle">|00⟩</text>
+<text class="fig-label fig-math" x="165" y="536" text-anchor="middle">|01⟩</text>
+<rect class="fig-bar-plain" x="220" y="490.5" width="34" height="25.5"/>
+<text class="fig-label" x="260" y="507.3">1/√2</text>
+<text class="fig-label fig-math" x="237" y="536" text-anchor="middle">|10⟩</text>
+<text class="fig-label fig-math" x="309" y="536" text-anchor="middle">|11⟩</text>
+<line class="fig-rule" x1="0" y1="556" x2="360" y2="556"/>
+</svg>
+<!-- /FIGURE:circuit -->
+</div>
+<figcaption>The circuit and its amplitudes at the marked times. ① Only $|00\rangle$ is present. ② $H$ splits qubit 1 into two terms, $|00\rangle$ and $|10\rangle$, each with amplitude $1/\sqrt2$; qubit 2 is untouched. ③ The controlled-NOT moves the $|10\rangle$ amplitude to $|11\rangle$ and leaves $|00\rangle$ alone. Time runs left to right, but the matrix product is written right to left: the output is $\operatorname{CNOT}\,(H\otimes I)|00\rangle$. The bottom row applies the same two gates in the other order and ends in $|+\rangle|0\rangle$, a product state.</figcaption>
+</figure>
 <h2 id="section-1">Read a circuit as a matrix product</h2>
 <p>A closed system evolves by a unitary $U$, satisfying $U^\dagger U=I$. This preserves inner products and normalisation. If gate $A$ acts first and gate $B$ second, the output is $BA|\psi\rangle$: the rightmost matrix acts first. The inverse operation is $U^\dagger$. A measurement with a discarded outcome generally has no inverse, so it must be treated separately.</p>
 <p>The Hadamard gate and two phase gates are</p>
@@ -34,7 +111,7 @@
 <p>Matrix multiplication gives $H|0\rangle=|+\rangle$, $H|1\rangle=|-\rangle$, and $H^2=I$. The gate $S$ changes $|+\rangle$ into $(|0\rangle+i|1\rangle)/\sqrt2$. It leaves the computational-basis probabilities unchanged, but changes the Bloch vector from $+x$ to $+y$. Also $T^2=S$ and $S^2=Z$.</p>
 <h2 id="section-2">Where noncommutativity enters</h2>
 <p>Two operators <strong>commute</strong> when their products agree in either order: $AB=BA$. Their <strong>commutator</strong> is $[A,B]=AB-BA$, so commuting means $[A,B]=0$. This definition concerns the operators on all inputs; two different products can still happen to agree on one particular state.</p>
-<p>Apply $H$ then $Z$ to $|0\rangle$: $ZH|0\rangle=|-\rangle$. Reverse the order: $HZ|0\rangle=|+\rangle$. The two outputs can be perfectly distinguished in the $X$ basis. Gate order is physically consequential. A useful identity is</p>
+<p>The circuit above already shows this. Applied in the other order, the same two gates give $(H\otimes I)\operatorname{CNOT}|00\rangle=|+\rangle|0\rangle$, because the controlled-NOT acts first on $|00\rangle$, where its control is 0, and does nothing. The order decides whether the output is entangled. A one-qubit example is just as sharp. Apply $H$ then $Z$ to $|0\rangle$: $ZH|0\rangle=|-\rangle$. Reverse the order: $HZ|0\rangle=|+\rangle$. The two outputs can be perfectly distinguished in the $X$ basis. Gate order is physically consequential. A useful identity is</p>
 <p>$$HZH=X,\qquad HXH=Z.$$</p>
 <p>For example, $HZH|0\rangle=H|-\rangle=|1\rangle$, and $HZH|1\rangle=H|+\rangle=|0\rangle$. Agreement on a basis establishes agreement on every superposition by linearity. Conjugating by $H$ changes a phase flip into a bit flip; this will let us reuse the bit-flip code for phase errors.</p>
 <h2 id="section-3">Controlled operations on a superposition</h2>
@@ -42,20 +119,28 @@
 <p>$$\operatorname{CNOT}=|0\rangle\langle0|\otimes I+|1\rangle\langle1|\otimes X=\begin{pmatrix}1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0\end{pmatrix}.$$</p>
 <p>It maps $|a,b\rangle$ to $|a,b\oplus a\rangle$, where $\oplus$ is addition modulo two. The word “control” does not mean that the control is measured. Apply the rule to each basis term and keep the amplitudes:</p>
 <p>$$|00\rangle\xrightarrow{H\otimes I}\frac{|00\rangle+|10\rangle}{\sqrt2}\xrightarrow{\operatorname{CNOT}}\frac{|00\rangle+|11\rangle}{\sqrt2}.$$</p>
-<p>This prepares a Bell pair. Reversing the gates disentangles it: CNOT maps it to $|+0\rangle$, and $H\otimes I$ maps it to $|00\rangle$. The order of the inverse circuit is reversed as well as each gate being inverted.</p>
+<p>This is step ③ of the figure, and it prepares a Bell pair. The input $|00\rangle$ was a product of two one-qubit states; the output is not, since no $(a|0\rangle+b|1\rangle)(c|0\rangle+d|1\rangle)$ has zero amplitude on $|01\rangle$ and $|10\rangle$ but nonzero amplitude on both $|00\rangle$ and $|11\rangle$ (that would need $ad=0$ and $bc=0$ with $ac$ and $bd$ nonzero). Each qubit alone is now described by $I/2$, as Chapter 3 found. Gates acting on one qubit at a time map product states to product states, so this is something only a gate acting on both qubits can do. Whether it does depends on the input: Problem 1 below gives a superposition that CNOT leaves a product. Reversing the gates disentangles the Bell pair: CNOT maps it to $|+0\rangle$, and $H\otimes I$ maps it to $|00\rangle$. The order of the inverse circuit is reversed as well as each gate being inverted.</p>
 <p>More generally $\operatorname{C}U=|0\rangle\langle0|\otimes I+|1\rangle\langle1|\otimes U$. A subtlety follows: the global phase of a standalone $U$ becomes a relative phase between control branches in $\operatorname{C}U$. Controlled-$e^{i\gamma}U$ cannot generally be substituted for controlled-$U$ without a compensating phase on the control.</p>
 <h2 id="section-4">Reversible evaluation of a function</h2>
 <p>A classical function $f$ may send several inputs to the same output and therefore cannot directly define a unitary $|x\rangle\mapsto|f(x)\rangle$. Preserve the input and use a target register instead:</p>
 <p>$$U_f|x,y\rangle=|x,y\oplus f(x)\rangle.$$</p>
 <p>Applying this twice returns $|x,y\rangle$, since $f(x)\oplus f(x)=0$. Thus it permutes basis vectors and defines a unitary. If a physical implementation uses work qubits, they must be uncomputed when their residual correlations would affect later interference. Such a reversible function box $U_f$ is called an <strong>oracle</strong> when an algorithm counts only how many times it is used; calling a box an oracle does not establish that it is inexpensive to implement.</p>
 <h2 id="section-5">What “universal” does and does not guarantee</h2>
-<p>All one-qubit unitaries together with CNOT can exactly implement any finite-dimensional qubit unitary. This is a decomposition theorem, stated here; it does not say the decomposition is short. A general unitary on $n$ qubits has $4^n$ real parameters, so most such operations require exponentially many elementary gates.</p>
+<p>The circuit above used one $H$ and one CNOT. Any operation on qubits can be built from such pieces: all one-qubit unitaries together with CNOT can exactly implement any finite-dimensional qubit unitary. This is a decomposition theorem, stated here; it does not say the decomposition is short. A general unitary on $n$ qubits has $4^n$ real parameters, so most such operations require exponentially many elementary gates. <strong>Universality does not imply efficient implementation.</strong></p>
 
-<p>A fixed finite alphabet, such as $H,T,$ and CNOT, is instead approximately universal, with physically irrelevant overall phase disregarded. Finite words form a countable set and cannot exactly cover the continuum of target operations. Approximate universality means that for every target and every $\epsilon>0$, some word $V$ satisfies $\min_\gamma\|U-e^{i\gamma}V\|&lt;\epsilon$, using operator norm.</p><p>There are two distinct construction problems here. In the first, arbitrary one-qubit matrices are available as elementary operations, so each can carry continuously chosen parameters. In the second, the available matrices are fixed in advance and only their sequence can vary. A continuously variable rotation cannot simply be counted as one fixed-alphabet gate; it must itself be synthesised.</p><p>Countability alone does not rule out arbitrarily good approximation. Decimal fractions have finite descriptions and form a countable set, yet they approximate any real number as closely as desired. For gates, the analogous question is whether available words come arbitrarily close to every target matrix. Some alphabets fail: powers of $T$ alone give only eight distinct matrices because $T^8=I$. The claim that $H,T,$ and CNOT suffice requires a separate density theorem, not merely the observation that there are infinitely many words.</p>
-<p>Errors also accumulate. If each of $L$ unitary gates is approximated with operator-norm error at most $\delta$, expand the difference of the two circuit products by replacing one factor at a time:</p><p>$$U_L\cdots U_1-V_L\cdots V_1=\sum_{k=1}^{L}U_L\cdots U_{k+1}\,(U_k-V_k)\,V_{k-1}\cdots V_1,$$</p><p>a telescoping sum in which consecutive terms cancel except the first and last. Each term has norm at most $\delta$, because multiplying by unitaries does not change the operator norm. The triangle inequality gives a total error at most $L\delta$. Choosing a synthesis tolerance therefore depends on circuit length, not just on one gate.</p>
+<p>A fixed finite alphabet, such as $H,T,$ and CNOT, is instead approximately universal, with physically irrelevant overall phase disregarded. Finite words form a countable set and cannot exactly cover the continuum of target operations. Approximate universality means that for every target and every $\epsilon>0$, some word $V$ satisfies $\min_\gamma\|U-e^{i\gamma}V\|&lt;\epsilon$, using operator norm.</p><p>There are two distinct construction problems here. In the first, arbitrary one-qubit matrices are available as elementary operations, so each can carry continuously chosen parameters. In the second, the available matrices are fixed in advance and only their sequence can vary. A continuously variable rotation cannot simply be counted as one fixed-alphabet gate; it must itself be synthesised.</p><details class="more"><summary>Why finitely many gates can still approximate a continuum</summary>
+<p>Countability alone does not rule out arbitrarily good approximation. Decimal fractions have finite descriptions and form a countable set, yet they approximate any real number as closely as desired. For gates, the analogous question is whether available words come arbitrarily close to every target matrix. Some alphabets fail: powers of $T$ alone give only eight distinct matrices because $T^8=I$. The claim that $H,T,$ and CNOT suffice requires a separate density theorem, not merely the observation that there are infinitely many words.</p>
+</details>
+<p>Errors also accumulate. If each of $L$ unitary gates is approximated with operator-norm error at most $\delta$, the whole circuit is off by at most $L\delta$. Choosing a synthesis tolerance therefore depends on circuit length, not just on one gate.</p>
+<details class="more"><summary>The error bound, by a telescoping sum</summary>
+<p>Expand the difference of the two circuit products by replacing one factor at a time:</p><p>$$U_L\cdots U_1-V_L\cdots V_1=\sum_{k=1}^{L}U_L\cdots U_{k+1}\,(U_k-V_k)\,V_{k-1}\cdots V_1,$$</p><p>a telescoping sum in which consecutive terms cancel except the first and last. Each term has norm at most $\delta$, because multiplying by unitaries does not change the operator norm. The triangle inequality gives a total error at most $L\delta$.</p>
+</details>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>Each gate is a matrix, and the circuit's output is their product, rightmost first. The Hadamard put qubit 1 into two terms. The controlled-NOT then changed something no one-qubit gate can: it correlated the two qubits, turning the product $|+\rangle|0\rangle$ into the entangled $(|00\rangle+|11\rangle)/\sqrt2$. In the other order the same gates leave a product. A controlled operation can also turn a phase on the target into a relative phase between the control's branches, as Problem 2 shows. Universality says such pieces suffice for any operation, not that the construction is short.</p>
+<p>A gate here is a matrix that someone applies. A physical qubit has no matrices, only a Hamiltonian and whatever fields are applied to it for a while. The next chapter derives a one-qubit gate from a pulse, including how long the pulse must last.</p>
 <h2 id="section-6">Problems</h2>
 <p><strong>1.</strong> What does CNOT do to $|+\rangle|+\rangle$? Does this gate always entangle?</p>
-<details><summary>Worked answer</summary><p>The input expands as $|++\rangle=(|00\rangle+|01\rangle+|10\rangle+|11\rangle)/2$. Apply the basis rule $|a,b\rangle\mapsto|a,b\oplus a\rangle$ to each term:</p><p>$$\operatorname{CNOT}|++\rangle=(|00\rangle+|01\rangle+|11\rangle+|10\rangle)/2=|++\rangle.$$</p><p>The exchanged terms have equal amplitudes, so the joint vector is unchanged and remains a product. CNOT can create entanglement, but its effect depends on the input state.</p></details>
+<details><summary>Worked answer</summary><p>The input expands as $|++\rangle=(|00\rangle+|01\rangle+|10\rangle+|11\rangle)/2$. Apply the basis rule $|a,b\rangle\mapsto|a,b\oplus a\rangle$ to each term:</p><p>$$\operatorname{CNOT}|++\rangle=(|00\rangle+|01\rangle+|11\rangle+|10\rangle)/2=|++\rangle.$$</p><p>The exchanged terms have equal amplitudes, so the joint vector is unchanged and remains a product. CNOT can create entanglement, but its effect depends on the input state.</p><p>The tempting wrong turn is to expect entanglement whenever the control is in a superposition. Here it is, but the target $|+\rangle$ is unchanged by $X$, so flipping it in one branch and not the other leaves the two branches with the same target state.</p></details>
 <p><strong>2.</strong> Compare controlled-$I$ and controlled-$(-I)$ on $|+0\rangle$.</p>
 <details><summary>Worked answer</summary><p>Expand $|+0\rangle=(|00\rangle+|10\rangle)/\sqrt2$. Controlled-$I$ applies identity in both control branches and changes neither term. Controlled-$(-I)$ leaves the zero-control branch alone and negates the one-control branch:</p><p>$$\operatorname{C}(-I)|+0\rangle=(|00\rangle-|10\rangle)/\sqrt2=|-\rangle|0\rangle.$$</p><p>For the first circuit an $X$ measurement on the control returns $+1$ certainly; for the second it returns $-1$ certainly. The target’s phase has become a relative phase between control branches, making the two controlled operations distinguishable.</p></details>
 <section class="references"><h2>References and further reading</h2>

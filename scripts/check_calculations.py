@@ -109,6 +109,38 @@ class Calculations(unittest.TestCase):
         self.assertAlmostEqual(mm(mm(adj(plus),e0),plus)[0][0].real,0)
         for v in (zero, plus):
             self.assertAlmostEqual(mm(mm(adj(v),eq),v)[0][0].real,1/math.sqrt(2))
+        # Figure data (scripts/figures/ch02_measurement.py). Check against the chapter's text:
+        # the running example, the controlled-NOT pointer model giving M, N_m = X M_m, equal
+        # effects, branch probabilities summing to one, normalised conditional states.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch02_measurement as fig
+        psi = ket(math.sqrt(3)/2, .5j)
+        self.same([[a] for a in fig.EXAMPLE], psi)
+        joint = mm(CNOT, tensor(psi, zero))            # system first, pointer second
+        for m in (0, 1):
+            v = [[joint[2*i+m][0]] for i in range(2)]  # component with pointer value m
+            mo = [[1 if (i == j == m) else 0 for j in range(2)] for i in range(2)]
+            self.same(v, mm(mo, psi))
+            self.same([list(r) for r in fig.M[m]], mo)
+            self.same([list(r) for r in fig.N[m]], mm(X, mo))
+            self.same(mm(adj(mm(X, mo)), mm(X, mo)), mm(adj(mo), mo))
+        for key, expect in (("M", ["|0⟩", "|1⟩"]), ("N", ["|1⟩", "|0⟩"])):
+            rows = fig.branches(key)
+            self.assertAlmostEqual(sum(r["p"] for r in rows), 1)
+            self.assertEqual([r["name"] for r in rows], expect)
+            for r, p in zip(rows, (.75, .25)):
+                self.assertAlmostEqual(r["p"], p)
+                self.assertAlmostEqual(fig.norm2(r["state"]), 1)
+        self.assertEqual([r["again"] for r in fig.branches("M")], [0, 1])
+        self.assertEqual([r["again"] for r in fig.branches("N")], [1, 0])
+        effects = [e0, ep, eq]                          # says |0>, says |+>, don't know
+        for (name, probs), v in zip(fig.unambiguous_rows(), (zero, plus)):
+            self.assertAlmostEqual(sum(probs), 1)
+            for prob, e in zip(probs, effects):
+                self.assertAlmostEqual(prob, mm(mm(adj(v), e), v)[0][0].real)
+        # The "ignored outcome" paragraph: |+> after an unread Z measurement gives + with p = 1/2.
+        avg = sum(abs(mm(adj(plus), b)[0][0])**2 * abs(mm(adj(b), plus)[0][0])**2 for b in (zero, ket(0, 1)))
+        self.assertAlmostEqual(avg, .5)
 
     def test_03_partial_trace_and_correlations(self):
         rho = projector(bell)
@@ -117,12 +149,39 @@ class Calculations(unittest.TestCase):
         self.assertAlmostEqual(trace(mm(rho,tensor(Y,Y))).real,-1)
         classical = [[rho[i][j] if i==j else 0 for j in range(4)] for i in range(4)]
         self.assertAlmostEqual(trace(mm(classical,tensor(X,X))).real,0)
+        # Figure data (scripts/figures/ch03_density.py) averages Bloch vectors. Check the other
+        # way: build each ensemble's density matrix from projectors, then read r from Pauli traces.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch03_density as fig
+        rhos = {}
+        for name, ens in fig.ENSEMBLES.items():
+            rho = add(*[scale(w, projector(ket(*fig.KETS[k]))) for w, k in ens])
+            rhos[name] = rho
+            r = [trace(mm(rho, s)).real for s in (X, Y, Z)]
+            for got, want in zip(fig.average(ens), r):
+                self.assertAlmostEqual(got, want)
+        self.same(rhos["source C"], rhos["plus-minus coin"]); self.same(rhos["source C"], scale(.5, I))
+        self.same(rhos["3:1 coin"], rhos["tilted pair"]); self.same(rhos["3:1 coin"], [[.75, 0], [0, .25]])
+        self.same(reduced, rhos["source C"])  # half of a Bell pair: the same matrix
 
     def test_04_gate_order_and_bell_preparation(self):
         self.same(mm(mm(H,Z),H),X)
         circuit = mm(CNOT,tensor(H,I))
         self.same(mm(circuit,ket(1,0,0,0)),bell)
         self.same(mm(CNOT,tensor(plus,plus)),tensor(plus,plus))
+        # Figure rows (scripts/figures/ch04_circuit.py) use basis rules on labelled terms. Check
+        # them with 4x4 matrices, and check that label "ab" is index 2a+b (qubit 1 leftmost).
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch04_circuit as fig
+        for k, lab in enumerate(fig.LABELS):
+            a_, b_ = int(lab[0]), int(lab[1])
+            basis = tensor(ket(1-a_, a_), ket(1-b_, b_))
+            self.assertAlmostEqual(basis[k][0], 1)
+        start = ket(1, 0, 0, 0)
+        expected = [start, mm(tensor(H, I), start), mm(circuit, start), mm(tensor(H, I), mm(CNOT, start))]
+        for (_, state), want in zip(fig.rows(), expected):
+            self.same([[state[lab]] for lab in fig.LABELS], want)
+        self.same(expected[3], tensor(plus, zero))  # other order: a product state
 
     def test_05_rotation_and_detuning(self):
         theta = math.pi/3
@@ -133,6 +192,26 @@ class Calculations(unittest.TestCase):
         # Detuned constant pulse at its first population maximum: Omega=Delta=1.
         u = scale(-1j/math.sqrt(2),add(X,Z))
         self.assertAlmostEqual(abs(mm(u,zero)[1][0])**2,.5)
+        # Figure paths (scripts/figures/ch05_rotation.py) use the rotation formula for Bloch
+        # vectors. Recompute them from the 2x2 matrix exp(-i w t n.sigma/2) acting on |0>.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch05_rotation as fig
+        for ratio in (0, 1):
+            w = math.sqrt(1 + ratio**2)
+            nsig = scale(1/w, add(X, scale(ratio, Z)))
+            for k in range(13):
+                omega_t = 2*math.pi*k/12
+                ang = w*omega_t
+                evo = add(scale(math.cos(ang/2), I), scale(-1j*math.sin(ang/2), nsig))
+                v = mm(evo, zero)
+                r = [mm(mm(adj(v), s), v)[0][0].real for s in (X, Y, Z)]
+                for got, want in zip(fig.bloch_after(omega_t, ratio), r):
+                    self.assertAlmostEqual(got, want)
+                closed = math.sin(w*omega_t/2)**2/(1+ratio**2)   # the chapter's p(1; t) formula
+                self.assertAlmostEqual(fig.p1(omega_t, ratio), closed)
+        self.assertAlmostEqual(fig.p1(math.pi, 0), 1)
+        self.assertAlmostEqual(fig.p1(math.pi/math.sqrt(2), 1), .5)
+        self.assertAlmostEqual(math.pi/(2*math.pi*10e6), 50e-9)          # pi pulse at Omega/2pi = 10 MHz
 
     def test_06_copying_orthogonal_alphabet(self):
         circuit = mm(mm(tensor(H,H),CNOT),tensor(H,I))

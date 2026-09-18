@@ -299,6 +299,23 @@ figcaption { font-family: var(--sans); font-size: .9rem; line-height: 1.55; colo
 .fig-dashed { stroke-dasharray: 4 4; }
 .fig-vector { stroke: var(--fig-accent); stroke-width: 2; }
 .fig-vector-plain { stroke: var(--ink-soft); stroke-width: 1.6; }
+.fig-branch { stroke: var(--ink-soft); stroke-width: 1.4; }
+.fig-node { fill: var(--bg-raised); stroke: var(--ink-soft); stroke-width: 1.2; }
+.fig-svg .fig-accent-text { fill: var(--fig-accent); font-weight: 700; }
+/* Narrow figures are drawn to fit a phone column, so they never need sideways scrolling. */
+figure.fig-narrow .fig-scroll { max-width: 30rem; margin: 0 auto; }
+.fig-chord { stroke: var(--ink-soft); stroke-width: 1.4; }
+.fig-chord-alt { stroke: var(--fig-second); stroke-dasharray: 5 3; }
+.fig-dot.fig-dot-mixed { fill: var(--bg-raised); stroke: var(--fig-accent); stroke-width: 2.5; }
+.fig-wire { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; }
+.fig-gate { fill: var(--bg-raised); stroke: var(--ink); stroke-width: 1.5; }
+.fig-control { fill: var(--ink); }
+.fig-target { fill: none; stroke: var(--ink-soft); stroke-width: 1.5; }
+.fig-trace { fill: none; stroke: var(--fig-accent); stroke-width: 2.2; }
+.fig-trace-alt { stroke: var(--fig-second); stroke-dasharray: 6 4; }
+.fig-faint { stroke-opacity: .5; }
+.fig-dot.fig-dot-alt { fill: var(--fig-second); }
+.fig-svg .fig-alt-text { fill: var(--fig-second); }
 .fig-bar { fill: var(--fig-accent); }
 .fig-bar-plain { fill: var(--fig-plain); }
 .fig-dot { fill: var(--ink); stroke: var(--bg-raised); stroke-width: 1.5; }
@@ -308,7 +325,9 @@ details.more { border-style: dashed; margin: .2rem 0 1.5rem; }
 details.more summary::after { content: " (optional)"; color: var(--ink-faint); }
 @media (max-width: 40rem) {
   .fig-svg { min-width: 620px; }
+  figure.fig-narrow .fig-svg { min-width: 0; }
   .fig-scroll::after { content: "Scroll sideways to see the whole figure."; display: block; font-family: var(--sans); font-size: .78rem; color: var(--ink-faint); margin-top: .4rem; position: sticky; left: 0; }
+  figure.fig-narrow .fig-scroll::after { display: none; }
 }
 @media print {
   :root, :root[data-theme], :root:not([data-theme="light"]) { --fig-accent:#b45309; --fig-second:#1d4ed8; --fig-plain:#999; }

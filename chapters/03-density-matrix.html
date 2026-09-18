@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Density matrices and the state of a subsystem — The Bridge</title>
-<meta name="description" content="A density matrix gives measurement predictions for uncertain preparations and for subsystems of entangled states. The same matrix can describe different preparation procedures.">
+<meta name="description" content="Two coin-flip sources that no measurement can tell apart, and the single matrix that holds every prediction for a mixed preparation or a subsystem.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -20,46 +20,110 @@
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 03</p><h1>Density matrices and the state of a subsystem</h1>
-<p class="lede">A density matrix gives measurement predictions for uncertain preparations and for subsystems of entangled states. The same matrix can describe different preparation procedures.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 1–2: outer products, tensor products, and measurement effects. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Derive the matrix from an ensemble</a></li>
+<p class="lede">Source C of Chapter 1 flips a coin and emits $|0\rangle$ or $|1\rangle$. Another source flips a coin and emits $|+\rangle$ or $|-\rangle$. Can any measurement on the qubits tell the two sources apart? And what describes one qubit of a pair when its partner is out of reach?</p><p class="prerequisites"><strong>Before you start:</strong> Bloch vectors and Pauli expectation values (<a href="01-superposition-qubit.html#section-3">Chapter 1</a>); effects and the averaging rule for unread outcomes (<a href="02-observables-measurement.html#section-2">Chapter 2</a>). Outer products $|a\rangle\langle b|$ and the trace of a matrix. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#two-coins">Two coin-flip sources</a></li>
+<li><a href="#section-1">Derive the matrix from an ensemble</a></li>
 <li><a href="#section-2">Coherence is measurable; ensemble labels may not be</a></li>
 <li><a href="#section-3">Purity and the Bloch ball</a></li>
 <li><a href="#section-4">Derive the partial trace from local predictions</a></li>
 <li><a href="#section-5">Local mixedness does not by itself prove entanglement</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-6">Problems</a></li>
 </ol></nav>
+<h2 id="two-coins">Two coin-flip sources</h2>
+<p>Call the second source D. Each run, it flips a fair coin and emits $|+\rangle$ or $|-\rangle$, without saying which. Source C does the same with $|0\rangle$ and $|1\rangle$. Chapter 2's rule for unread outcomes applies to both: a prediction is the average of the predictions for the two possible states.</p>
+<p>Try a few measurements. In the computational basis, source C gives 0 with probability $\tfrac12\cdot1+\tfrac12\cdot0=\tfrac12$; source D gives $\tfrac12\cdot\tfrac12+\tfrac12\cdot\tfrac12=\tfrac12$. In the $+/-$ basis, source C gives $+$ with probability $\tfrac12$, and so does source D, now as $\tfrac12\cdot1+\tfrac12\cdot0$. The numbers agree, for different reasons. Agreement in two bases proves nothing about the others, and there are infinitely many. What we need is one object that holds the predictions of every measurement at once.</p>
 <h2 id="section-1">Derive the matrix from an ensemble</h2>
-<p>Suppose a preparation chooses $|\psi_j\rangle$ with classical probability $p_j$, but the label $j$ is withheld. For a measurement effect $E_m$, average the conditional probabilities:</p>
+<p>Suppose a preparation chooses $|\psi_j\rangle$ with classical probability $p_j$, but the label $j$ is withheld. Such a list of states and probabilities is called an <strong>ensemble</strong>. For a measurement effect $E_m$, average the conditional probabilities:</p>
 <p>$$p(m)=\sum_jp_j\langle\psi_j|E_m|\psi_j\rangle=\operatorname{Tr}(\rho E_m),\qquad \rho=\sum_jp_j|\psi_j\rangle\langle\psi_j|.$$</p>
-<p>The trace identity follows by inserting any orthonormal basis: $\operatorname{Tr}(|\psi\rangle\langle\psi|E)=\langle\psi|E|\psi\rangle$. The density matrix is Hermitian, positive semidefinite, and has trace one. Conversely, a matrix with these properties has an eigenvector decomposition with nonnegative eigenvalues summing to one, so it is a valid ensemble state.</p>
+<p>The trace identity follows by inserting any orthonormal basis: $\operatorname{Tr}(|\psi\rangle\langle\psi|E)=\langle\psi|E|\psi\rangle$. The density matrix is Hermitian, positive in the sense of Chapter 2 ($\langle v|\rho|v\rangle\ge0$ for every $v$), and has trace one. Conversely, a matrix with these properties has an eigenvector decomposition with nonnegative eigenvalues summing to one, so it is a valid ensemble state.</p>
 <p>For a pure qubit, multiplying the column by its conjugate row gives</p>
 <p>$$|\psi\rangle\langle\psi|=\begin{pmatrix}|\alpha|^2&\alpha\beta^*\\\alpha^*\beta&|\beta|^2\end{pmatrix}.$$</p>
 <p>The diagonal entries are computational-basis probabilities. The off-diagonal entries affect measurements in other bases. They depend on the basis: “diagonal” does not mean “classical” independently of which observables are being considered.</p>
+<p>Now compare the two sources. For source C, $\rho_C=\tfrac12|0\rangle\langle0|+\tfrac12|1\rangle\langle1|=I/2$. For source D, adding the two outer products gives</p>
+<p>$$\rho_D=\frac12\cdot\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix}+\frac12\cdot\frac12\begin{pmatrix}1&-1\\-1&1\end{pmatrix}=\frac I2.$$</p>
+<p>The matrices are equal, so $\operatorname{Tr}(\rho E)$ is the same for every effect $E$. No measurement on the qubits, of any kind, can tell source C from source D. What distinguishes them is the coin's record, which is not in the qubit.</p>
 <h2 id="section-2">Coherence is measurable; ensemble labels may not be</h2>
-<p>Compare two preparation procedures:</p>
-<p>$$\rho_+=|+\rangle\langle+|=\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix},\qquad \rho_{\rm mix}=\frac12|0\rangle\langle0|+\frac12|1\rangle\langle1|=\frac I2.$$</p>
-<p>Both have the same diagonal. But $\operatorname{Tr}(\rho_+X)=1$ whereas $\operatorname{Tr}(\rho_{\rm mix}X)=0$. Thus $X$ measurements distinguish these preparations statistically. By contrast, an equal mixture of $|+\rangle$ and $|-\rangle$ also gives $I/2$. No measurement on the qubit can distinguish those two ensembles, because every effect has the same trace against their identical matrices. A classical record of which preparation was used would be additional information.</p>
+<p>Compare source A of Chapter 1 with source C:</p>
+<p>$$\rho_+=|+\rangle\langle+|=\frac12\begin{pmatrix}1&1\\1&1\end{pmatrix},\qquad \rho_C=\frac12|0\rangle\langle0|+\frac12|1\rangle\langle1|=\frac I2.$$</p>
+<p>Both have the same diagonal. But $\operatorname{Tr}(\rho_+X)=1$ whereas $\operatorname{Tr}(\rho_CX)=0$. Thus $X$ measurements distinguish these preparations statistically. The off-diagonal entries of $\rho_+$ are what the $X$ measurement detects; source C has none. Source D has none either: its ensemble averages to $I/2$, like source C. The density matrix keeps exactly what measurements can see: coherence, when it is present, but not the list of states a coin chose from.</p>
 <h2 id="section-3">Purity and the Bloch ball</h2>
 <p>If $\lambda_j$ are the eigenvalues of $\rho$, then $\operatorname{Tr}\rho^2=\sum_j\lambda_j^2\le1$. Equality requires one eigenvalue equal to one and all others zero: exactly a pure state. For a qubit, the Pauli matrices and identity form a basis for Hermitian matrices, so</p>
 <p>$$\rho=\frac12(I+r_xX+r_yY+r_zZ)=\frac12\begin{pmatrix}1+r_z&r_x-ir_y\\r_x+ir_y&1-r_z\end{pmatrix}.$$</p>
 <p>Its eigenvalues are $(1\pm|\mathbf r|)/2$, which are nonnegative precisely when $|\mathbf r|\le1$. Pure states lie on the sphere; mixed states lie inside. Writing $(\sigma_1,\sigma_2,\sigma_3)=(X,Y,Z)$, each Pauli matrix is traceless and squares to $I$, so $\operatorname{Tr}(\sigma_i\sigma_j)=2\delta_{ij}$. Using this gives $\operatorname{Tr}\rho^2=(1+|\mathbf r|^2)/2$. The centre $I/2$ has purity $1/2$.</p>
+<p>Since $\rho$ depends linearly on $\mathbf r$, the Bloch vector of a mixture is the probability-weighted average of its members' Bloch vectors. A mixture therefore sits inside the ball, on the segment or polygon spanned by its members, and any two ensembles with the same average are the same density matrix. Sources C and D both average to the centre. Away from the centre, the ensemble $\tfrac34|0\rangle,\tfrac14|1\rangle$ and the equal mixture of $(\sqrt3|0\rangle\pm|1\rangle)/2$ both give $\mathbf r=(0,0,\tfrac12)$, that is $\rho=\operatorname{diag}(\tfrac34,\tfrac14)$. The second pair's off-diagonal entries, $\pm\sqrt3/4$, cancel in the average.</p>
+<figure class="fig-narrow">
+<div class="fig-scroll">
+<!-- FIGURE:ensembles -->
+<svg class="fig-svg" viewBox="0 0 360 664" role="img" aria-labelledby="fig-ensembles-title fig-ensembles-desc">
+<title id="fig-ensembles-title">Mixtures inside the Bloch ball</title>
+<desc id="fig-ensembles-desc">Two circles, each the x-z slice of the Bloch ball. Top: zero at the top, one at the bottom, plus at the right edge. Source C, the equal mixture of zero and one, is the midpoint of the vertical line joining them, at the centre. Bottom: the vertical line from zero to one and the horizontal line from minus to plus cross at the centre, labelled I over 2. A second horizontal line, at height one half, joins the two tilted states; its midpoint is on the vertical line at height one half, labelled diag three quarters, one quarter, which is also three quarters of the way from one to zero.</desc>
+<text class="fig-head" x="0" y="30">A superposition and a mixture</text>
+<circle class="fig-outline" cx="180" cy="170" r="118"/>
+<line class="fig-axis" x1="50" y1="170" x2="310" y2="170"/>
+<line class="fig-axis" x1="180" y1="300" x2="180" y2="40"/>
+<text class="fig-label fig-soft fig-italic" x="306" y="188">x</text>
+<text class="fig-label fig-soft fig-italic" x="172" y="48" text-anchor="end">z</text>
+<line class="fig-chord" x1="180" y1="52" x2="180" y2="288"/>
+<circle class="fig-dot" cx="180" cy="52" r="5"/>
+<text class="fig-label fig-math" x="190" y="46" text-anchor="start">|0⟩</text>
+<circle class="fig-dot" cx="180" cy="288" r="5"/>
+<text class="fig-label fig-math" x="190" y="304" text-anchor="start">|1⟩</text>
+<circle class="fig-dot fig-dot-accent" cx="298" cy="170" r="5"/>
+<text class="fig-label fig-math" x="302" y="158" text-anchor="start">|+⟩</text>
+<text class="fig-label fig-soft" x="284" y="202" text-anchor="end">source A, pure</text>
+<circle class="fig-dot fig-dot-mixed" cx="180" cy="170" r="5"/>
+<text class="fig-label" x="170" y="160" text-anchor="end">source C</text>
+<text class="fig-head" x="0" y="380">Different mixtures, one matrix</text>
+<circle class="fig-outline" cx="180" cy="520" r="118"/>
+<line class="fig-axis" x1="50" y1="520" x2="310" y2="520"/>
+<line class="fig-axis" x1="180" y1="650" x2="180" y2="390"/>
+<text class="fig-label fig-soft fig-italic" x="306" y="538">x</text>
+<text class="fig-label fig-soft fig-italic" x="172" y="398" text-anchor="end">z</text>
+<line class="fig-chord" x1="180" y1="402" x2="180" y2="638"/>
+<line class="fig-chord" x1="298" y1="520" x2="62" y2="520"/>
+<line class="fig-chord fig-chord-alt" x1="282.2" y1="461" x2="77.8" y2="461"/>
+<circle class="fig-dot" cx="180" cy="402" r="5"/>
+<text class="fig-label fig-math" x="190" y="396" text-anchor="start">|0⟩</text>
+<circle class="fig-dot" cx="180" cy="638" r="5"/>
+<text class="fig-label fig-math" x="190" y="654" text-anchor="start">|1⟩</text>
+<circle class="fig-dot" cx="298" cy="520" r="5"/>
+<text class="fig-label fig-math" x="302" y="510" text-anchor="start">|+⟩</text>
+<circle class="fig-dot" cx="62" cy="520" r="5"/>
+<text class="fig-label fig-math" x="58" y="510" text-anchor="end">|−⟩</text>
+<circle class="fig-dot" cx="282.2" cy="461" r="5"/>
+<circle class="fig-dot" cx="77.8" cy="461" r="5"/>
+<circle class="fig-dot fig-dot-mixed" cx="180" cy="520" r="5"/>
+<text class="fig-label fig-math" x="190" y="540" text-anchor="start">I/2</text>
+<circle class="fig-dot fig-dot-mixed" cx="180" cy="461" r="5"/>
+<text class="fig-label fig-math" x="190" y="479" text-anchor="start">diag(¾, ¼)</text>
+</svg>
+<!-- /FIGURE:ensembles -->
+</div>
+<figcaption>The $x$–$z$ slice of the Bloch ball. Top: the superposition $|+\rangle$ lies on the surface, with $r_x=1$, so an $X$ measurement gives $+$ with certainty. Source C lies at the centre, the midpoint of the segment from $|0\rangle$ to $|1\rangle$, and every measurement on it gives even odds. Bottom: a mixture is the weighted average of its members. Two ensembles meet at $I/2$ (sources C and D). Two others meet at $\operatorname{diag}(\tfrac34,\tfrac14)$: the vertical segment weighted $\tfrac34$ towards $|0\rangle$, and the tilted pair joined by the horizontal segment at height $\tfrac12$, weighted equally.</figcaption>
+</figure>
 <h2 id="section-4">Derive the partial trace from local predictions</h2>
 <p>Now take a joint state $\rho_{AB}$. An apparatus acting only on $A$ has effect $E_m\otimes I_B$, so its probability is $\operatorname{Tr}[\rho_{AB}(E_m\otimes I_B)]$. We seek a matrix $\rho_A$ giving the same number as $\operatorname{Tr}(\rho_AE_m)$ for every local effect. In product-basis indices the required matrix is</p>
 <p>$$(\rho_A)_{ik}=\sum_j(\rho_{AB})_{ij,kj},\qquad \rho_A=\operatorname{Tr}_B\rho_{AB}.$$</p>
 <p>Equivalently, $\operatorname{Tr}_B(|i\rangle\langle k|\otimes|j\rangle\langle\ell|)=\delta_{j\ell}|i\rangle\langle k|$. The repeated index is summed because the partner's outcome is not distinguished. Partial trace discards access to a subsystem; it does not require anyone to physically measure that subsystem.</p>
+<details class="more"><summary>Why this is the right matrix: the index calculation</summary>
 <p>For a concrete index check, expand a joint matrix as $\rho_{AB}=\sum_{i,j,k,\ell}r_{ij,k\ell}|i\rangle\langle k|\otimes|j\rangle\langle\ell|$. A local effect is blind to the second subsystem, so</p>
 <p>$$\begin{aligned}p(m)&=\operatorname{Tr}[\rho_{AB}(E_m\otimes I)]\\
 &=\sum_{i,j,k,\ell}r_{ij,k\ell}\langle k|E_m|i\rangle\langle\ell|j\rangle\\
 &=\sum_{i,k}\left(\sum_jr_{ij,kj}\right)\langle k|E_m|i\rangle.
 \end{aligned}$$</p>
 <p>The quantity in parentheses is precisely the matrix element $(\rho_A)_{ik}$. This establishes the partial trace by the predictions it must preserve, rather than by an arbitrary rule for deleting indices. Terms with unequal partner labels vanish because their partner states are orthogonal. Coherences between system labels $i,k$ can remain when the partner label is the same.</p>
-<p>For comparison, $|00\rangle\langle10|$ becomes $|0\rangle\langle1|$: the partner is zero on both sides. But $|00\rangle\langle11|$ becomes zero, because it would require the overlap $\langle1|0\rangle$. This distinction explains which coherences are lost in the Bell-state calculation below.</p>
-<p>For $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$, the projector has four terms. The terms $|00\rangle\langle11|$ and $|11\rangle\langle00|$ vanish on tracing $B$, because their $B$ indices differ. Hence $\rho_A=I/2$, even though $\rho_{AB}$ is pure.</p>
+<p>For comparison, $|00\rangle\langle10|$ becomes $|0\rangle\langle1|$: the partner is zero on both sides. But $|00\rangle\langle11|$ becomes zero, because it would require the overlap $\langle1|0\rangle$.</p>
+</details>
+<p>For the Bell state $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$, the projector has four terms. The terms $|00\rangle\langle11|$ and $|11\rangle\langle00|$ vanish on tracing $B$, because their $B$ indices differ. Hence $\rho_A=I/2$, even though $\rho_{AB}$ is pure. One qubit of this pair is described by the same matrix as source C and source D, and no measurement on that qubit alone can tell the three apart.</p>
 <h2 id="section-5">Local mixedness does not by itself prove entanglement</h2>
 <p>The classically correlated state $\rho_{\rm cc}=(|00\rangle\langle00|+|11\rangle\langle11|)/2$ has exactly the same two reduced states as $|\Phi^+\rangle$. Both give matching $Z$ results. To tell the joint preparations apart, compute $\langle X\otimes X\rangle$: it is one for $|\Phi^+\rangle$ and zero for $\rho_{\rm cc}$. The latter has no off-diagonal terms to contribute.</p>
 <p>If the joint state is known to be pure, a mixed reduced state certifies entanglement. Without that assumption, it does not. Nor does every interaction create entanglement: a controlled-NOT leaves $|00\rangle$ unchanged. The input and the interaction both matter.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>No measurement on the qubits can tell source C from source D: both have $\rho=I/2$, and every outcome probability is $\operatorname{Tr}(\rho E)$. The density matrix holds everything a measurement can reveal about a preparation, and nothing more. It records coherence, which separates $|+\rangle$ from source C, but not which list of states a coin chose from. The same matrix describes one qubit of a Bell pair, so a mixed reduced state alone cannot say whether it came from a coin, from entanglement, or from classical correlation; only with the joint state known to be pure does it certify entanglement.</p>
+<p>Every preparation here was a coin flip or a pair that was already correlated. The next chapter asks how states are changed and correlated in the first place: what a sequence of gates, including one qubit controlling another, does to the amplitudes.</p>
 <h2 id="section-6">Problems</h2>
 <p><strong>1.</strong> Trace either subsystem out of $\sqrt{3/4}|00\rangle+\sqrt{1/4}|11\rangle$. Find the purity.</p>
-<details><summary>Worked answer</summary><p>Write the coefficients as $\sqrt3/2$ and $1/2$, then form the outer product:</p><p>$$\rho_{AB}=\tfrac34|00\rangle\langle00|+\tfrac{\sqrt3}{4}(|00\rangle\langle11|+|11\rangle\langle00|)+\tfrac14|11\rangle\langle11|.$$</p><p>Tracing $B$ keeps the diagonal terms and multiplies the cross terms by $\langle1|0\rangle$ or $\langle0|1\rangle$, both zero. Hence $\rho_A=\operatorname{diag}(3/4,1/4)$, and tracing $A$ gives the same matrix. Squaring yields $\rho_A^2=\operatorname{diag}(9/16,1/16)$, so the purity is $10/16=5/8$. The pure joint state has a mixed reduced state and is therefore entangled.</p></details>
+<details><summary>Worked answer</summary><p>Write the coefficients as $\sqrt3/2$ and $1/2$, then form the outer product:</p><p>$$\rho_{AB}=\tfrac34|00\rangle\langle00|+\tfrac{\sqrt3}{4}(|00\rangle\langle11|+|11\rangle\langle00|)+\tfrac14|11\rangle\langle11|.$$</p><p>Tracing $B$ keeps the diagonal terms and multiplies the cross terms by $\langle1|0\rangle$ or $\langle0|1\rangle$, both zero. Hence $\rho_A=\operatorname{diag}(3/4,1/4)$, and tracing $A$ gives the same matrix. Squaring yields $\rho_A^2=\operatorname{diag}(9/16,1/16)$, so the purity is $10/16=5/8$. The pure joint state has a mixed reduced state and is therefore entangled.</p><p>The tempting wrong turn is to keep the cross terms $\sqrt3/4$ in $\rho_A$. They vanish because their partner labels differ; the same reduced state, $\operatorname{diag}(3/4,1/4)$, is the point at height $\tfrac12$ in the figure, where it could equally have come from a coin.</p></details>
 <p><strong>2.</strong> Someone assigns $\rho=\left(\begin{smallmatrix}1/2&3/4\\3/4&1/2\end{smallmatrix}\right)$ to a qubit. It is Hermitian with trace one. Why is it invalid?</p>
 <details><summary>Worked answer</summary><p>Apply the proposed matrix to the two candidate eigenvectors. On the unnormalised column $(1,1)^T$ it gives $(5/4,5/4)^T$; on $(1,-1)^T$ it gives $(-1/4,1/4)^T$. Thus the normalised $|+\rangle,|-\rangle$ are eigenvectors with eigenvalues $5/4,-1/4$.</p><p>$$p(-)=\langle-|\rho|-\rangle=-\tfrac14\langle-|-\rangle=-\tfrac14.$$</p><p>This negative measurement probability excludes the matrix. Hermiticity and unit trace check two state conditions, but they do not guarantee the third, positivity.</p></details>
 <section class="references"><h2>References and further reading</h2>
