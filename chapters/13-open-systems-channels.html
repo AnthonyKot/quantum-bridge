@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quantum channels: discarded environments and noise — The Bridge</title>
-<meta name="description" content="When a system interacts with an environment, its reduced evolution need not be unitary. The channel formalism calculates what remains accessible.">
+<title>Quantum channels: discarded environments and noise — Quantum Information, Explained</title>
+<meta name="description" content="A qubit decays while no one watches. What is left of its state, what changes if the emission is recorded, and why noise need not make a state more mixed.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -16,20 +16,71 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap">
-<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<a class="brand" href="../index.html">Quantum Information, <span>Explained</span></a>
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 13</p><h1>Quantum channels: discarded environments and noise</h1>
-<p class="lede">When a system interacts with an environment, its reduced evolution need not be unitary. The channel formalism calculates what remains accessible.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 2–3: measurement operators, density matrices, and partial trace. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Derive the operator-sum representation</a></li>
+<p class="lede">A qubit prepared in $|+\rangle$ can decay to its ground state by emitting a photon into its surroundings. If no one looks at the surroundings, what is left of the qubit’s state? What changes if the photon is detected and the result recorded? And does noise always make a state more mixed?</p><p class="prerequisites"><strong>Before you start:</strong> Recorded and ignored outcomes, and measurement operators (<a href="02-observables-measurement.html#ignored">Chapter 2</a>); density matrices, the Bloch ball and the partial trace (<a href="03-density-matrix.html">Chapter 3</a>). The companion guide’s <a href="https://anthonykot.github.io/quantum-quartet/chapters/14-measurement.html">measurement essay</a> discusses decoherence in physical terms. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#three-descriptions">One interaction, three descriptions</a></li>
+<li><a href="#section-1">Derive the operator-sum representation</a></li>
 <li><a href="#section-2">Why positivity must hold with an untouched partner</a></li>
 <li><a href="#section-3">Amplitude damping: populations and coherence</a></li>
 <li><a href="#section-4">Phase noise behaves differently</a></li>
 <li><a href="#section-5">A recorded outcome supplies more than a channel</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-6">Problems</a></li>
 </ol></nav>
+<h2 id="three-descriptions">One interaction, three descriptions</h2>
+<p>Model the surroundings by one environment qubit $E$, starting in $|0\rangle_E$. If the system is in $|0\rangle$, nothing happens. If it is in $|1\rangle$, it emits with probability $\gamma$, and the emission flips $E$:</p>
+<p>$$|0\rangle|0\rangle_E\mapsto|0\rangle|0\rangle_E,\qquad |1\rangle|0\rangle_E\mapsto\sqrt{1-\gamma}\,|1\rangle|0\rangle_E+\sqrt\gamma\,|0\rangle|1\rangle_E.$$</p>
+<p>Take $\gamma=\tfrac34$ and the input $|+\rangle$. By linearity the joint state is</p>
+<p>$$\frac1{\sqrt2}\Big(|0\rangle|0\rangle_E+\tfrac12|1\rangle|0\rangle_E+\tfrac{\sqrt3}2|0\rangle|1\rangle_E\Big).$$</p>
+<p>The same physical situation now has three descriptions, and they answer different questions.</p>
+<p><strong>The joint state.</strong> System and environment together are in the pure state above. Nothing has been lost; the system has become entangled with $E$.</p>
+<p><strong>The environment ignored.</strong> If $E$ is out of reach, predictions for the system alone come from its reduced state (Chapter 3). Tracing out $E$ gives $\rho=\left(\begin{smallmatrix}7/8&1/4\\1/4&1/8\end{smallmatrix}\right)$, a mixed state with Bloch vector $(\tfrac12,0,\tfrac34)$.</p>
+<p><strong>The environment measured and recorded.</strong> If a detector reads $E$ in the basis $|0\rangle_E,|1\rangle_E$ and the result is kept, each reading has its own conditional state (Chapter 2). A photon is detected with probability $\tfrac12\cdot\tfrac34=\tfrac38$, leaving $|0\rangle$. No photon, with probability $\tfrac58$, leaves $(2|0\rangle+|1\rangle)/\sqrt5$. Both conditional states are pure.</p>
+<p>The descriptions are linked by Chapter 2’s averaging rule: the two recorded branches, weighted $\tfrac38$ and $\tfrac58$, average to the ignored-outcome state. But they are not interchangeable. The mixed $\rho$ is what someone without the record must use; the pure branch states are what someone with the record may use. A different measurement of $E$ would give different branches with the same average, as the last section explains.</p>
+<figure class="fig-narrow">
+<div class="fig-scroll">
+<!-- FIGURE:channel -->
+<svg class="fig-svg" viewBox="0 0 360 604" role="img" aria-labelledby="fig-channel-title fig-channel-desc">
+<title id="fig-channel-title">Recorded, ignored, and the channel on the whole ball</title>
+<desc id="fig-channel-desc">Top: a circle, the x-z slice of the Bloch ball. The input plus sits at the right edge. Two recorded outcomes lie on the circle: emission at the top, the state zero, with probability three eighths, and no emission at x 0.8, z 0.6, with probability five eighths. A segment joins them, and the ignored-outcome state lies on it inside the circle, at x one half, z three quarters. Bottom: the unit circle; dephasing squeezes it into a tall ellipse of half width; damping shrinks it into a small ellipse centred at z three quarters touching the top; full damping sends every state to the top point.</desc>
+<text class="fig-head" x="0" y="26">One interaction, three descriptions</text>
+<circle class="fig-outline" cx="180" cy="158" r="112"/>
+<line class="fig-axis" x1="58" y1="158" x2="302" y2="158"/>
+<line class="fig-axis" x1="180" y1="280" x2="180" y2="36"/>
+<line class="fig-chord" x1="269.6" y1="90.8" x2="180" y2="46"/>
+<line class="fig-line fig-dashed" x1="292" y1="158" x2="236" y2="74"/>
+<circle class="fig-dot" cx="292" cy="158" r="5"/>
+<text class="fig-label fig-math" x="300" y="176" text-anchor="end">start |+⟩</text>
+<circle class="fig-dot fig-dot-alt" cx="180" cy="46" r="5"/>
+<text class="fig-label fig-alt-text" x="190" y="42" text-anchor="start">emission, p = 3/8</text>
+<circle class="fig-dot fig-dot-alt" cx="269.6" cy="90.8" r="5"/>
+<text class="fig-label fig-alt-text" x="279.6" y="86.8" text-anchor="start">no emission</text>
+<text class="fig-label fig-alt-text" x="279.6" y="102.8">p = 5/8</text>
+<circle class="fig-dot fig-dot-mixed" cx="236" cy="74" r="5"/>
+<text class="fig-label" x="226" y="78" text-anchor="end">outcome ignored</text>
+<text class="fig-head" x="0" y="336">What each channel does to the whole ball</text>
+<circle class="fig-outline" cx="180" cy="468" r="112"/>
+<line class="fig-axis" x1="58" y1="468" x2="302" y2="468"/>
+<line class="fig-axis" x1="180" y1="590" x2="180" y2="346"/>
+<path class="fig-image fig-image-alt" d="M180,356 L182.9,356.2 L185.9,356.6 L188.8,357.4 L191.6,358.4 L194.5,359.8 L197.3,361.5 L200.1,363.4 L202.8,365.7 L205.4,368.2 L208,371 L210.5,374.1 L212.9,377.4 L215.2,381 L217.5,384.8 L219.6,388.8 L221.6,393.1 L223.5,397.5 L225.3,402.2 L227,407 L228.5,412 L229.9,417.2 L231.2,422.4 L232.3,427.9 L233.3,433.4 L234.1,439 L234.8,444.7 L235.3,450.5 L235.7,456.3 L235.9,462.1 L236,468 L235.9,473.9 L235.7,479.7 L235.3,485.5 L234.8,491.3 L234.1,497 L233.3,502.6 L232.3,508.1 L231.2,513.6 L229.9,518.8 L228.5,524 L227,529 L225.3,533.8 L223.5,538.5 L221.6,542.9 L219.6,547.2 L217.5,551.2 L215.2,555 L212.9,558.6 L210.5,561.9 L208,565 L205.4,567.8 L202.8,570.3 L200.1,572.6 L197.3,574.5 L194.5,576.2 L191.6,577.6 L188.8,578.6 L185.9,579.4 L182.9,579.8 L180,580 L177.1,579.8 L174.1,579.4 L171.2,578.6 L168.4,577.6 L165.5,576.2 L162.7,574.5 L159.9,572.6 L157.2,570.3 L154.6,567.8 L152,565 L149.5,561.9 L147.1,558.6 L144.8,555 L142.5,551.2 L140.4,547.2 L138.4,542.9 L136.5,538.5 L134.7,533.8 L133,529 L131.5,524 L130.1,518.8 L128.8,513.6 L127.7,508.1 L126.7,502.6 L125.9,497 L125.2,491.3 L124.7,485.5 L124.3,479.7 L124.1,473.9 L124,468 L124.1,462.1 L124.3,456.3 L124.7,450.5 L125.2,444.7 L125.9,439 L126.7,433.4 L127.7,427.9 L128.8,422.4 L130.1,417.2 L131.5,412 L133,407 L134.7,402.2 L136.5,397.5 L138.4,393.1 L140.4,388.8 L142.5,384.8 L144.8,381 L147.1,377.4 L149.5,374.1 L152,371 L154.6,368.2 L157.2,365.7 L159.9,363.4 L162.7,361.5 L165.5,359.8 L168.4,358.4 L171.2,357.4 L174.1,356.6 L177.1,356.2 L180,356"/>
+<path class="fig-image" d="M180,356 L182.9,356 L185.9,356.2 L188.8,356.3 L191.6,356.6 L194.5,357 L197.3,357.4 L200.1,357.9 L202.8,358.4 L205.4,359.1 L208,359.8 L210.5,360.5 L212.9,361.3 L215.2,362.2 L217.5,363.2 L219.6,364.2 L221.6,365.3 L223.5,366.4 L225.3,367.5 L227,368.8 L228.5,370 L229.9,371.3 L231.2,372.6 L232.3,374 L233.3,375.3 L234.1,376.8 L234.8,378.2 L235.3,379.6 L235.7,381.1 L235.9,382.5 L236,384 L235.9,385.5 L235.7,386.9 L235.3,388.4 L234.8,389.8 L234.1,391.2 L233.3,392.7 L232.3,394 L231.2,395.4 L229.9,396.7 L228.5,398 L227,399.2 L225.3,400.5 L223.5,401.6 L221.6,402.7 L219.6,403.8 L217.5,404.8 L215.2,405.8 L212.9,406.7 L210.5,407.5 L208,408.2 L205.4,408.9 L202.8,409.6 L200.1,410.1 L197.3,410.6 L194.5,411 L191.6,411.4 L188.8,411.7 L185.9,411.8 L182.9,412 L180,412 L177.1,412 L174.1,411.8 L171.2,411.7 L168.4,411.4 L165.5,411 L162.7,410.6 L159.9,410.1 L157.2,409.6 L154.6,408.9 L152,408.2 L149.5,407.5 L147.1,406.7 L144.8,405.8 L142.5,404.8 L140.4,403.8 L138.4,402.7 L136.5,401.6 L134.7,400.5 L133,399.2 L131.5,398 L130.1,396.7 L128.8,395.4 L127.7,394 L126.7,392.7 L125.9,391.2 L125.2,389.8 L124.7,388.4 L124.3,386.9 L124.1,385.5 L124,384 L124.1,382.5 L124.3,381.1 L124.7,379.6 L125.2,378.2 L125.9,376.8 L126.7,375.3 L127.7,374 L128.8,372.6 L130.1,371.3 L131.5,370 L133,368.8 L134.7,367.5 L136.5,366.4 L138.4,365.3 L140.4,364.2 L142.5,363.2 L144.8,362.2 L147.1,361.3 L149.5,360.5 L152,359.8 L154.6,359.1 L157.2,358.4 L159.9,357.9 L162.7,357.4 L165.5,357 L168.4,356.6 L171.2,356.3 L174.1,356.2 L177.1,356 L180,356"/>
+<circle class="fig-dot fig-dot-accent" cx="180" cy="356" r="5"/>
+<text class="fig-label" x="190" y="350" text-anchor="start">full damping → |0⟩</text>
+<text class="fig-label fig-alt-text" x="118" y="512" text-anchor="end">dephasing</text>
+<text class="fig-label fig-alt-text" x="118" y="528" text-anchor="end">p = ¼</text>
+<text class="fig-label fig-accent-text" x="246" y="388">damping, γ = ¾</text>
+</svg>
+<!-- /FIGURE:channel -->
+</div>
+<figcaption>Top: the Bloch vectors in the $x$–$z$ plane. The recorded branches lie on the surface, because they are pure. The ignored-outcome state lies inside, on the segment between them, $\tfrac38$ of the way from the no-emission branch towards $|0\rangle$. Bottom: the channel acting on every input at once. Dephasing with $p=\tfrac14$ halves $r_x$ and $r_y$ and leaves $r_z$ alone. Damping with $\gamma=\tfrac34$ shrinks the ball and moves it towards $|0\rangle$. Full damping sends every state to the pure $|0\rangle$, so this kind of noise can make a state purer, not more mixed.</figcaption>
+</figure>
+<p>The rest of the chapter turns the ignored-outcome description into a general rule, a <strong>channel</strong>, and then returns to what a record adds.</p>
 <h2 id="section-1">Derive the operator-sum representation</h2>
 <p>Assume the system starts in state $\rho$ and the environment in a fixed pure state $|0\rangle_E$, with no initial correlations. Let them interact through a joint unitary $U$. If the environment is inaccessible, the output state is</p>
 <p>$$\mathcal E(\rho)=\operatorname{Tr}_E[U(\rho\otimes|0\rangle\langle0|)U^\dagger].$$</p>
+<details class="more"><summary>The same result, derived term by term for a pure input</summary>
 <p>First take a pure system input $|\psi\rangle$. Whatever the joint unitary does, we can expand its output using the environment basis:</p>
 <p>$$U(|\psi\rangle|0\rangle_E)=\sum_j|v_j\rangle_S|j\rangle_E.$$</p>
 <p>The system vectors $v_j$ are not generally normalised or orthogonal. Taking the environment component with $I\otimes\langle j|$ selects $v_j$. Since both attaching the initial environment and applying $U$ are linear, $v_j$ depends linearly on $\psi$; this dependence defines a system operator $K_j$ with $v_j=K_j\psi$.</p>
@@ -40,31 +91,38 @@
 &=\sum_jK_j|\psi\rangle\langle\psi|K_j^\dagger.
 \end{aligned}$$</p>
 <p>Different environment labels are distinguishable alternatives for the discarded subsystem, so their cross terms disappear in local predictions. If the initial state is a mixture, apply this derivation to each pure member and average its density matrix. Linearity gives the same formula with $|\psi\rangle\langle\psi|$ replaced by $\rho$. No assumption that the system's output remains pure has been made.</p>
-<p>Insert an orthonormal environment basis $\{|j\rangle\}$ in the partial trace and define $K_j=(I\otimes\langle j|)U(I\otimes|0\rangle)$. Then</p>
+</details>
+<p>In the example, $K_0=\operatorname{diag}(1,\sqrt{1-\gamma})$ gave the no-emission branch and $K_1=\sqrt\gamma\,|0\rangle\langle1|$ the emission branch. In general, insert an orthonormal environment basis $\{|j\rangle\}$ in the partial trace and define $K_j=(I\otimes\langle j|)U(I\otimes|0\rangle)$, called <strong>Kraus operators</strong>. Then</p>
 <p>$$\mathcal E(\rho)=\sum_jK_j\rho K_j^\dagger,\qquad\sum_jK_j^\dagger K_j=I.$$</p>
 <p>The last identity follows from $U^\dagger U=I$ and implies trace preservation: $\operatorname{Tr}\mathcal E(\rho)=\operatorname{Tr}[\rho\sum_jK_j^\dagger K_j]=1$. A fixed mixed environment can be included by purifying it into a larger space. Initial system-environment correlations require more care and are outside this construction's assumptions.</p>
 <h2 id="section-2">Why positivity must hold with an untouched partner</h2>
 <p>Each term $K_j\rho K_j^\dagger$ is positive when $\rho$ is positive. The same argument holds on a larger state with operators $I_R\otimes K_j$, so $I_R\otimes\mathcal E$ remains positive for every reference system $R$. This is complete positivity. A quantum channel is a completely positive, trace-preserving linear map.</p>
+<p>Ordinary positivity, that $\mathcal E$ maps every density matrix to a density matrix, is weaker. The standard counterexample is transposition, which is positive but gives a negative eigenvalue when applied to half of a Bell pair.</p>
+<details class="more"><summary>The partial transpose, and the negative eigenvalue</summary>
 <p>A <strong>partial transpose</strong> is a mathematical operation on a bipartite matrix: transpose only the indices belonging to the selected subsystem, in a specified product basis. On a basis operator the rule is</p>
 <p>$$(|i\rangle\langle k|\otimes|j\rangle\langle\ell|)^{T_B}
 =|i\rangle\langle k|\otimes|\ell\rangle\langle j|.$$</p>
 <p>For example, $|00\rangle\langle11|$ becomes $|01\rangle\langle10|$, while $|00\rangle\langle00|$ stays fixed. Unlike a partial trace, this does not discard a subsystem or reduce the matrix dimension. Applying the rule to the four terms of the Bell projector gives the matrix below. Its negative eigenvalue will show why this otherwise well-defined mathematical operation is not a valid local channel.</p>
-<p>Ordinary positivity is weaker. Matrix transposition $\rho\mapsto\rho^T$ preserves the eigenvalues of a single state, but transposing only the second half of a Bell projector gives</p>
+<p>Matrix transposition $\rho\mapsto\rho^T$ preserves the eigenvalues of a single state, but transposing only the second half of a Bell projector gives</p>
 <p>$$\left(|\Phi^+\rangle\langle\Phi^+|\right)^{T_B}=\frac12\begin{pmatrix}1&0&0&0\\0&0&1&0\\0&1&0&0\\0&0&0&1\end{pmatrix}.$$</p>
 <p>The middle block has eigenvalues $+1/2,-1/2$. This cannot be an output density matrix. Transposition is positive but not completely positive, so it cannot act as a universal physical local channel on unknown inputs.</p>
+</details>
 <h2 id="section-3">Amplitude damping: populations and coherence</h2>
 <p>Model a transition from excited $|1\rangle$ to ground $|0\rangle$ with probability $\gamma$, where $0\le\gamma\le1$. Choose</p>
 <p>$$K_0=\begin{pmatrix}1&0\\0&\sqrt{1-\gamma}\end{pmatrix},\qquad K_1=\begin{pmatrix}0&\sqrt\gamma\\0&0\end{pmatrix}.$$</p>
 <p>Completeness follows from $K_0^\dagger K_0=\operatorname{diag}(1,1-\gamma)$ and $K_1^\dagger K_1=\operatorname{diag}(0,\gamma)$. Multiplying out both branches gives</p>
 <p>$$\mathcal E\begin{pmatrix}\rho_{00}&\rho_{01}\\\rho_{10}&\rho_{11}\end{pmatrix}=\begin{pmatrix}\rho_{00}+\gamma\rho_{11}&\sqrt{1-\gamma}\rho_{01}\\\sqrt{1-\gamma}\rho_{10}&(1-\gamma)\rho_{11}\end{pmatrix}.$$</p>
 <p>Population flows to the ground state; coherence is attenuated by a square root. With $\gamma(t)=1-e^{-t/T_1}$, the excited population decays as $e^{-t/T_1}$ and off-diagonal entries as $e^{-t/(2T_1)}$. The corresponding $T_2=2T_1$ holds for this relaxation-only model; additional dephasing can shorten coherence time.</p>
-<p>For input $|+\rangle$ and $\gamma=3/4$, the output is $\left(\begin{smallmatrix}7/8&1/4\\1/4&1/8\end{smallmatrix}\right)$. Its Bloch vector is $(1/2,0,3/4)$ and its purity is $(1+1/4+9/16)/2=29/32$. At full damping, every input becomes $|0\rangle\langle0|$, a pure state. Noise can decrease system entropy; it need not make the system more mixed.</p>
+<p>For input $|+\rangle$ and $\gamma=3/4$, the output is $\left(\begin{smallmatrix}7/8&1/4\\1/4&1/8\end{smallmatrix}\right)$. Its Bloch vector is $(1/2,0,3/4)$ and its purity is $(1+1/4+9/16)/2=29/32$. At full damping, every input becomes $|0\rangle\langle0|$, a pure state. Noise can make the system purer; it need not make it more mixed.</p>
 <h2 id="section-4">Phase noise behaves differently</h2>
 <p>A random phase flip has channel $\mathcal D_p(\rho)=(1-p)\rho+pZ\rho Z$. The diagonal entries stay fixed and the off-diagonal entries are multiplied by $1-2p$. At $p=1/2$, all computational-basis coherence disappears. At $p=1$, the operation is the known unitary $Z$, so it does not destroy purity. Increasing a parameter called “error probability” does not always increase mixedness monotonically.</p>
 <p>On the Bloch ball this channel maps $(r_x,r_y,r_z)$ to $((1-2p)r_x,(1-2p)r_y,r_z)$. Amplitude damping instead maps it to $(\sqrt{1-\gamma}r_x,\sqrt{1-\gamma}r_y,(1-\gamma)r_z+\gamma)$. The displacement toward the north pole explains why damping can purify.</p>
 <h2 id="section-5">A recorded outcome supplies more than a channel</h2>
-<p>If the environment basis is actually measured and outcome $j$ retained, its probability is $p_j=\operatorname{Tr}(K_j\rho K_j^\dagger)$ and its conditional state is $K_j\rho K_j^\dagger/p_j$. The effects are $E_j=K_j^\dagger K_j$. Forgetting the outcome gives the channel sum. If a recorded outcome $m$ groups hidden alternatives $j$, the conditional numerator is $\sum_jK_{mj}\rho K_{mj}^\dagger$.</p>
+<p>If the environment basis is actually measured and outcome $j$ retained, its probability is $p_j=\operatorname{Tr}(K_j\rho K_j^\dagger)$ and its conditional state is $K_j\rho K_j^\dagger/p_j$. The effects are $K_j^\dagger K_j$ (not to be confused with the environment $E$ or the channel $\mathcal E$). Forgetting the outcome gives the channel sum. If a recorded outcome $m$ groups hidden alternatives $j$, the conditional numerator is $\sum_jK_{mj}\rho K_{mj}^\dagger$.</p>
 <p>A Kraus representation is not unique: replacing the $K_j$ by unitary linear combinations leaves the channel unchanged. Consequently, a Kraus index does not automatically identify a unique physical event. It becomes an experimentally meaningful outcome only when a particular environment measurement is specified.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>With the surroundings ignored, the decayed $|+\rangle$ is described by the mixed state $\rho=\left(\begin{smallmatrix}7/8&1/4\\1/4&1/8\end{smallmatrix}\right)$: population has moved towards $|0\rangle$ and coherence has shrunk. If the emission is recorded, the qubit is in one of two pure states, $|0\rangle$ or $(2|0\rangle+|1\rangle)/\sqrt5$, and the record says which. The joint state of qubit and surroundings stayed pure throughout. Noise is not the same as mixing: full damping ends in a pure state, and a phase flip with $p=1$ is a known unitary.</p>
+<p>A channel acting on a lone qubit generally cannot be undone, because the information has gone to a system we do not hold. The next chapter spreads one qubit's amplitudes over several physical qubits, so that the effect of a small error can be identified and reversed without looking at the amplitudes themselves.</p>
 <h2 id="section-6">Problems</h2>
 <p><strong>1.</strong> Apply full dephasing to one half of $|\Phi^+\rangle$. Is the output entangled?</p>
 <details><summary>Worked answer</summary><p>Full dephasing on $B$ is the equal mixture of doing nothing and applying $Z$ to $B$. The second operation converts $|\Phi^+\rangle$ to $|\Phi^-\rangle=(|00\rangle-|11\rangle)/\sqrt2$. Therefore</p><p>$$\rho'=\tfrac12|\Phi^+\rangle\langle\Phi^+|+\tfrac12|\Phi^-\rangle\langle\Phi^-|.$$</p><p>Each projector has diagonal terms $|00\rangle\langle00|/2$ and $|11\rangle\langle11|/2$. Their cross terms have opposite signs and cancel in the mixture. The result is $(|00\rangle\langle00|+|11\rangle\langle11|)/2$, a mixture of two explicit product states, hence separable. Measurement in the computational basis still gives equal bits on the two sides.</p></details>
@@ -73,6 +131,6 @@
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §8.2.2–8.2.4 (environments, operator sums, complete positivity), §8.3.3 (phase flips), §8.3.5 (amplitude damping), and §8.5 (limitations of the formalism).</p></section><nav class="chapter-nav"><a href="12-grover-search.html"><span class="dir">Previous</span>Grover search as two reflections</a><a class="next" href="14-error-correction.html"><span class="dir">Next chapter</span>Error correction without reading the logical state</a></nav>
 </div></main>
-<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<footer class="site-footer"><div class="wrap"><p>Quantum Information, Explained · A calculation-first introduction to quantum information.</p>
 <p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
 </body></html>

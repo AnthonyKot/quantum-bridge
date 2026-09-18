@@ -1,5 +1,10 @@
 # The Bridge: rewrite and review record
 
+> **Note (18 September 2026).** This record describes the 12 September rewrite. The later rework
+> (opening questions, figures, optional derivations, closing sections, new title "Quantum Information,
+> Explained") and its reviews are recorded in `docs/REWORK-PLAN.md`, which is the current record.
+
+
 Date: 2026-09-11, updated 2026-09-12 after the depth revision. Scope: the complete
 local book, all fifteen chapter bodies, contents, reader's guide, editorial rules,
 and shared reading controls.

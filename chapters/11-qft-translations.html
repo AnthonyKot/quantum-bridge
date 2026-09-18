@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fourier sampling, phase estimation, and periods — The Bridge</title>
+<title>Fourier sampling, phase estimation, and periods — Quantum Information, Explained</title>
 <meta name="description" content="One Fourier sample returns a single integer. What it reveals about a hidden period, why the peaks can be spread, and the classical work that finishes the job.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
@@ -16,7 +16,7 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap">
-<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<a class="brand" href="../index.html">Quantum Information, <span>Explained</span></a>
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 11</p><h1>Fourier sampling, phase estimation, and periods</h1>
@@ -190,7 +190,7 @@
 <p>These are eigenstates, $U_a|u_s\rangle=e^{2\pi is/r}|u_s\rangle$, so the eigenphases are the fractions $s/r$. We do not need to prepare an individual eigenstate: the easily prepared state $|1\rangle$ is an equal superposition of them, $|1\rangle=r^{-1/2}\sum_s|u_s\rangle$. Phase estimation therefore samples the phase distributions for the different $s$ values with equal weights. The orthogonal target eigenstates prevent cross terms between those distributions when we measure the control alone.</p>
 <p>For $a=2,M=21$, the cycle is $1,2,4,8,16,11,1$, giving $r=6$. Phases such as $1/6$ and $1/3$ cannot be represented exactly with a power-of-two denominator. This is where rational approximation becomes necessary.</p>
 <h2 id="section-6">Recover a phase fraction using continued fractions</h2>
-<p>The measured rational number is $k/N$. Reducing it in lowest terms still gives a power-of-two denominator, so that operation alone cannot recover an odd factor of $r$. Instead, expand $k/N$ as a <strong>continued fraction</strong>, written $[a_0;a_1,a_2,\ldots]=a_0+1/(a_1+1/(a_2+\cdots))$. Truncating after successive entries gives rational approximations called <strong>convergents</strong>.</p>
+<p>The measured rational number is $k/N$. Reducing it in lowest terms still gives a power-of-two denominator, so that operation alone cannot recover an odd factor of $r$. Instead, expand $k/N$ as a <strong>continued fraction</strong>, written $[c_0;c_1,c_2,\ldots]=c_0+1/(c_1+1/(c_2+\cdots))$. Truncating after successive entries gives rational approximations called <strong>convergents</strong>.</p>
 <p>For example, $256=3\cdot85+1$ and $85=85\cdot1$, so $85/256=[0;3,85]$. Its convergents include $0$, $1/3$, and $85/256$. The odd denominator three appears in an intermediate approximation; it is not the reduced denominator of the measured fraction.</p>
 <p>The relevant theorem is precise: if $p/q$ is in lowest terms and $|k/N-p/q|&lt;1/(2q^2)$, then <strong>$p/q$ occurs among the convergents of the continued-fraction expansion of $k/N$</strong>. The proof is a number-theoretic result; see the linked continued-fraction reference. Here the desired $p/q$ is $s/r$ after reducing <em>that unknown phase fraction</em>. An error smaller than $1/(2r^2)$ is sufficient because its reduced denominator $q$ is at most $r$.</p>
 <p>The approximation theorem and the register size are separate statements. On a nearest-integer phase-estimation outcome, $|k/N-s/r|\le1/(2N)$. Choosing $N\ge2r^2$ is a sufficient margin: that error is at most $1/(4r^2)$, strictly below the required bound. It is not a necessary condition of the continued-fraction theorem itself, nor does it guarantee every measured outcome is close enough. Since $r$ is unknown but $r&lt;M$, choosing a power of two $N\ge2M^2$ provides this margin in advance.</p>
@@ -198,7 +198,7 @@
 <p>Continue with $a=2,M=21$ and choose $N=1024$, which exceeds $2M^2$. A possible near-$1/3$ sample is $k=341$. Division gives $341/1024=[0;3,341]$, so one candidate phase fraction is $1/3$. Its approximation error is</p>
 <p>$$\left|\frac{341}{1024}-\frac13\right|=\frac1{3072}&lt;\frac1{2\cdot6^2}.$$</p>
 <p>The approximation is excellent, yet its denominator three is not the order: $2^3\bmod21=8\ne1$. This sample corresponds to $s=2,r=6$, whose fraction reduces to $1/3$. The information lost in that reduction cannot be restored from this sample alone.</p>
-<p>A second possible sample near $1/6$ is $171/1024=[0;5,1,84,2]$. Which convergent to test is fixed by the register-size margin: with $N\ge2M^2$ and a nearest-integer phase-estimation outcome, the fraction $s/r$ is guaranteed to be a convergent, and since $r&lt;M$ it is the convergent with the largest denominator below $M$. The convergents of $171/1024$ are $0,\ 1/5,\ 1/6,\ 85/509,\ 171/1024$; the last two have denominators above $M=21$, so the rule selects $[0;5,1]=1/6$ and candidate six, and $2^6\bmod21=1$. Checking its proper divisors one, two, and three excludes a smaller order in this example. In general a passing power test establishes a multiple of the order; further reduction or suitable candidate selection establishes the least one. Repetitions and classical verification are part of the algorithm.</p>
+<p>A second possible sample near $1/6$ is $171/1024=[0;5,1,84,2]$. Which convergent to test is fixed by the register-size margin, provided the sample is accurate enough. If $N\ge2M^2$ and $k$ is the integer nearest to $Ns/r$ for some $s$, then the reduced form of $s/r$ is a convergent of $k/N$, and since $r&lt;M$ it is the convergent with the largest denominator below $M$. The register size does not make every sample accurate: an outcome away from every peak, which occurs with small but nonzero probability, carries no such guarantee. Its candidate fails the power test, and the run is repeated. The convergents of $171/1024$ are $0,\ 1/5,\ 1/6,\ 85/509,\ 171/1024$; the last two have denominators above $M=21$, so the rule selects $[0;5,1]=1/6$ and candidate six, and $2^6\bmod21=1$. Checking its proper divisors one, two, and three excludes a smaller order in this example. In general a passing power test establishes a multiple of the order; further reduction or suitable candidate selection establishes the least one. Repetitions and classical verification are part of the algorithm.</p>
 <p>For factoring, an even order can yield factors through greatest common divisors of $a^{r/2}\pm1$ with $M$. Here $\gcd(7,21)=7$ and $\gcd(9,21)=3$. Some choices yield odd orders or unhelpful square roots and must be retried. The reference treats those cases and the success analysis.</p>
 <h2 id="section-8">Account for the operations used</h2>
 <p>The exact QFT circuit uses $n$ Hadamards, $n(n-1)/2$ controlled phase rotations, and qubit-order reversal: $O(n^2)$ elementary operations, meaning an upper bound proportional to $n^2$ for large $n$. This count assumes those specified rotations are available; synthesis into a fixed alphabet adds approximation overhead.</p>
@@ -215,6 +215,6 @@
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §5.1–5.4.1 (QFT, phase estimation, order-finding, factoring, and periodic functions). For the approximation theorem, see <a href="https://crypto.stanford.edu/pbc/notes/contfrac/converge.html">Ben Lynn’s notes on continued-fraction convergence</a>. For the full algorithm and runtime argument, see <a href="https://arxiv.org/abs/quant-ph/9508027">Shor, Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer</a>.</p></section><nav class="chapter-nav"><a href="10-interference-deutsch.html"><span class="dir">Previous</span>Phase kickback and the Deutsch–Jozsa algorithm</a><a class="next" href="12-grover-search.html"><span class="dir">Next chapter</span>Grover search as two reflections</a></nav>
 </div></main>
-<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<footer class="site-footer"><div class="wrap"><p>Quantum Information, Explained · A calculation-first introduction to quantum information.</p>
 <p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
 </body></html>

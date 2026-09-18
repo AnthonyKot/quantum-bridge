@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>How to read this book — The Bridge</title>
-<meta name="description" content="Prerequisites, notation, problem-solving guidance, and references for The Bridge.">
+<title>How to read this book — Quantum Information, Explained</title>
+<meta name="description" content="Prerequisites, notation, problem-solving guidance, and references for Quantum Information, Explained.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="static/style.css">
 <link rel="stylesheet" href="static/katex/katex.min.css">
@@ -16,15 +16,19 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap">
-<a class="brand" href="index.html">The <span>Bridge</span></a>
+<a class="brand" href="index.html">Quantum Information, <span>Explained</span></a>
 <nav class="site-nav" aria-label="Main navigation"><a href="index.html">Contents</a><a href="about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Reader’s guide</p><h1>How to read this book</h1>
 <p class="lede">Work with the state or probability distribution on paper. Each chapter gives enough intermediate steps to check where its result comes from.</p>
+<h2 id="shape">How each chapter is built</h2>
+<p>Every chapter has the same shape. It opens with a concrete question. A worked example carries the argument, with a figure generated from the same calculation. Longer derivations and general proofs sit in sections marked <em>optional</em>, closed by default; the main path is complete without them, and conditions on a result are never hidden in one. A closing section, “Where this leaves us”, answers the opening question and says why the next chapter follows. Two problems with worked answers end the chapter.</p>
 <h2>Background and reading order</h2>
-<p>You should be comfortable with complex conjugation, matrix multiplication, inner products, eigenvalues, and elementary probability. Chapter 1 introduces bras, kets, qubits, and tensor products. Chapter 5 also uses the Schrödinger equation. You do not need prior quantum computing or access to a particular textbook.</p>
+<p>You should be comfortable with complex conjugation, matrix multiplication, inner products, eigenvalues, and elementary probability. Chapter 1 introduces bras, kets, qubits, and tensor products. Chapter 5 also uses the Schrödinger equation. You do not need prior quantum computing or access to a particular textbook. For a slower introduction to quantum mechanics itself, the companion guide <a href="https://anthonykot.github.io/quantum-quartet/">The Quantum Quartet</a> is a recommended, not required, starting point; chapters link to its specific essays.</p>
 <p>Read Chapters 1–3 before working with measurements or reduced states. Chapters 4–5 establish gate conventions and control. Chapters 6–9 develop entanglement and communication; Chapters 10–12 calculate algorithms. Chapters 13–15 cover noise, recovery, and information. Each chapter lists the prerequisites relevant to its calculation.</p>
 <p>All fifteen chapters are written, with thirty problems and worked answers. Their length varies with the calculation: a protocol needs its register states, a bound needs its assumptions, and an algorithm needs its output distribution and resource count.</p>
+<h2 id="checking">How the content is checked</h2>
+<p>Two kinds of checking are kept separate. Every worked number and every figure is recomputed by a test script, by a second method where possible: a figure computed from a formula is checked against a direct matrix simulation, and a circuit figure against the register and gate order used in the text. Passing those tests shows that the calculations are right. It does not show that the prose around them is right, so each chapter has also had a separate scientific review of its statements and their conditions. Neither replaces the other.</p>
 <h2 id="notation">Notation used throughout</h2>
 <div class="table-scroll"><table><caption>Conventions and symbols</caption><thead><tr><th>Symbol</th><th>Meaning</th></tr></thead><tbody>
 <tr><td>$|\psi\rangle$, $\langle\psi|$</td><td>Column state vector and its conjugate transpose.</td></tr>
@@ -32,7 +36,8 @@
 <tr><td>$|\psi\rangle\langle\psi|$</td><td>Outer product, the density matrix of a normalised pure state.</td></tr>
 <tr><td>$AB|\psi\rangle$</td><td>$B$ acts first, then $A$.</td></tr>
 <tr><td>$|ab\rangle$</td><td>$|a\rangle\otimes|b\rangle$. Two-qubit basis order is $00,01,10,11$.</td></tr>
-<tr><td>$X,Y,Z$; $H$</td><td>Pauli matrices; Hadamard gate. A Hamiltonian is written $\mathcal H$.</td></tr>
+<tr><td>$X,Y,Z$; $H$</td><td>Pauli matrices; Hadamard gate. A Hamiltonian is written $\mathcal H$. The companion guide, which has no Hadamard gate, writes the Hamiltonian as $H$ and the Pauli matrices as $\sigma_x,\sigma_y,\sigma_z$; its spin up and down are $|0\rangle$ and $|1\rangle$ here.</td></tr>
+<tr><td>$\mathbf r$</td><td>Bloch vector $(\langle X\rangle,\langle Y\rangle,\langle Z\rangle)$. For spin ½ its angles are spatial angles; for linear photon polarisation they are twice the polariser angle (Chapter 5).</td></tr>
 <tr><td>$\rho$; $\operatorname{Tr}_B$</td><td>Density matrix; partial trace over subsystem $B$.</td></tr>
 <tr><td>$E_m$; $M_m$</td><td>Measurement effect; measurement operator. $E_m=M_m^\dagger M_m$ in the single-operator case.</td></tr>
 <tr><td>$\oplus$; $x\cdot z$</td><td>Addition modulo two; bitwise dot product modulo two.</td></tr>
@@ -58,6 +63,6 @@
 <p>The book derives small-system calculations in full and explicitly identifies the larger theorems it uses without proof, including universality, the unstructured-search lower bound, the general recovery criterion, and the Holevo bound. These references are the next reading step if you need those proofs. Source prose and textbook PDFs are not included in the published site.</p>
 <p><a href="index.html">Browse the chapters →</a></p>
 </div></main>
-<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<footer class="site-footer"><div class="wrap"><p>Quantum Information, Explained · A calculation-first introduction to quantum information.</p>
 <p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
 </body></html>

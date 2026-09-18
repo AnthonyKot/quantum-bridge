@@ -1,7 +1,6 @@
 # Book2 rework plan: make the explanations easier to reach
 
-Status: APPROVED 18 September 2026. Pilots (1, 12) approved and published. Batch 2–5 reviewed and checkpointed
-(agreement with the reported changes, not an independent verification). Next: batch 6–9.
+Status: COMPLETE 18 September 2026 (see "Final checks" at the end). Pilots, batches 2–15, continuous read and site reconciliation done.
 
 ## What kind of rework this is
 
@@ -242,3 +241,55 @@ way to prepare one; chapter 10's caption keeps "a single nonzero string" local t
 opening classical claim says "with certainty"; chapter 11's caption explains N = 64 (visibility) against
 N = 1024 (precision margin); the runtime sentence credits efficient reversible modular arithmetic for the
 controlled powers.
+
+## Batch 13–15 record (18 September 2026)
+
+| Ch | Question | Figure | Moved to fold-outs |
+|---|---|---|---|
+| 13 | A decaying \|+⟩ with no one watching: what is left, what does a recorded emission change, does noise always mix? | `channel` (joint / ignored / recorded for γ = ¾; the ball under dephasing, damping, full damping) | the term-by-term operator-sum derivation; the partial-transpose calculation (statement kept) |
+| 14 | How can an error be found and undone without learning the encoded state? | `syndrome` (error, corrupted state with α, β, parity readings, recovery) | the Knill–Laflamme check on the repetition code (criterion kept) |
+| 15 | How many bits can one qubit carry, and what does a shared pair add? | `resources` (what travels, what is shared, χ and achieved bits for five scenarios) | none |
+
+Focus points applied: chapter 13 opens with one interaction described three ways (joint pure state; environment
+ignored, mixed; environment measured and recorded, pure branches that average to the ignored state), and keeps
+"noise need not increase entropy" in the main path and the figure. Chapter 14 states in the main path and
+figure that the parity readings are identical for both terms, so they carry nothing about α, β; the coherent
+recovery stays visible. Chapter 15 states the three resources for every calculation, and closes by answering
+what quantum information allows and does not allow, with no new notation.
+
+Tests extended: test_13 (branches and reduced state from a joint unitary with an environment qubit; ball maps
+against Kraus operators), test_14 (readings as Z1Z2, Z2Z3 eigenvalues for three (α, β); recovery; term lists),
+test_15 (χ from eigenvalues; achieved information from joint distributions; dense-coding reduced states).
+
+## Whole-book continuous read (18 September 2026)
+
+Read with every optional derivation closed (main path only), for prerequisites, notation and whether each
+opening question is answered. All fifteen opening questions are answered in the main path. Seventeen fixes:
+entanglement defined in chapter 3 at first technical use; β₀₀ = Φ⁺ stated and the label β separated from the
+amplitude β (chapter 9, convention kept); "Kraus operators" named (13); purity instead of entropy before
+entropy is defined, and the effects no longer written E_j beside the environment E (13); the chapter 7
+pointer to its own entanglement entropy, U_A ⊗ U_B for local unitaries, v* throughout; Shor code "not
+arbitrary two-qubit errors" (14); X, Y, H redefined explicitly for chapter 15 and log₂d stated as the maximum
+entropy; continued-fraction entries c_k and "the reduced form of s/r" (11); "channels, Chapter 13" at first use
+(6); the bit-flip code pointer (4); convex hull instead of "segment or polygon" (3); the Chapter 2 averaging
+rule linked from chapter 9; the tensor product stated in one sentence (1).
+
+Site reconciliation: title "Quantum Information, Explained" on every page (formerly "The Bridge"; URLs
+unchanged); landing page opening and part introductions rewritten as questions, with the companion guide
+linked as optional; about page gains "How each chapter is built", "How the content is checked" (calculation
+tests versus scientific review) and notation rows for the book1 translation and Bloch angles; README, CONTEXT,
+HANDOVER and rewrite-review updated to point here.
+
+## Final checks (18 September 2026)
+
+Last qualifications: chapter 11's convergent rule now requires an accurate sample (k nearest to Ns/r) and says
+an off-peak sample carries no guarantee and is caught by the power test; chapter 15 distinguishes the bound χ
+from what a named measurement recovers (0.311 against 0.601 for |0⟩ or |+⟩) and states that in dense coding one
+qubit travels while Bob measures two, using an ebit shared beforehand.
+
+Final verification: verify.sh passes (links, prev/next chain, structure, 18 calculation test groups, prose
+scans); browser check passes on 17 pages at 1440 and 390 px (2093 formulas, 30 answers, 18 figures, 19 optional
+derivations, labels ≥ 10 px); every chapter printed to PDF with all fold-outs and answers present; all external
+links, including the six book1 refresher links, return 200.
+
+Status: rework complete. Title "Quantum Information, Explained".

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Entropy, accessible information, and the Holevo bound — The Bridge</title>
-<meta name="description" content="A state can have large entropy while carrying no information about a message. To quantify communication, compare the average state with the states assigned to individual messages.">
+<title>Entropy, accessible information, and the Holevo bound — Quantum Information, Explained</title>
+<meta name="description" content="How many bits one transmitted qubit can carry, what a shared entangled pair adds, and why entropy is not the same as information.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -16,11 +16,11 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap">
-<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<a class="brand" href="../index.html">Quantum Information, <span>Explained</span></a>
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 15</p><h1>Entropy, accessible information, and the Holevo bound</h1>
-<p class="lede">A state can have large entropy while carrying no information about a message. To quantify communication, compare the average state with the states assigned to individual messages.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 2–3, 7, 9, and 13: effects, density-matrix spectra, entanglement, dense coding, and channels. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Begin with classical uncertainty</a></li>
+<p class="lede">Alice encodes a message in one qubit and sends it to Bob. A qubit’s state takes continuous parameters to describe, so could it carry many bits? How many can Bob actually recover, and what changes if the two of them shared an entangled pair beforehand?</p><p class="prerequisites"><strong>Before you start:</strong> POVMs (<a href="02-observables-measurement.html#section-2">Chapter 2</a>); density matrices and their eigenvalues (<a href="03-density-matrix.html">Chapter 3</a>); Schmidt coefficients (<a href="07-entanglement-schmidt.html">Chapter 7</a>); dense coding (<a href="09-teleportation-superdense.html#section-4">Chapter 9</a>). The last section uses channels (<a href="13-open-systems-channels.html">Chapter 13</a>). Logarithms are base two throughout. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Begin with classical uncertainty</a></li>
 <li><a href="#section-2">Compute quantum entropy from eigenvalues</a></li>
 <li><a href="#section-3">Entanglement entropy has a restricted domain</a></li>
 <li><a href="#section-4">Define the communication problem precisely</a></li>
@@ -28,10 +28,11 @@
 <li><a href="#section-6">A nonorthogonal encoding</a></li>
 <li><a href="#section-7">Dense coding with all resources included</a></li>
 <li><a href="#section-8">Noise and information are not the same as mixedness</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-9">Problems</a></li>
 </ol></nav>
 <h2 id="section-1">Begin with classical uncertainty</h2>
-<p>For a random variable $X$ with probabilities $p_x$, the Shannon entropy in bits is $H(X)=-\sum_xp_x\log_2p_x$, with $0\log_2 0=0$ by continuity. A certain outcome has entropy zero; a fair binary outcome has entropy one. The binary entropy function is $h_2(p)=-p\log_2p-(1-p)\log_2(1-p)$.</p>
+<p>In this chapter $X$ and $Y$ denote random variables and $H$ the Shannon entropy, not the Pauli matrices $X,Y$ or the Hadamard gate; $Z$ still denotes the Pauli matrix. For a random variable $X$ with probabilities $p_x$, the Shannon entropy in bits is $H(X)=-\sum_xp_x\log_2p_x$, with $0\log_2 0=0$ by continuity. A certain outcome has entropy zero; a fair binary outcome has entropy one. The binary entropy function is $h_2(p)=-p\log_2p-(1-p)\log_2(1-p)$.</p>
 <p>Entropy of a measurement result is not automatically information about a message. Let $X$ be the message and $Y$ the observed outcome. To define their <strong>conditional entropy</strong>, first fix an observed value $y$ and use the probabilities $p(x|y)=p(x,y)/p(y)$. The remaining uncertainty is $H(X|Y=y)=-\sum_xp(x|y)\log_2p(x|y)$. Average this uncertainty over the observed values to obtain $H(X|Y)=\sum_yp(y)H(X|Y=y)$; outcomes with $p(y)=0$ contribute nothing. Interchanging $X$ and $Y$ defines $H(Y|X)$ in the same way.</p>
 <p><strong>Mutual information</strong> is the average reduction in uncertainty about the message after seeing the outcome. Start with $H(X)$, subtract what remains, $H(X|Y)$. An equivalent expression subtracts the outcome uncertainty left after the input is specified:</p>
 <p>$$I(X:Y)=H(Y)-\sum_xp_xH(Y|X=x)=H(X)-H(X|Y).$$</p>
@@ -46,13 +47,13 @@ I(X:Y)&=1-0.811\approx0.189\text{ bits}.
 <h2 id="section-2">Compute quantum entropy from eigenvalues</h2>
 <p>For a density matrix with eigenvalues $\lambda_j$, define</p>
 <p>$$S(\rho)=-\operatorname{Tr}(\rho\log_2\rho)=-\sum_j\lambda_j\log_2\lambda_j.$$</p>
-<p>A pure state has spectrum $1,0,\ldots$ and entropy zero. The maximally mixed state $I/d$ has entropy $\log_2d$. For a qubit with Bloch-vector length $r$, the eigenvalues are $(1\pm r)/2$, so $S(\rho)=h_2((1+r)/2)$. This depends on the spectrum, not the chosen matrix basis.</p>
+<p>A pure state has spectrum $1,0,\ldots$ and entropy zero. The maximally mixed state $I/d$ has entropy $\log_2d$, and no $d$-dimensional state has more: the uniform spectrum maximises the entropy. For a qubit with Bloch-vector length $r$, the eigenvalues are $(1\pm r)/2$, so $S(\rho)=h_2((1+r)/2)$. This depends on the spectrum, not the chosen matrix basis.</p>
 <p>In particular $S(|+\rangle\langle+|)=0$, although measuring $Z$ on it produces a fair random bit with Shannon entropy one. The measurement basis creates a distribution that is not the eigenvalue distribution. A pure state is not a promise of deterministic outcomes for every observable.</p>
 <h2 id="section-3">Entanglement entropy has a restricted domain</h2>
 <p>For a pure bipartite state with Schmidt coefficients $s_j$, the reduced eigenvalues are $s_j^2$. Its entanglement entropy is $S(\rho_A)=S(\rho_B)=-\sum_js_j^2\log_2s_j^2$. A Bell pair gives one bit of reduced entropy, conventionally one ebit of entanglement; a product gives zero.</p>
 <p>This equality is a pure-joint-state statement. The separable mixture $(|00\rangle\langle00|+|11\rangle\langle11|)/2$ also has $S(\rho_A)=S(\rho_B)=1$, yet no entanglement. Reduced entropy alone does not quantify mixed-state entanglement.</p>
 <h2 id="section-4">Define the communication problem precisely</h2>
-<p>Alice draws $x$ with probability $p_x$, prepares $\rho_x$, and sends the system to Bob. Its average state is $\bar\rho=\sum_xp_x\rho_x$. Bob chooses a positive operator-valued measure (POVM), the general measurement introduced in Chapter 2. Its effects $\{E_y\}$ obey $E_y\ge0$ and $\sum_yE_y=I$, giving $p(y|x)=\operatorname{Tr}(\rho_xE_y)$. These conditional probabilities, together with $p_x$, define a classical joint distribution and hence $I(X:Y)$.</p>
+<p>Every calculation below states three things: what travels from Alice to Bob, what they shared beforehand, and what Bob holds when he decodes. Alice draws $x$ with probability $p_x$, prepares $\rho_x$, and sends the system to Bob. Its average state is $\bar\rho=\sum_xp_x\rho_x$. Bob chooses a positive operator-valued measure (POVM), the general measurement introduced in Chapter 2. Its effects $\{E_y\}$ obey $E_y\ge0$ and $\sum_yE_y=I$, giving $p(y|x)=\operatorname{Tr}(\rho_xE_y)$. These conditional probabilities, together with $p_x$, define a classical joint distribution and hence $I(X:Y)$.</p>
 <p>The accessible information is the maximum of that mutual information over Bob's measurements. The Holevo theorem bounds it by</p>
 <p>$$I(X:Y)\le\chi,\qquad \chi=S(\bar\rho)-\sum_xp_xS(\rho_x).$$</p>
 <p>The theorem is stated here, not proved. Its proof uses quantum entropy inequalities. Since $S(\rho_x)\ge0$ and $S(\bar\rho)\le\log_2d$, an ensemble received on a $d$-dimensional system has $\chi\le\log_2d$. This statement applies to the whole system available for decoding, with any message-correlated side information accounted for.</p>
@@ -67,10 +68,85 @@ I(X:Y)&=1-0.811\approx0.189\text{ bits}.
 <h2 id="section-7">Dense coding with all resources included</h2>
 <p>In Chapter 9's equal-prior dense-coding ensemble, each of the four message-conditioned transmitted-qubit states is $I/2$. On that qubit alone, $\chi=1-1=0$. Bob, however, also possesses the other half of the original Bell pair. After receiving the transmitted half, his four possible <em>joint</em> states are orthogonal pure Bell states. Their average is $I/4$, so</p>
 <p>$$\chi_{AB}=S(I/4)-\frac14\sum_{a,b}S(|\beta_{ab}\rangle\langle\beta_{ab}|)=2-0=2.$$</p>
-<p>A Bell measurement attains two bits. The protocol uses one transmitted qubit and one pre-shared ebit. The one-qubit dimension bound cannot be applied to a decoder holding a two-qubit message-dependent state.</p>
+<p>Bob’s Bell measurement acts on two qubits: the one that travelled and his half of the pair shared beforehand. Here it recovers two bits, equal to $\chi$. The accounting is: one qubit travels, one entangled pair (an ebit) was shared before the message was chosen, and Bob measures two qubits. The one-qubit dimension bound cannot be applied to a decoder holding a two-qubit message-dependent state.</p>
+<figure class="fig-narrow">
+<div class="fig-scroll">
+<!-- FIGURE:resources -->
+<svg class="fig-svg" viewBox="0 0 360 462" role="img" aria-labelledby="fig-resources-title fig-resources-desc">
+<title id="fig-resources-title">Bits recoverable, with the resources used</title>
+<desc id="fig-resources-desc">Five rows. Zero or one on one qubit: chi one, Z measurement one bit. Zero or plus: chi 0.601, Z measurement 0.311. Maximally mixed for every message: zero and zero. Dense coding with only the sent qubit: zero. Dense coding with Bob holding both qubits after one ebit was shared beforehand: chi two, Bell measurement two.</desc>
+<text class="fig-label fig-soft" x="24" y="16">bits:</text>
+<text class="fig-label fig-soft" x="64" y="16" text-anchor="middle">0</text>
+<text class="fig-label fig-soft" x="189" y="16" text-anchor="middle">1</text>
+<text class="fig-label fig-soft" x="314" y="16" text-anchor="middle">2</text>
+<line class="fig-rule" x1="0" y1="26" x2="360" y2="26"/>
+<text class="fig-label fig-strong fig-math" x="0" y="45">|0⟩ or |1⟩</text>
+<text class="fig-label fig-soft" x="0" y="63">sends 1 qubit · shares nothing</text>
+<line class="fig-rule" x1="64" y1="70" x2="64" y2="106"/>
+<line class="fig-rule" x1="189" y1="70" x2="189" y2="106"/>
+<line class="fig-rule" x1="314" y1="70" x2="314" y2="106"/>
+<text class="fig-label fig-soft" x="0" y="84">χ</text>
+<text class="fig-label fig-soft" x="0" y="102">Z</text>
+<rect class="fig-bar-outline" x="64" y="72" width="125" height="14"/>
+<text class="fig-label" x="195" y="84">1</text>
+<rect class="fig-bar" x="64" y="90" width="125" height="14"/>
+<text class="fig-label" x="195" y="102">1</text>
+<line class="fig-rule" x1="0" y1="112" x2="360" y2="112"/>
+<text class="fig-label fig-strong fig-math" x="0" y="131">|0⟩ or |+⟩</text>
+<text class="fig-label fig-soft" x="0" y="149">sends 1 qubit · shares nothing</text>
+<line class="fig-rule" x1="64" y1="156" x2="64" y2="192"/>
+<line class="fig-rule" x1="189" y1="156" x2="189" y2="192"/>
+<line class="fig-rule" x1="314" y1="156" x2="314" y2="192"/>
+<text class="fig-label fig-soft" x="0" y="170">χ</text>
+<text class="fig-label fig-soft" x="0" y="188">Z</text>
+<rect class="fig-bar-outline" x="64" y="158" width="75.1" height="14"/>
+<text class="fig-label" x="145.1" y="170">0.601</text>
+<rect class="fig-bar" x="64" y="176" width="38.9" height="14"/>
+<text class="fig-label" x="108.9" y="188">0.311</text>
+<line class="fig-rule" x1="0" y1="198" x2="360" y2="198"/>
+<text class="fig-label fig-strong fig-math" x="0" y="217">I/2 for every message</text>
+<text class="fig-label fig-soft" x="0" y="235">sends 1 qubit · shares nothing</text>
+<line class="fig-rule" x1="64" y1="242" x2="64" y2="278"/>
+<line class="fig-rule" x1="189" y1="242" x2="189" y2="278"/>
+<line class="fig-rule" x1="314" y1="242" x2="314" y2="278"/>
+<text class="fig-label fig-soft" x="0" y="256">χ</text>
+<text class="fig-label fig-soft" x="0" y="274">any</text>
+<text class="fig-label" x="70" y="256">0</text>
+<text class="fig-label" x="70" y="274">0</text>
+<line class="fig-rule" x1="0" y1="284" x2="360" y2="284"/>
+<text class="fig-label fig-strong fig-math" x="0" y="303">dense coding, sent qubit alone</text>
+<text class="fig-label fig-soft" x="0" y="321">sends 1 qubit · decoder lacks the ebit</text>
+<line class="fig-rule" x1="64" y1="328" x2="64" y2="364"/>
+<line class="fig-rule" x1="189" y1="328" x2="189" y2="364"/>
+<line class="fig-rule" x1="314" y1="328" x2="314" y2="364"/>
+<text class="fig-label fig-soft" x="0" y="342">χ</text>
+<text class="fig-label fig-soft" x="0" y="360">any</text>
+<text class="fig-label" x="70" y="342">0</text>
+<text class="fig-label" x="70" y="360">0</text>
+<line class="fig-rule" x1="0" y1="370" x2="360" y2="370"/>
+<text class="fig-label fig-strong fig-math" x="0" y="389">dense coding, Bob holds both</text>
+<text class="fig-label fig-soft" x="0" y="407">sends 1 qubit · shares 1 ebit beforehand</text>
+<line class="fig-rule" x1="64" y1="414" x2="64" y2="450"/>
+<line class="fig-rule" x1="189" y1="414" x2="189" y2="450"/>
+<line class="fig-rule" x1="314" y1="414" x2="314" y2="450"/>
+<text class="fig-label fig-soft" x="0" y="428">χ</text>
+<text class="fig-label fig-soft" x="0" y="446">Bell</text>
+<rect class="fig-bar-outline" x="64" y="416" width="250" height="14"/>
+<text class="fig-label" x="320" y="428">2</text>
+<rect class="fig-bar" x="64" y="434" width="250" height="14"/>
+<text class="fig-label" x="320" y="446">2</text>
+<line class="fig-rule" x1="0" y1="456" x2="360" y2="456"/>
+</svg>
+<!-- /FIGURE:resources -->
+</div>
+<figcaption>Bits recoverable from equally likely messages, with the resources used. The outlined bar is the Holevo quantity $\chi$ of the states Bob holds, an upper bound for any measurement; the filled bar is what the named measurement actually recovers. The two need not coincide: for $|0\rangle$ or $|+\rangle$ the $Z$ measurement recovers $0.311$ bits against a bound of $0.601$. One transmitted qubit with nothing shared gives at most one bit. Dense coding sends the same single qubit, yet gives two bits, because an entangled pair was shared beforehand and Bob measures two qubits, the one that travelled and his own half; an eavesdropper holding only the transmitted qubit gets nothing.</figcaption>
+</figure>
 <h2 id="section-8">Noise and information are not the same as mixedness</h2>
 <p>A channel can lower entropy: full amplitude damping sends $I/2$ to the pure ground state. It can nevertheless destroy message information. If it maps both $|0\rangle$ and $|1\rangle$ to $|0\rangle$, their output ensemble has $\chi=0$, although its average is now pure.</p>
 <p>The relevant monotonicity theorem is that applying the same channel to every signal state cannot increase the Holevo quantity. This is a data-processing statement about the ensemble, not a claim that every individual state's entropy grows. Entropy, entanglement, and accessible classical information answer different questions; their assumptions determine which calculation is appropriate.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>One transmitted qubit, with nothing shared beforehand, gives Bob at most one bit, however many continuous parameters Alice used to prepare it: the Holevo quantity of a qubit ensemble is at most $\log_22=1$. That bound, $\chi$, is a ceiling on what any measurement recovers; a particular measurement can recover less, as the $Z$ measurement does for $|0\rangle$ or $|+\rangle$, $0.311$ bits against $0.601$. Nonorthogonal encodings stay below one bit, and a message-independent state gives nothing, even though its entropy is maximal. With one entangled pair shared beforehand, the same single transmitted qubit carries two bits: one qubit travels, but Bob measures two, the transmitted qubit together with his half of the pair.</p>
+<p>That answer is typical of what the book has found quantum information allows. It does not allow copying an unknown state, sending a message faster than a classical signal, or packing more than one bit into a qubit alone. It does allow correlations that no local classical model reproduces; moving an unknown state with two classical bits and a shared pair; answering some questions with fewer queries than any exact classical method, and finding periods through Fourier sampling, when the problem has the right structure and the oracle or arithmetic can be built; and protecting amplitudes against errors without reading them. Each of those came with its conditions, and the conditions are part of the result.</p>
 <h2 id="section-9">Problems</h2>
 <p><strong>1.</strong> Send equally likely $|0\rangle$ and $|1\rangle$ through a bit-flip channel with flip probability $p$. Compute $\chi$ and the information obtained by measuring $Z$.</p>
 <details><summary>Worked answer</summary><p>The channel takes input zero to $\rho'_0=(1-p)|0\rangle\langle0|+p|1\rangle\langle1|$ and input one to $\rho'_1=p|0\rangle\langle0|+(1-p)|1\rangle\langle1|$. Both have eigenvalues $p,1-p$, while their equal average is $I/2$.</p><p>$$\chi=S(I/2)-\tfrac12S(\rho'_0)-\tfrac12S(\rho'_1)=1-h_2(p).$$</p><p>Measuring $Z$ gives a fair output bit: $H(Y)=1$. With either input fixed, the output probabilities are $p,1-p$, so $H(Y|X)=\frac12h_2(p)+\frac12h_2(p)=h_2(p)$. Hence $I(X:Y)=1-h_2(p)$, attaining the bound. At $p=1/2$ it vanishes; at $p=1$ the output identifies the input after a known inversion.</p></details>
@@ -79,6 +155,6 @@ I(X:Y)&=1-0.811\approx0.189\text{ bits}.
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §11.1–11.3 (classical and quantum entropy), §11.4 (strong subadditivity), and §12.1 (accessible information and the Holevo bound). Proofs of the entropy and data-processing theorems are outside this chapter.</p></section><nav class="chapter-nav"><a href="14-error-correction.html"><span class="dir">Previous</span>Error correction without reading the logical state</a><a class="next" href="../index.html"><span class="dir">Return to</span>Contents</a></nav>
 </div></main>
-<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<footer class="site-footer"><div class="wrap"><p>Quantum Information, Explained · A calculation-first introduction to quantum information.</p>
 <p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
 </body></html>

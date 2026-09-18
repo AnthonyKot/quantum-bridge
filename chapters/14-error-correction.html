@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Error correction without reading the logical state — The Bridge</title>
-<meta name="description" content="An error-correcting code stores a qubit in a subspace. Measuring parity can identify a recoverable error while preserving the amplitudes inside that subspace.">
+<title>Error correction without reading the logical state — Quantum Information, Explained</title>
+<meta name="description" content="Checking a qubit for errors by measuring it would destroy its amplitudes. Parity checks on an encoded qubit find and undo a flip without revealing the encoded state.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
 <link rel="stylesheet" href="../static/katex/katex.min.css">
@@ -16,15 +16,16 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap">
-<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<a class="brand" href="../index.html">Quantum Information, <span>Explained</span></a>
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 14</p><h1>Error correction without reading the logical state</h1>
-<p class="lede">An error-correcting code stores a qubit in a subspace. Measuring parity can identify a recoverable error while preserving the amplitudes inside that subspace.</p><p class="prerequisites"><strong>Before you start:</strong> Chapters 2, 4, 6, and 13: degenerate measurement, Pauli gates, no-cloning, and Kraus operators. <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Encode amplitudes rather than independent copies</a></li>
+<p class="lede">Measuring a qubit to see whether an error has occurred would disturb the amplitudes it holds, and no-cloning rules out keeping a backup copy. How can an error be detected and undone without learning the encoded state?</p><p class="prerequisites"><strong>Before you start:</strong> Parity measurements that keep a superposition (<a href="02-observables-measurement.html#section-1">Chapter 2</a>); controlled-NOT and the identity $HZH=X$ (<a href="04-unitary-gates.html#section-2">Chapter 4</a>); encoding is not copying (<a href="06-linearity-no-cloning.html#section-5">Chapter 6</a>). The last section uses channels (<a href="13-open-systems-channels.html">Chapter 13</a>). <a href="../about.html#notation">Notation guide</a>.</p><nav class="on-this-page" aria-label="On this page"><p>In this chapter</p><ol><li><a href="#section-1">Encode amplitudes rather than independent copies</a></li>
 <li><a href="#section-2">Read parities with two commuting checks</a></li>
 <li><a href="#section-3">A coherent small error is corrected too</a></li>
 <li><a href="#section-4">Protect both bit and phase information</a></li>
 <li><a href="#section-5">The general recovery condition</a></li>
+<li><a href="#where-this-leaves-us">Where this leaves us</a></li>
 <li><a href="#section-6">Problems</a></li>
 </ol></nav>
 <h2 id="section-1">Encode amplitudes rather than independent copies</h2>
@@ -37,8 +38,57 @@
 <p>so the check still returns $+1$. If the error anticommutes with it, $SE=-ES$, and instead</p>
 <p>$$S(E|\psi_L\rangle)=-ES|\psi_L\rangle=-E|\psi_L\rangle,$$</p>
 <p>so the outcome becomes $-1$. These are statements about the entire logical superposition, not just one basis vector.</p>
-<p>For $E=X_1$, check $Z_1Z_2$ has one overlapping site where $Z$ and $X$ anticommute. Moving $X_1$ through that check introduces one minus sign. Check $Z_2Z_3$ acts on different sites and introduces none. Thus $X_1$ has syndrome $(-1,+1)$. Error $X_2$ anticommutes with both checks, giving $(-1,-1)$; $X_3$ only anticommutes with the second, giving $(+1,-1)$. This produces the table:</p>
-<div class="table-scroll"><table><caption>Single-bit-flip syndromes</caption><thead><tr><th>Error</th><th>$S_1$</th><th>$S_2$</th><th>Recovery</th></tr></thead><tbody><tr><td>$I$</td><td>+1</td><td>+1</td><td>$I$</td></tr><tr><td>$X_1$</td><td>−1</td><td>+1</td><td>$X_1$</td></tr><tr><td>$X_2$</td><td>−1</td><td>−1</td><td>$X_2$</td></tr><tr><td>$X_3$</td><td>+1</td><td>−1</td><td>$X_3$</td></tr></tbody></table></div>
+<p>For $E=X_1$, check $Z_1Z_2$ has one overlapping site where $Z$ and $X$ anticommute. Moving $X_1$ through that check introduces one minus sign. Check $Z_2Z_3$ acts on different sites and introduces none. Thus $X_1$ has syndrome $(-1,+1)$. Error $X_2$ anticommutes with both checks, giving $(-1,-1)$; $X_3$ only anticommutes with the second, giving $(+1,-1)$. This produces the syndromes in the figure.</p>
+<figure class="fig-narrow">
+<div class="fig-scroll">
+<!-- FIGURE:syndrome -->
+<svg class="fig-svg" viewBox="0 0 360 252" role="img" aria-labelledby="fig-syndrome-title fig-syndrome-desc">
+<title id="fig-syndrome-title">Syndrome readings and recoveries</title>
+<desc id="fig-syndrome-desc">A table with four rows. No error: state alpha 000 plus beta 111, readings 0 0, no recovery. X1: alpha 100 plus beta 011, readings 1 0, recovery X1. X2: alpha 010 plus beta 101, readings 1 1, recovery X2. X3: alpha 001 plus beta 110, readings 0 1, recovery X3. Both terms of each state give the same readings.</desc>
+<text class="fig-label fig-soft" x="0" y="16">error</text>
+<text class="fig-label fig-soft" x="62" y="16">state after the error</text>
+<text class="fig-label fig-soft" x="216" y="16">readings</text>
+<text class="fig-label fig-soft" x="294" y="16">recovery</text>
+<line class="fig-rule" x1="0" y1="30" x2="360" y2="30"/>
+<text class="fig-label fig-strong" x="0" y="57">none</text>
+<text class="fig-label fig-math" x="62" y="58">α|000⟩ + β|111⟩</text>
+<rect class="fig-cell" x="216" y="39" width="22" height="26"/>
+<text class="fig-label fig-strong" x="227" y="57" text-anchor="middle">0</text>
+<rect class="fig-cell" x="242" y="39" width="22" height="26"/>
+<text class="fig-label fig-strong" x="253" y="57" text-anchor="middle">0</text>
+<text class="fig-label" x="294" y="57">none</text>
+<line class="fig-rule" x1="0" y1="74" x2="360" y2="74"/>
+<text class="fig-label fig-strong" x="0" y="101">X₁</text>
+<text class="fig-label fig-math" x="62" y="102">α|100⟩ + β|011⟩</text>
+<rect class="fig-cell fig-cell-on" x="216" y="83" width="22" height="26"/>
+<text class="fig-label fig-strong" x="227" y="101" text-anchor="middle">1</text>
+<rect class="fig-cell" x="242" y="83" width="22" height="26"/>
+<text class="fig-label fig-strong" x="253" y="101" text-anchor="middle">0</text>
+<text class="fig-label" x="294" y="101">X₁</text>
+<line class="fig-rule" x1="0" y1="118" x2="360" y2="118"/>
+<text class="fig-label fig-strong" x="0" y="145">X₂</text>
+<text class="fig-label fig-math" x="62" y="146">α|010⟩ + β|101⟩</text>
+<rect class="fig-cell fig-cell-on" x="216" y="127" width="22" height="26"/>
+<text class="fig-label fig-strong" x="227" y="145" text-anchor="middle">1</text>
+<rect class="fig-cell fig-cell-on" x="242" y="127" width="22" height="26"/>
+<text class="fig-label fig-strong" x="253" y="145" text-anchor="middle">1</text>
+<text class="fig-label" x="294" y="145">X₂</text>
+<line class="fig-rule" x1="0" y1="162" x2="360" y2="162"/>
+<text class="fig-label fig-strong" x="0" y="189">X₃</text>
+<text class="fig-label fig-math" x="62" y="190">α|001⟩ + β|110⟩</text>
+<rect class="fig-cell" x="216" y="171" width="22" height="26"/>
+<text class="fig-label fig-strong" x="227" y="189" text-anchor="middle">0</text>
+<rect class="fig-cell fig-cell-on" x="242" y="171" width="22" height="26"/>
+<text class="fig-label fig-strong" x="253" y="189" text-anchor="middle">1</text>
+<text class="fig-label" x="294" y="189">X₃</text>
+<line class="fig-rule" x1="0" y1="206" x2="360" y2="206"/>
+<text class="fig-label fig-soft" x="0" y="226">Readings: parity of qubits 1,2 and of qubits 2,3.</text>
+<text class="fig-label fig-soft" x="0" y="244">Both terms give the same bits, whatever α and β are.</text>
+</svg>
+<!-- /FIGURE:syndrome -->
+</div>
+<figcaption>The syndrome table with the corrupted states written out. Each check is read as a bit, 0 for eigenvalue $+1$ and 1 for $-1$: the parity of qubits 1 and 2, and of qubits 2 and 3. In every row the two terms, the one carrying $\alpha$ and the one carrying $\beta$, give the same bits, so a reading reveals which qubit flipped and nothing about $\alpha$ or $\beta$. Applying $X$ to that qubit restores $\alpha|000\rangle+\beta|111\rangle$.</figcaption>
+</figure>
 <p>For example, both $|100\rangle$ and $|011\rangle$ have syndrome $(-1,+1)$. Reading it cannot distinguish their amplitudes. Applying $X_1$ then restores $|\psi_L\rangle$.</p>
 <p>To measure $Z_1Z_2$, prepare an ancilla $|0\rangle$, apply CNOTs from data qubits 1 and 2 to it, then measure the ancilla in the computational basis. Its bit is $q_1\oplus q_2$: zero denotes eigenvalue $+1$, one denotes $-1$. The ancilla records only parity. This circuit assumes ideal gates and readout; faulty syndrome extraction is a separate fault-tolerance problem.</p>
 <h2 id="section-3">A coherent small error is corrected too</h2>
@@ -54,8 +104,15 @@
 <h2 id="section-5">The general recovery condition</h2>
 <p>Let $P$ project onto a code, and let $\{E_a\}$ be the errors to correct. The Knill–Laflamme criterion states that perfect recovery is possible exactly when</p>
 <p>$$PE_a^\dagger E_bP=c_{ab}P$$</p>
-<p>for scalars $c_{ab}$. In a logical orthonormal basis this says $\langle i_L|E_a^\dagger E_b|j_L\rangle=c_{ab}\delta_{ij}$. Check it on the repetition code with the error set $\{I,X_1,X_2,X_3\}$: for $a\ne b$ the product $E_a^\dagger E_b$ flips one or two qubits, so it maps $|000\rangle$ and $|111\rangle$ to strings outside the code space and every matrix element vanishes, giving $c_{ab}=0$; for $a=b$ the product is $I$, giving $c_{aa}=1$ with no dependence on $i,j$ beyond $\delta_{ij}$. The criterion holds with $c_{ab}=\delta_{ab}$, which is the orthogonal-syndrome case. Error overlaps must not distinguish or mix logical basis labels in an input-dependent way. Orthogonal syndrome spaces are one way to satisfy the condition, but degenerate errors can satisfy it too. The full necessity-and-sufficiency proof is a cited theorem; our repetition-code recovery above is explicit.</p>
+<p>for scalars $c_{ab}$. In a logical orthonormal basis this says $\langle i_L|E_a^\dagger E_b|j_L\rangle=c_{ab}\delta_{ij}$.</p>
+<details class="more"><summary>Checking the criterion on the repetition code</summary>
+<p>Check it on the repetition code with the error set $\{I,X_1,X_2,X_3\}$: for $a\ne b$ the product $E_a^\dagger E_b$ flips one or two qubits, so it maps $|000\rangle$ and $|111\rangle$ to strings outside the code space and every matrix element vanishes, giving $c_{ab}=0$; for $a=b$ the product is $I$, giving $c_{aa}=1$ with no dependence on $i,j$ beyond $\delta_{ij}$. The criterion holds with $c_{ab}=\delta_{ab}$, which is the orthogonal-syndrome case.</p>
+</details>
+<p>Error overlaps must not distinguish or mix logical basis labels in an input-dependent way. Orthogonal syndrome spaces are one way to satisfy the condition, but degenerate errors can satisfy it too. The full necessity-and-sufficiency proof is a cited theorem; our repetition-code recovery above is explicit.</p>
 <p>If a code corrects an error basis, the same recovery corrects its linear span. Every operator on one qubit expands as $aI+bX+cY+dZ$, so a code satisfying the criterion for all single-site Pauli errors corrects arbitrary noise supported on one site, including coupling to an environment. This does not imply that a code corrects arbitrarily many simultaneous errors.</p>
+<h2 id="where-this-leaves-us">Where this leaves us</h2>
+<p>An error is detected without reading the encoded state by measuring only parities, $Z_1Z_2$ and $Z_2Z_3$. Every code state gives $+1$ for both, whatever $\alpha$ and $\beta$ are, so the readings carry no information about the amplitudes; after a single flip, both terms of the corrupted state give the same readings, which point to the flipped qubit. Applying $X$ there restores $\alpha|000\rangle+\beta|111\rangle$ exactly. Because recovery works on an error basis, it also corrects a small coherent rotation. The limits stay part of the answer: the repetition code misses phase errors, the Shor code handles any single-qubit error but not arbitrary two-qubit errors, and faulty checks need fault-tolerant constructions.</p>
+<p>The book has now followed a qubit through preparation, measurement, gates, entanglement, communication, algorithms and noise. The last chapter asks the question underneath the communication protocols: how much classical information one qubit can carry, and what shared entanglement adds.</p>
 <h2 id="section-6">Problems</h2>
 <p><strong>1.</strong> In the three-qubit code, apply $X_1X_2$ and then the recovery indicated by its syndrome. What logical operation remains?</p>
 <details><summary>Worked answer</summary><p>For error $X_1X_2$, commuting it through $Z_1Z_2$ produces two minus signs, which cancel. Commuting it through $Z_2Z_3$ produces only one minus sign. The syndrome is therefore $(+1,-1)$, the same as for the single error $X_3$.</p><p>$$\alpha|000\rangle+\beta|111\rangle\xrightarrow{X_1X_2}\alpha|110\rangle+\beta|001\rangle\xrightarrow{X_3}\alpha|111\rangle+\beta|000\rangle.$$</p><p>The prescribed recovery leaves the amplitudes attached to the opposite logical basis states: a logical $X$. Two different error patterns share this syndrome, and the code’s single-flip assumption selects the wrong recovery for the two-flip case.</p></details>
@@ -64,6 +121,6 @@
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §10.1–10.3 (repetition, Shor code, recovery conditions, degeneracy), and §10.6 (fault tolerance). For the general criterion, see <a href="https://arxiv.org/abs/quant-ph/9604034">Knill &amp; Laflamme, A Theory of Quantum Error-Correcting Codes</a>.</p></section><nav class="chapter-nav"><a href="13-open-systems-channels.html"><span class="dir">Previous</span>Quantum channels: discarded environments and noise</a><a class="next" href="15-entropy-holevo.html"><span class="dir">Next chapter</span>Entropy, accessible information, and the Holevo bound</a></nav>
 </div></main>
-<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<footer class="site-footer"><div class="wrap"><p>Quantum Information, Explained · A calculation-first introduction to quantum information.</p>
 <p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
 </body></html>

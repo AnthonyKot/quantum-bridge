@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Density matrices and the state of a subsystem — The Bridge</title>
+<title>Density matrices and the state of a subsystem — Quantum Information, Explained</title>
 <meta name="description" content="Two coin-flip sources that no measurement can tell apart, and the single matrix that holds every prediction for a mixed preparation or a subsystem.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
@@ -16,7 +16,7 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap">
-<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<a class="brand" href="../index.html">Quantum Information, <span>Explained</span></a>
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 03</p><h1>Density matrices and the state of a subsystem</h1>
@@ -50,7 +50,7 @@
 <p>If $\lambda_j$ are the eigenvalues of $\rho$, then $\operatorname{Tr}\rho^2=\sum_j\lambda_j^2\le1$. Equality requires one eigenvalue equal to one and all others zero: exactly a pure state. For a qubit, the Pauli matrices and identity form a basis for Hermitian matrices, so</p>
 <p>$$\rho=\frac12(I+r_xX+r_yY+r_zZ)=\frac12\begin{pmatrix}1+r_z&r_x-ir_y\\r_x+ir_y&1-r_z\end{pmatrix}.$$</p>
 <p>Its eigenvalues are $(1\pm|\mathbf r|)/2$, which are nonnegative precisely when $|\mathbf r|\le1$. Pure states lie on the sphere; mixed states lie inside. Writing $(\sigma_1,\sigma_2,\sigma_3)=(X,Y,Z)$, each Pauli matrix is traceless and squares to $I$, so $\operatorname{Tr}(\sigma_i\sigma_j)=2\delta_{ij}$. Using this gives $\operatorname{Tr}\rho^2=(1+|\mathbf r|^2)/2$. The centre $I/2$ has purity $1/2$.</p>
-<p>Since $\rho$ depends linearly on $\mathbf r$, the Bloch vector of a mixture is the probability-weighted average of its members' Bloch vectors. A mixture therefore sits inside the ball, on the segment or polygon spanned by its members, and any two ensembles with the same average are the same density matrix. Sources C and D both average to the centre. Away from the centre, the ensemble $\tfrac34|0\rangle,\tfrac14|1\rangle$ and the equal mixture of $(\sqrt3|0\rangle\pm|1\rangle)/2$ both give $\mathbf r=(0,0,\tfrac12)$, that is $\rho=\operatorname{diag}(\tfrac34,\tfrac14)$. The second pair's off-diagonal entries, $\pm\sqrt3/4$, cancel in the average.</p>
+<p>Since $\rho$ depends linearly on $\mathbf r$, the Bloch vector of a mixture is the probability-weighted average of its members' Bloch vectors. A mixture therefore sits inside the ball, inside the convex hull of its members (a segment, polygon or solid), and any two ensembles with the same average are the same density matrix. Sources C and D both average to the centre. Away from the centre, the ensemble $\tfrac34|0\rangle,\tfrac14|1\rangle$ and the equal mixture of $(\sqrt3|0\rangle\pm|1\rangle)/2$ both give $\mathbf r=(0,0,\tfrac12)$, that is $\rho=\operatorname{diag}(\tfrac34,\tfrac14)$. The second pair's off-diagonal entries, $\pm\sqrt3/4$, cancel in the average.</p>
 <figure class="fig-narrow">
 <div class="fig-scroll">
 <!-- FIGURE:ensembles -->
@@ -114,7 +114,7 @@
 <p>The quantity in parentheses is precisely the matrix element $(\rho_A)_{ik}$. This establishes the partial trace by the predictions it must preserve, rather than by an arbitrary rule for deleting indices. Terms with unequal partner labels vanish because their partner states are orthogonal. Coherences between system labels $i,k$ can remain when the partner label is the same.</p>
 <p>For comparison, $|00\rangle\langle10|$ becomes $|0\rangle\langle1|$: the partner is zero on both sides. But $|00\rangle\langle11|$ becomes zero, because it would require the overlap $\langle1|0\rangle$.</p>
 </details>
-<p>For the Bell state $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$, the projector has four terms. The terms $|00\rangle\langle11|$ and $|11\rangle\langle00|$ vanish on tracing $B$, because their $B$ indices differ. Hence $\rho_A=I/2$, even though $\rho_{AB}$ is pure. One qubit of this pair is described by the same matrix as source C and source D, and no measurement on that qubit alone can tell the three apart.</p>
+<p>A pure joint state that is not a product of one-qubit states is called <strong>entangled</strong>; Chapter 7 gives a test for it and the separate definition needed for mixed states. For the Bell state $|\Phi^+\rangle=(|00\rangle+|11\rangle)/\sqrt2$, which is entangled, the projector has four terms. The terms $|00\rangle\langle11|$ and $|11\rangle\langle00|$ vanish on tracing $B$, because their $B$ indices differ. Hence $\rho_A=I/2$, even though $\rho_{AB}$ is pure. One qubit of this pair is described by the same matrix as source C and source D, and no measurement on that qubit alone can tell the three apart.</p>
 <h2 id="section-5">Local mixedness does not by itself prove entanglement</h2>
 <p>The classically correlated state $\rho_{\rm cc}=(|00\rangle\langle00|+|11\rangle\langle11|)/2$ has exactly the same two reduced states as $|\Phi^+\rangle$. Both give matching $Z$ results. To tell the joint preparations apart, compute $\langle X\otimes X\rangle$: it is one for $|\Phi^+\rangle$ and zero for $\rho_{\rm cc}$. The latter has no off-diagonal terms to contribute.</p>
 <p>If the joint state is known to be pure, a mixed reduced state certifies entanglement. Without that assumption, it does not. Nor does every interaction create entanglement: a controlled-NOT leaves $|00\rangle$ unchanged. The input and the interaction both matter.</p>
@@ -129,6 +129,6 @@
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §2.4.1–2.4.3 (ensembles, density-operator properties, reduced states).</p></section><nav class="chapter-nav"><a href="02-observables-measurement.html"><span class="dir">Previous</span>Measurement: probabilities and state changes</a><a class="next" href="04-unitary-gates.html"><span class="dir">Next chapter</span>Gates, circuits, and universality</a></nav>
 </div></main>
-<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<footer class="site-footer"><div class="wrap"><p>Quantum Information, Explained · A calculation-first introduction to quantum information.</p>
 <p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
 </body></html>

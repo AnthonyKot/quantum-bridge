@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Entanglement and the Schmidt decomposition — The Bridge</title>
+<title>Entanglement and the Schmidt decomposition — Quantum Information, Explained</title>
 <meta name="description" content="Arrange a two-qubit state's amplitudes in a matrix: its determinant tests factorisation, and its singular values give the Schmidt coefficients and the best overlap with any product state.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
@@ -16,7 +16,7 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap">
-<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<a class="brand" href="../index.html">Quantum Information, <span>Explained</span></a>
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 07</p><h1>Entanglement and the Schmidt decomposition</h1>
@@ -54,8 +54,8 @@
 <p>$$C=\frac1{\sqrt3}\begin{pmatrix}1&1\\1&0\end{pmatrix},\qquad\rho_A=CC^\dagger=\frac13\begin{pmatrix}2&1\\1&1\end{pmatrix}.$$</p><p>The identity $\rho_A=CC^\dagger$ is the partial trace written in coefficients: $(\rho_A)_{ii'}=\sum_j C_{ij}C^*_{i'j}$, because tracing over $B$ pairs the second index of $C$ with the second index of $C^*$. Likewise $\rho_B=(C^\dagger C)^T$ has the same nonzero eigenvalues, which is why the construction above could start from $C^\dagger C$.</p>
 <p>The reduced matrix has trace one and determinant $1/9$. Its characteristic equation $\lambda^2-\lambda+1/9=0$ gives</p>
 <p>$$\lambda_\pm=\frac{3\pm\sqrt5}{6},\qquad s_\pm=\sqrt{\lambda_\pm}.$$</p>
-<p>Both coefficients are nonzero, so the state is entangled. Its purity is $\lambda_+^2+\lambda_-^2=1-2/9=7/9$. It is less entangled than a Bell pair according to the pure-state entropy measure introduced in Chapter 15: the Bell pair's reduced spectrum $(1/2,1/2)$ is more uniform than $(\lambda_+,\lambda_-)\approx(0.87,0.13)$. We did not need to find the local eigenvectors to establish entanglement or compute purity.</p>
-<p>The squared Schmidt coefficients also answer the second half of the opening question directly. The largest squared overlap $|\langle u\otimes v|\Psi\rangle|^2$ with any normalised product state is $s_{\max}^2$, the largest squared Schmidt coefficient. The reason is that $\langle u\otimes v|\Psi\rangle=u^\dagger C\,\bar v$, where $\bar v$ is the complex conjugate of $v$, and a matrix cannot lengthen a unit vector by more than its largest singular value; the top Schmidt pair attains that value. For the worked state the best product state reaches $s_{\max}^2=\lambda_+\approx0.873$. For a Bell pair no product state does better than $0.5$.</p>
+<p>Both coefficients are nonzero, so the state is entangled. Its purity is $\lambda_+^2+\lambda_-^2=1-2/9=7/9$. It is less entangled than a Bell pair according to the entanglement entropy defined below (interpreted in Chapter 15): the Bell pair's reduced spectrum $(1/2,1/2)$ is more uniform than $(\lambda_+,\lambda_-)\approx(0.87,0.13)$. We did not need to find the local eigenvectors to establish entanglement or compute purity.</p>
+<p>The squared Schmidt coefficients also answer the second half of the opening question directly. The largest squared overlap $|\langle u\otimes v|\Psi\rangle|^2$ with any normalised product state is $s_{\max}^2$, the largest squared Schmidt coefficient. The reason is that $\langle u\otimes v|\Psi\rangle=u^\dagger C\,v^*$, where $v^*$ is the complex conjugate of $v$, and a matrix cannot lengthen a unit vector by more than its largest singular value; the top Schmidt pair attains that value. For the worked state the best product state reaches $s_{\max}^2=\lambda_+\approx0.873$. For a Bell pair no product state does better than $0.5$.</p>
 <figure class="fig-narrow">
 <div class="fig-scroll">
 <!-- FIGURE:schmidt -->
@@ -122,7 +122,7 @@
 <figcaption>Three states, from coefficient matrix to squared Schmidt coefficients $s^2$. Rows of $C$ are qubit $A$'s label, columns qubit $B$'s. The product state has a single nonzero $s^2$, equal to 1, and $\det C=0$. The worked state has two unequal values, $s^2\approx0.873$ and $0.127$; the Bell pair has two equal values, $\tfrac12$ each. For two qubits $|\det C|=s_1s_2$, so the determinant is zero exactly when one coefficient is missing, and largest, $\tfrac12$, when the two are equal. The largest $s^2$ in each row is the best squared overlap any product state can reach.</figcaption>
 </figure>
 <h2 id="section-4">What local unitaries can change</h2>
-<p>Under $A\otimes B$, the coefficient matrix becomes $C'=ACB^T$. Since $A$ and $B$ are unitary, the singular values remain unchanged. Local unitaries can rotate the Schmidt bases but cannot change the Schmidt coefficients. In particular, no independent rotations on the two halves can turn a product state into a Bell pair.</p>
+<p>Under local unitaries $U_A\otimes U_B$, the coefficient matrix becomes $C'=U_ACU_B^T$. Since $U_A$ and $U_B$ are unitary, the singular values remain unchanged. Local unitaries can rotate the Schmidt bases but cannot change the Schmidt coefficients. In particular, no independent rotations on the two halves can turn a product state into a Bell pair.</p>
 <p>For pure bipartite states the coefficients also specify entanglement entropy, $-\sum_ks_k^2\log_2s_k^2$. This is zero for a product and one for a two-qubit Bell state. We postpone its information-theoretic interpretation until entropy has been defined.</p>
 <h2 id="section-5">Mixed-state entanglement needs a different definition</h2>
 <p>A mixed state is separable if it admits a convex combination of product states, $\rho_{AB}=\sum_jp_j\rho_A^{(j)}\otimes\rho_B^{(j)}$. Otherwise it is entangled. The classically correlated mixture of $|00\rangle$ and $|11\rangle$ is separable by inspection, although both reduced states are mixed. A spectral decomposition of a mixed matrix is not a Schmidt decomposition of a pure vector, and the pure-state tests above cannot be transferred to it.</p>
@@ -138,6 +138,6 @@
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §2.1.10 (singular values), §2.5 (Schmidt decomposition), and §12.5 (entanglement).</p></section><nav class="chapter-nav"><a href="06-linearity-no-cloning.html"><span class="dir">Previous</span>Why an unknown state cannot be copied</a><a class="next" href="08-epr-bell.html"><span class="dir">Next chapter</span>Bell correlations and the CHSH inequality</a></nav>
 </div></main>
-<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<footer class="site-footer"><div class="wrap"><p>Quantum Information, Explained · A calculation-first introduction to quantum information.</p>
 <p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
 </body></html>

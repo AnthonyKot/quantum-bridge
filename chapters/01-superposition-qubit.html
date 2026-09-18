@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Qubits, amplitudes, and relative phase — The Bridge</title>
+<title>Qubits, amplitudes, and relative phase — Quantum Information, Explained</title>
 <meta name="description" content="Two sources can give identical 0/1 statistics and still prepare different states. A second measurement reveals the relative phase between a qubit's amplitudes.">
 <script>try{var t=localStorage.getItem("bridge-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <link rel="stylesheet" href="../static/style.css">
@@ -16,7 +16,7 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header"><div class="wrap">
-<a class="brand" href="../index.html">The <span>Bridge</span></a>
+<a class="brand" href="../index.html">Quantum Information, <span>Explained</span></a>
 <nav class="site-nav" aria-label="Main navigation"><a href="../index.html">Contents</a><a href="../about.html">How to read</a><button class="theme-toggle" type="button">☾ Dark</button></nav>
 </div></header>
 <main id="main"><div class="wrap"><p class="kicker">Chapter 01</p><h1>Qubits, amplitudes, and relative phase</h1>
@@ -174,7 +174,7 @@
 </figure>
 <p>These are expectation values, estimated on separate ensembles. They are not three simultaneously definite spin components. Since each Pauli measurement returns an eigenvalue $+1$ or $-1$, its mean is $p(+1)-p(-1)$. Thus a measurement along $z$ has $p(+1)=(1+r_z)/2$. The outcome label $0$ corresponds to eigenvalue $+1$ of $Z$; it is not an eigenvalue zero.</p>
 <h2 id="section-4">Adding a second qubit</h2>
-<p>Use the ordered basis $|00\rangle,|01\rangle,|10\rangle,|11\rangle$, with the first symbol referring to the first subsystem. Distributing a tensor product gives</p>
+<p>Use the ordered basis $|00\rangle,|01\rangle,|10\rangle,|11\rangle$, with the first symbol referring to the first subsystem. The state space of two qubits is the <strong>tensor product</strong> of the two one-qubit spaces: its basis vectors are the pairs $|ab\rangle=|a\rangle\otimes|b\rangle$, and $\otimes$ distributes over sums and scalar multiples. Distributing a tensor product gives</p>
 <p>$$(\alpha|0\rangle+\beta|1\rangle)\otimes(\gamma|0\rangle+\delta|1\rangle)=\alpha\gamma|00\rangle+\alpha\delta|01\rangle+\beta\gamma|10\rangle+\beta\delta|11\rangle.$$</p>
 <p>For example, $|+\rangle\otimes|1\rangle=(|01\rangle+|11\rangle)/\sqrt2$. Its column vector is $(0,1,0,1)^T/\sqrt2$. A general two-qubit state need not factor this way; we will test factorisation in Chapter 7. For $n$ qubits there are $2^n$ basis strings, but measurement still returns one string per preparation. The number of amplitudes alone does not establish a computational advantage.</p>
 <h2 id="where-this-leaves-us">Where this leaves us</h2>
@@ -188,6 +188,6 @@
 <section class="references"><h2>References and further reading</h2>
 <p>Nielsen &amp; Chuang, §1.2 (qubits), §2.1.3–2.1.7 (Pauli matrices, inner products, tensor products), and §2.2.7 (phase).</p></section><nav class="chapter-nav"><a href="../index.html"><span class="dir">Previous</span>Contents</a><a class="next" href="02-observables-measurement.html"><span class="dir">Next chapter</span>Measurement: probabilities and state changes</a></nav>
 </div></main>
-<footer class="site-footer"><div class="wrap"><p>The Bridge · Quantum mechanics and quantum information.</p>
+<footer class="site-footer"><div class="wrap"><p>Quantum Information, Explained · A calculation-first introduction to quantum information.</p>
 <p>Original explanations and calculations. References identify further reading; source prose is not reproduced.</p></div></footer>
 </body></html>

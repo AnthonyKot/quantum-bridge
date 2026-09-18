@@ -1,4 +1,12 @@
-# Editorial guide — The Bridge
+# Editorial guide — Quantum Information, Explained
+
+## Current state (18 September 2026)
+
+All fifteen chapters were reworked under docs/REWORK-PLAN.md: each has an opening question,
+one or two script-generated figures (scripts/figures/), optional derivations in
+`<details class="more">`, a "Where this leaves us" section, and linked prerequisites. The title
+is "Quantum Information, Explained" (formerly "The Bridge"). docs/REWORK-PLAN.md holds the
+per-batch records and review fixes. The editorial rules below still apply.
 
 ## Current direction
 

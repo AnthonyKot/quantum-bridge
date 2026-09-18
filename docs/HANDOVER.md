@@ -1,5 +1,10 @@
 # Book2 handover — 12 September 2026
 
+> **Note (18 September 2026).** This record describes the 12 September rewrite. The later rework
+> (opening questions, figures, optional derivations, closing sections, new title "Quantum Information,
+> Explained") and its reviews are recorded in `docs/REWORK-PLAN.md`, which is the current record.
+
+
 ## Objective and authorisation
 
 The user asked to replace the book's rigid textbook-comparison framework, improve

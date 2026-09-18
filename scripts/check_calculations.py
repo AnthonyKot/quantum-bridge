@@ -416,6 +416,35 @@ class Calculations(unittest.TestCase):
         rho=channel(projector(plus),operators)
         self.same(rho,[[7/8,1/4],[1/4,1/8]])
         self.assertAlmostEqual(trace(mm(rho,rho)).real,29/32)
+        # Figure (scripts/figures/ch13_channels.py). Top: build the joint system-environment
+        # unitary, act on |+>|0>_E, read branches off the environment, and trace it out.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch13_channels as fig
+        g = fig.GAMMA; c, s = math.sqrt(1-g), math.sqrt(g)
+        u = [[1,0,0,0],[0,c,s,0],[0,-s,c,0],[0,0,0,1]]   # order |system, env>; |1,0> -> c|1,0> + s|0,1>
+        joint = mm(u, tensor(plus, zero))
+        branches = []
+        for e in range(2):
+            v = [[joint[2*i+e][0]] for i in range(2)]
+            p = sum(abs(x[0])**2 for x in v)
+            r = [mm(mm(adj(v), m), v)[0][0].real/p for m in (X, Z)]
+            branches.append((p, r))
+        for (_, p, _, r), (pw, rw) in zip(fig.branches(), branches):
+            self.assertAlmostEqual(p, pw); self.assertAlmostEqual(r[0], rw[0]); self.assertAlmostEqual(r[1], rw[1])
+        reduced = [[sum(joint[2*i+e][0]*joint[2*k+e][0].conjugate() for e in range(2)) for k in range(2)] for i in range(2)]
+        self.same(reduced, [[7/8, 1/4], [1/4, 1/8]])
+        for got, m in zip(fig.ignored(), (X, Z)):
+            self.assertAlmostEqual(got, trace(mm(reduced, m)).real)
+        # Bottom: the Bloch-ball maps against Kraus operators on points of the circle.
+        deph = [scale(math.sqrt(1-fig.P_DEPHASE), I), scale(math.sqrt(fig.P_DEPHASE), Z)]
+        damp = [[[1,0],[0,c]], [[0,s],[0,0]]]
+        for k in range(12):
+            th = 2*math.pi*k/12
+            rho = scale(.5, add(I, scale(math.sin(th), X), scale(math.cos(th), Z)))
+            for ks, fmap in ((deph, fig.dephase_map), (damp, fig.damp_map)):
+                out = channel(rho, ks)
+                want = fmap(math.sin(th), math.cos(th))
+                self.assertAlmostEqual(trace(mm(out, X)).real, want[0]); self.assertAlmostEqual(trace(mm(out, Z)).real, want[1])
 
     def test_14_syndrome_and_coherent_recovery(self):
         encoded=ket(math.sqrt(.3),0,0,0,0,0,0,1j*math.sqrt(.7))
@@ -451,6 +480,21 @@ class Calculations(unittest.TestCase):
             for b in states:
                 self.assertLess(abs(inner(a[0],b[1])),1e-10)
                 self.assertLess(abs(inner(a[0],b[0])-inner(a[1],b[1])),1e-10)
+        # Figure table (scripts/figures/ch14_syndrome.py): readings from Z1Z2, Z2Z3 eigenvalues on the
+        # corrupted state for several (alpha, beta), and recovery restores the logical state.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch14_syndrome as fig
+        def op(ms): return tensor(tensor(ms[0], ms[1]), ms[2])
+        z12, z23 = op([Z, Z, I]), op([I, Z, Z])
+        for al, be in ((1, 0), (0, 1), (math.sqrt(.3), 1j*math.sqrt(.7))):
+            logical = [[0]]*8; logical = [[al if k == 0 else be if k == 7 else 0] for k in range(8)]
+            for (name, terms, (b1, b2), _), k in zip(fig.rows(), fig.ERRORS):
+                err = op([X if q == k else I for q in range(3)])
+                bad = mm(err, logical)
+                self.same(mm(z12, bad), scale((-1)**b1, bad)); self.same(mm(z23, bad), scale((-1)**b2, bad))
+                self.same(mm(err, bad), logical)
+                self.assertEqual(sorted(format(i, '03b') for i in range(8) if abs(bad[i][0]) > 1e-12),
+                                 sorted(tm for tm, amp in zip(terms, (al, be)) if abs(amp) > 1e-12))
 
     def test_15_information_accounting(self):
         chi=entropy([(1+1/math.sqrt(2))/2,(1-1/math.sqrt(2))/2])
@@ -460,7 +504,31 @@ class Calculations(unittest.TestCase):
         self.assertLess(measured,chi)
         self.assertEqual(entropy([.5,.5])-entropy([.5,.5]),0)
         self.assertEqual(entropy([.25]*4),2)
-
+        # Figure rows (scripts/figures/ch15_resources.py): chi from density-matrix eigenvalues, and
+        # achieved information from joint outcome distributions.
+        sys.path.insert(0, str(Path(__file__).resolve().parent / 'figures'))
+        import ch15_resources as fig
+        def eig2(r):
+            tr = (r[0][0]+r[1][1]).real; det = (r[0][0]*r[1][1]-r[0][1]*r[1][0]).real
+            d = math.sqrt(max(tr*tr/4-det, 0)); return [tr/2+d, tr/2-d]
+        def chi(states):
+            avg = scale(1/len(states), add(*states))
+            return entropy(eig2(avg)) - sum(entropy(eig2(s)) for s in states)/len(states)
+        def mutual(states, basis):
+            joint = [[mm(mm(adj(b), s), b)[0][0].real/len(states) for b in basis] for s in states]
+            px = [sum(r) for r in joint]; py = [sum(c) for c in zip(*joint)]
+            return sum(joint[x][y]*math.log2(joint[x][y]/(px[x]*py[y])) for x in range(len(states)) for y in range(len(basis)) if joint[x][y] > 0)
+        rows = {r[0]: r for r in fig.SCENARIOS}
+        one = ket(0, 1)
+        for name, states in (("|0⟩ or |1⟩", [projector(zero), projector(one)]), ("|0⟩ or |+⟩", [projector(zero), projector(plus)]),
+                             ("I/2 for every message", [scale(.5, I), scale(.5, I)])):
+            self.assertAlmostEqual(rows[name][2], chi(states))
+            self.assertAlmostEqual(rows[name][3], mutual(states, [zero, one]))
+        sent = [projector(mm(tensor(mm(mm(X, Z) if (a and b) else X if b else Z if a else I, I), I), bell)) for a in (0, 1) for b in (0, 1)]
+        alone = [[[sum(s[2*i+j][2*k+j] for j in range(2)) for k in range(2)] for i in range(2)] for s in sent]
+        self.assertAlmostEqual(rows["dense coding, sent qubit alone"][2], chi(alone))
+        avg = scale(.25, add(*sent)); self.same(avg, scale(.25, tensor(I, I)))
+        self.assertAlmostEqual(rows["dense coding, Bob holds both"][2], 2 - 0)
 
     def test_16_two_register_projection(self):
         # Build a function-evaluation state, project the output, and renormalise.

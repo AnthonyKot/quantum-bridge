@@ -325,6 +325,9 @@ figure.fig-narrow .fig-scroll { max-width: 30rem; margin: 0 auto; }
 .fig-zone-alt { fill: var(--bg-subtle); fill-opacity: .6; }
 .fig-bell { fill: none; stroke: var(--fig-second); stroke-width: 1.6; stroke-dasharray: 4 3; }
 .fig-classical { stroke: var(--ink-soft); stroke-width: 1.2; fill: none; }
+.fig-image { fill: var(--fig-accent); fill-opacity: .12; stroke: var(--fig-accent); stroke-width: 1.8; }
+.fig-image-alt { fill: var(--fig-second); stroke: var(--fig-second); stroke-dasharray: 5 3; }
+.fig-bar-outline { fill: none; stroke: var(--fig-accent); stroke-width: 1.6; }
 .fig-bar { fill: var(--fig-accent); }
 .fig-bar-plain { fill: var(--fig-plain); }
 .fig-dot { fill: var(--ink); stroke: var(--bg-raised); stroke-width: 1.5; }
@@ -345,3 +348,7 @@ details.more summary::after { content: " (optional)"; color: var(--ink-faint); }
   .fig-scroll::after { display: none; }
   details::details-content { content-visibility: visible; }
 }
+/* Contents entries: the whole entry is a link, so underline only the title. */
+.toc a { display: block; text-decoration: none; color: var(--ink); padding: .7rem .3rem; border-radius: 6px; }
+.toc a strong { color: var(--link); text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+.toc a .chapter-description { color: var(--ink-soft); }
